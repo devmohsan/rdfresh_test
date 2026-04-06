@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rdfresh | Edit Order Items</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-[#F8FAFC]">
+    <div class="flex h-screen overflow-hidden">
+        <%- include('partials/sidebar') %>
+
+            <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+                <%- include('partials/header') %>
+
+                    <main class="flex-1 p-8 pb-32">
+                        <div class="max-w-6xl mx-auto space-y-8">
+
+                            <!-- Header & Actions -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <a href="/orders/view/<%= order.id %>"
+                                        class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </a>
+                                    <div>
+                                        <h1 class="text-2xl font-black text-slate-900 tracking-tight">Modify Order</h1>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <span
+                                                class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-500 uppercase tracking-widest border border-slate-200">
+                                                #<%= order.orderNumber %>
+                                            </span>
+                                            <span class="text-xs text-slate-400 font-medium">
+                                                <%= new Date(order.orderDate).toLocaleDateString() %>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="text-right mr-4">
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Grand
+                                            Total</p>
+                                        <p class="text-2xl font-black text-slate-900" id="headerTotal">$0.00</p>
+                                    </div>
+                                    <button onclick="document.getElementById('orderForm').submit()"
+                                        class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                                        <i class="fas fa-save"></i>
+                                        Save Changes
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Order Details Summary -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- Customer -->
+                                <div
+                                    class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-user text-xs"></i>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                                            Customer</h3>
+                                        <p class="font-bold text-slate-900 truncate">
+                                            <%= order.user?.name || 'Guest' %>
+                                        </p>
+                                        <p class="text-xs text-slate-500 truncate">
+                                            <%= order.user?.email %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Ship To -->
+                                <div
+                                    class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-map-marker-alt text-xs"></i>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                                            Shipping To</h3>
+                                        <p class="font-bold text-slate-900 truncate">
+                                            <%= order.shipTo?.name %>
+                                        </p>
+                                        <p class="text-xs text-slate-500 truncate">
+                                            <%= order.shipTo?.city %>, <%= order.shipTo?.state %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Status -->
+                                <div
+                                    class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-start gap-3">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-info-circle text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                                            Current Status</h3>
+                                        <span
+                                            class="inline-flex px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest bg-slate-100/80 text-slate-600 border border-slate-200">
+                                            <%= order.status %>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Wrapper -->
+                            <form id="orderForm" action="/admin/orders/update/<%= order.id %>" method="POST"
+                                onsubmit="console.log('Submitting form with items:', cart)">
+                                <div id="hiddenInputsContainer"></div>
+
+                                <!-- CURRENT ITEMS SECTION -->
+                                <div
+                                    class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden mb-8">
+                                    <div
+                                        class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white">
+                                                <i class="fas fa-shopping-bag text-xs"></i>
+                                            </div>
+                                            <div>
+                                                <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">
+                                                    Current Order Items</h3>
+                                                <p class="text-[10px] font-bold text-slate-500">Items currently in this
+                                                    order</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-left">
+                                            <thead>
+                                                <tr
+                                                    class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50/50 border-b border-slate-100">
+                                                    <th class="px-8 py-3 w-16">#</th>
+                                                    <th class="px-8 py-3">Product</th>
+                                                    <th class="px-8 py-3 text-right">Price</th>
+                                                    <th class="px-8 py-3 text-center">Quantity</th>
+                                                    <th class="px-8 py-3 text-right">Total</th>
+                                                    <th class="px-8 py-3 w-16 text-center"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="cartTableBody" class="divide-y divide-slate-50">
+                                                <!-- Cart items rendered via JS -->
+                                            </tbody>
+                                        </table>
+                                        <div id="emptyCartMessage" class="hidden py-12 text-center">
+                                            <div
+                                                class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-300">
+                                                <i class="fas fa-shopping-basket text-2xl"></i>
+                                            </div>
+                                            <p class="text-sm font-bold text-slate-500">No items in this order.</p>
+                                            <p class="text-xs text-slate-400 mt-1">Add products from the catalog below.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary Footer -->
+                                    <div class="px-8 py-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+                                        <div class="text-right w-48">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="text-xs font-bold text-slate-500">Subtotal</span>
+                                                <span class="text-sm font-bold text-slate-900"
+                                                    id="cartSubtotal">$0.00</span>
+                                            </div>
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="text-xs font-bold text-slate-500">Estimated Tax</span>
+                                                <span class="text-xs font-bold text-slate-400">Calculated by SS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- CATALOG SECTION -->
+                            <div
+                                class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden flex flex-col h-[600px]">
+                                <div
+                                    class="px-8 py-5 border-b border-slate-100 flex items-center justify-between bg-emerald-50/50 flex-shrink-0">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center text-white">
+                                            <i class="fas fa-cubes text-xs"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">
+                                                Product Catalog</h3>
+                                            <p class="text-[10px] font-bold text-slate-500">Click + to add to order</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="text" id="productSearch" placeholder="Search by name or SKU..."
+                                            class="px-4 py-2 bg-white rounded-xl border border-transparent focus:border-emerald-500 focus:outline-none text-xs font-bold text-slate-700 w-72 shadow-sm placeholder-slate-400 ring-4 ring-transparent focus:ring-emerald-500/10 transition-all">
+                                        <i
+                                            class="fas fa-search absolute right-4 top-2.5 text-slate-300 pointer-events-none text-xs"></i>
+                                    </div>
+                                </div>
+
+                                <div class="overflow-y-auto custom-scrollbar flex-1 relative">
+                                    <table class="w-full text-left">
+                                        <thead class="sticky top-0 bg-white/95 backdrop-blur z-10 shadow-sm">
+                                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                <th class="px-8 py-3 w-16">Img</th>
+                                                <th class="px-8 py-3">Product Details</th>
+                                                <th class="px-8 py-3 text-right">Unit Price</th>
+                                                <th class="px-8 py-3 w-24 text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-50" id="catalogTableBody">
+                                            <!-- Catalog items rendered via JS -->
+                                        </tbody>
+                                    </table>
+                                    <div id="noResultsMessage" class="hidden py-20 text-center">
+                                        <p class="text-sm font-bold text-slate-400">No products found matching your
+                                            search.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Spacer for bottom padding -->
+                            <div class="h-8"></div>
+                        </div>
+                    </main>
+            </div>
+    </div>
+
+    <!-- <script>
+        // --- Data Initialization (Synced) ---
+        const initialOrderItems = <%- JSON.stringify(order.items || []) %>;
+        const allProducts = <%- JSON.stringify(products || []) %>;
+
+        // Clean up catalog data
+        const catalog = allProducts.map(p => ({
+            sku: p.sku,
+            name: p.name,
+            price: parseFloat(p.price) || 0,
+            imageUrl: p.thumbnailUrl || p.imageUrl || null,
+            // Fallback for image URL formatting
+            displayImg: (function (url) {
+                if (!url || url === 'null') return null;
+                if (url.startsWith('http')) return url;
+                if (url.startsWith('www')) return 'https://' + url;
+                return url;
+            })(p.thumbnailUrl || p.imageUrl)
+        }));
+
+        // Initialize state
+        let cart = initialOrderItems.map(item => ({
+            sku: item.sku,
+            name: item.name,
+            price: parseFloat(item.price) || 0,
+            quantity: parseInt(item.quantity) || 0,
+            imageUrl: item.imageUrl || null,
+            displayImg: (function (url) {
+                if (!url || url === 'null') return null;
+                if (url.startsWith('http')) return url;
+                if (url.startsWith('www')) return 'https://' + url;
+                return url;
+            })(item.imageUrl)
+        }));
+
+        // DOM Elements
+        const cartTableBody = document.getElementById('cartTableBody');
+        const catalogTableBody = document.getElementById('catalogTableBody');
+        const hiddenInputsContainer = document.getElementById('hiddenInputsContainer');
+        const cartSubtotalEl = document.getElementById('cartSubtotal');
+        const headerTotalEl = document.getElementById('headerTotal');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const productSearch = document.getElementById('productSearch');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+
+        // --- Functions ---
+
+        function formatMoney(amount) {
+            return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function renderCart() {
+            cartTableBody.innerHTML = '';
+            hiddenInputsContainer.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                emptyCartMessage.classList.remove('hidden');
+            } else {
+                emptyCartMessage.classList.add('hidden');
+
+                cart.forEach((item, index) => {
+                    // Update totals
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+
+                    // 1. Create Table Row
+                    const tr = document.createElement('tr');
+                    tr.className = 'group hover:bg-slate-50/50 transition-colors';
+                    tr.innerHTML = `
+                        <td class="px-8 py-4 text-slate-400 font-bold text-xs w-16">${index + 1}</td>
+                        <td class="px-8 py-4">
+                            <div class="flex items-center gap-4">
+                                ${item.displayImg
+                            ? `<img src="${item.displayImg}" class="w-10 h-10 rounded-lg object-cover border border-slate-100 bg-white" alt="">`
+                            : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300"><i class="fas fa-box text-xs"></i></div>`
+                        }
+                                <div>
+                                    <p class="font-black text-slate-900 text-sm leading-tight">${item.name}</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">SKU: ${item.sku}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4 text-right font-bold text-slate-500 text-xs">${formatMoney(item.price)}</td>
+                        <td class="px-8 py-4 text-center">
+                            <div class="inline-flex items-center bg-white border border-slate-200 rounded-lg shadow-sm">
+                                <button type="button" onclick="updateQuantity(${index}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
+                                    <i class="fas fa-minus text-[10px]"></i>
+                                </button>
+                                <input type="number" min="1" value="${item.quantity}" 
+                                    onchange="setQuantity(${index}, this.value)"
+                                    class="w-10 text-center text-xs font-bold text-slate-900 border-none focus:ring-0 p-0">
+                                <button type="button" onclick="updateQuantity(${index}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-emerald-500 transition-colors">
+                                    <i class="fas fa-plus text-[10px]"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4 text-right font-black text-slate-900 text-sm">${formatMoney(itemTotal)}</td>
+                        <td class="px-8 py-4 text-center w-16">
+                            <button type="button" onclick="removeItem(${index})" 
+                                class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                    cartTableBody.appendChild(tr);
+
+                    // 2. Create Hidden Inputs for Form Submission
+                    // name="items[0][sku]", etc.
+                    hiddenInputsContainer.innerHTML += `
+                        <input type="hidden" name="items[${index}][sku]" value="${item.sku}">
+                        <input type="hidden" name="items[${index}][name]" value="${item.name}">
+                        <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
+                        <input type="hidden" name="items[${index}][price]" value="${item.price}">
+                        <input type="hidden" name="items[${index}][imageUrl]" value="${item.imageUrl || ''}">
+                    `;
+                });
+            }
+
+            // Update Summaries
+            cartSubtotalEl.innerText = formatMoney(total);
+            headerTotalEl.innerText = formatMoney(total);
+        }
+
+        function renderCatalog(filter = '') {
+            catalogTableBody.innerHTML = '';
+            const lowerFilter = filter.toLowerCase();
+            let hasResults = false;
+
+            // Simple client-side pagination limit for performance
+            let count = 0;
+            const maxDisplay = 100;
+
+            for (const p of catalog) {
+                if (count >= maxDisplay) break;
+
+                if (lowerFilter && !p.name.toLowerCase().includes(lowerFilter) && !p.sku.toLowerCase().includes(lowerFilter)) {
+                    continue;
+                }
+
+                hasResults = true;
+                count++;
+
+                const tr = document.createElement('tr');
+                tr.className = 'group hover:bg-slate-50/50 transition-colors border-b border-slate-50 last:border-0';
+
+                // Determine logic: Check if already in cart to maybe block it or show different UI?
+                // For now, simpler is better: "Add" button just adds to cart.
+
+                tr.innerHTML = `
+                    <td class="px-8 py-3 w-16">
+                        ${p.displayImg
+                        ? `<img src="${p.displayImg}" class="w-8 h-8 rounded shadow-sm object-cover" alt="">`
+                        : `<div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-300"><i class="fas fa-box text-[10px]"></i></div>`
+                    }
+                    </td>
+                    <td class="px-8 py-3">
+                        <p class="font-bold text-slate-700 text-xs leading-tight group-hover:text-slate-900 transition-colors">${p.name}</p>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">SKU: ${p.sku}</p>
+                    </td>
+                    <td class="px-8 py-3 text-right font-bold text-slate-500 text-xs">${formatMoney(p.price)}</td>
+                    <td class="px-8 py-3 w-24 text-center">
+                        <button type="button" onclick="addToCart('${p.sku}')" 
+                            class="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-all shadow-sm">
+                            <i class="fas fa-plus mr-1"></i> Add
+                        </button>
+                    </td>
+                `;
+                catalogTableBody.appendChild(tr);
+            }
+
+            if (!hasResults && lowerFilter) {
+                noResultsMessage.classList.remove('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+            }
+        }
+
+        // --- Interaction Handlers ---
+
+        window.addToCart = function (sku) {
+            const product = catalog.find(p => p.sku === sku);
+            if (!product) return;
+
+            const existingItem = cart.find(i => i.sku === sku);
+            if (existingItem) {
+                existingItem.quantity += 1;
+                // Optional: Scroll to top or flash message
+            } else {
+                cart.push({
+                    sku: product.sku,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    imageUrl: product.imageUrl,
+                    displayImg: product.displayImg
+                });
+            }
+            renderCart();
+        };
+
+        window.removeItem = function (index) {
+            cart.splice(index, 1);
+            renderCart();
+        };
+
+        window.updateQuantity = function (index, delta) {
+            const item = cart[index];
+            if (!item) return;
+
+            const newQty = item.quantity + delta;
+            if (newQty <= 0) {
+                window.removeItem(index);
+            } else {
+                item.quantity = newQty;
+                renderCart();
+            }
+        };
+
+        window.setQuantity = function (index, value) {
+            const qty = parseInt(value);
+            if (isNaN(qty) || qty <= 0) {
+                if (confirm("Remove this item?")) {
+                    window.removeItem(index);
+                } else {
+                    // Reset to 1 or previous? Just re-render
+                    renderCart();
+                }
+            } else {
+                cart[index].quantity = qty;
+                renderCart();
+            }
+        };
+
+        // --- Event Listeners ---
+
+        productSearch.addEventListener('input', (e) => {
+            renderCatalog(e.target.value);
+        });
+
+        // --- Init ---
+        renderCart();
+        renderCatalog();
+
+    </script> -->
+
+    <!-- Data Injection (Cleaner Method) -->
+    <script id="order-items-data" type="application/json">
+        <%- JSON.stringify(order.items || []) %>
+    </script>
+    <script id="products-data" type="application/json">
+        <%- JSON.stringify(products || []) %>
+    </script>
+
+    <script>
+        // --- Data Initialization (Clean & Robust) ---
+        // Parsing data from JSON script tags avoids syntax errors and linting issues
+        const initialOrderItems = JSON.parse(document.getElementById('order-items-data').textContent);
+        const allProducts = JSON.parse(document.getElementById('products-data').textContent);
+
+        console.log('Initial Order Items:', initialOrderItems);
+        console.log('All Products:', allProducts);
+
+        // Clean up catalog data
+        const catalog = allProducts.map(p => {
+            // Handle missing or malformed products
+            if (!p) return null;
+
+            return {
+                sku: p.sku || 'N/A',
+                name: p.name || 'Unnamed Product',
+                price: parseFloat(p.price) || 0,
+                imageUrl: p.thumbnailUrl || p.imageUrl || null,
+                displayImg: (function (url) {
+                    if (!url || url === 'null' || url === 'undefined') return null;
+                    if (url.startsWith('http')) return url;
+                    if (url.startsWith('www')) return 'https://' + url;
+                    return url;
+                })(p.thumbnailUrl || p.imageUrl)
+            };
+        }).filter(p => p !== null); // Remove null entries
+
+        console.log('Processed Catalog:', catalog);
+
+        // Initialize state
+        let cart = initialOrderItems.map(item => {
+            if (!item) return null;
+
+            return {
+                lineItemKey: item.lineItemKey || null,
+                sku: item.sku || 'N/A',
+                name: item.name || 'Unknown Product',
+                price: parseFloat(item.price) || 0,
+                quantity: parseInt(item.quantity) || 1,
+                imageUrl: item.imageUrl || null,
+                displayImg: (function (url) {
+                    if (!url || url === 'null' || url === 'undefined') return null;
+                    if (url.startsWith('http')) return url;
+                    if (url.startsWith('www')) return 'https://' + url;
+                    return url;
+                })(item.imageUrl)
+            };
+        }).filter(item => item !== null); // Remove null entries
+
+        console.log('Initial Cart:', cart);
+
+        // DOM Elements
+        const cartTableBody = document.getElementById('cartTableBody');
+        const catalogTableBody = document.getElementById('catalogTableBody');
+        const hiddenInputsContainer = document.getElementById('hiddenInputsContainer');
+        const cartSubtotalEl = document.getElementById('cartSubtotal');
+        const headerTotalEl = document.getElementById('headerTotal');
+        const emptyCartMessage = document.getElementById('emptyCartMessage');
+        const productSearch = document.getElementById('productSearch');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        // --- Functions ---
+
+        function formatMoney(amount) {
+            if (isNaN(amount)) amount = 0;
+            return '$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function renderCart() {
+            console.log('Rendering cart with items:', cart);
+            cartTableBody.innerHTML = '';
+            hiddenInputsContainer.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                emptyCartMessage.classList.remove('hidden');
+            } else {
+                emptyCartMessage.classList.add('hidden');
+
+                cart.forEach((item, index) => {
+                    // Validate item
+                    if (!item) return;
+
+                    // Update totals
+                    const itemTotal = (item.price || 0) * (item.quantity || 1);
+                    total += itemTotal;
+
+                    // 1. Create Table Row
+                    const tr = document.createElement('tr');
+                    tr.className = 'group hover:bg-slate-50/50 transition-colors';
+                    tr.innerHTML = `
+                    <td class="px-8 py-4 text-slate-400 font-bold text-xs w-16">${index + 1}</td>
+                    <td class="px-8 py-4">
+                        <div class="flex items-center gap-4">
+                            ${item.displayImg
+                            ? `<img src="${item.displayImg}" class="w-10 h-10 rounded-lg object-cover border border-slate-100 bg-white" alt="${item.name}">`
+                            : `<div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-300"><i class="fas fa-box text-xs"></i></div>`
+                        }
+                            <div>
+                                <p class="font-black text-slate-900 text-sm leading-tight">${item.name}</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">SKU: ${item.sku}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-8 py-4 text-right font-bold text-slate-500 text-xs">${formatMoney(item.price)}</td>
+                    <td class="px-8 py-4 text-center">
+                        <div class="inline-flex items-center bg-white border border-slate-200 rounded-lg shadow-sm">
+                            <button type="button" onclick="updateQuantity(${index}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
+                                <i class="fas fa-minus text-[10px]"></i>
+                            </button>
+                            <input type="number" min="1" value="${item.quantity}" 
+                                onchange="setQuantity(${index}, this.value)"
+                                class="w-10 text-center text-xs font-bold text-slate-900 border-none focus:ring-0 p-0">
+                            <button type="button" onclick="updateQuantity(${index}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-emerald-500 transition-colors">
+                                <i class="fas fa-plus text-[10px]"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="px-8 py-4 text-right font-black text-slate-900 text-sm">${formatMoney(itemTotal)}</td>
+                    <td class="px-8 py-4 text-center w-16">
+                        <button type="button" onclick="removeItem(${index})" 
+                            class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                    cartTableBody.appendChild(tr);
+
+                    // 2. Create Hidden Inputs for Form Submission
+                    hiddenInputsContainer.innerHTML += `
+                    <input type="hidden" name="items[${index}][lineItemKey]" value="${item.lineItemKey || ''}">
+                    <input type="hidden" name="items[${index}][sku]" value="${item.sku}">
+                    <input type="hidden" name="items[${index}][name]" value="${item.name}">
+                    <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
+                    <input type="hidden" name="items[${index}][price]" value="${item.price}">
+                    <input type="hidden" name="items[${index}][imageUrl]" value="${item.imageUrl || ''}">
+                `;
+                });
+            }
+
+            // Update Summaries
+            cartSubtotalEl.innerText = formatMoney(total);
+            headerTotalEl.innerText = formatMoney(total);
+        }
+
+        function renderCatalog(filter = '') {
+            console.log('Rendering catalog with filter:', filter);
+            catalogTableBody.innerHTML = '';
+            const lowerFilter = filter.toLowerCase();
+            let hasResults = false;
+
+            if (catalog.length === 0) {
+                console.log('Catalog is empty!');
+                // Show empty catalog message
+                catalogTableBody.innerHTML = `
+                                            <tr>
+                                                <td colspan="4" class="px-8 py-8 text-center">
+                                                    <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-300">
+                                                        <i class="fas fa-box-open text-2xl"></i>
+                                                    </div>
+                                                    <p class="text-sm font-bold text-slate-500">No products available in catalog.</p>
+                                                    <p class="text-xs text-slate-400 mt-1">Check your product data source.</p>
+                                                </td>
+                                            </tr>
+                                            `;
+                return;
+            }
+
+            for (const p of catalog) {
+                if (!p) continue;
+
+                if (lowerFilter &&
+                    !p.name.toLowerCase().includes(lowerFilter) &&
+                    !p.sku.toLowerCase().includes(lowerFilter)) {
+                    continue;
+                }
+
+                hasResults = true;
+
+                const tr = document.createElement('tr');
+                tr.className = 'group hover:bg-slate-50/50 transition-colors border-b border-slate-50 last:border-0';
+
+                tr.innerHTML = `
+                                            <td class="px-8 py-3 w-16">
+                                                ${p.displayImg
+                        ? `<img src="${p.displayImg}" class="w-8 h-8 rounded shadow-sm object-cover" alt="${p.name}">`
+                        : `<div class="w-8 h-8 rounded bg-slate-100 flex items-center justify-center text-slate-300"><i class="fas fa-box text-[10px]"></i></div>`
+                    }
+                                            </td>
+                                            <td class="px-8 py-3">
+                                                <p class="font-bold text-slate-700 text-xs leading-tight group-hover:text-slate-900 transition-colors">${p.name}</p>
+                                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">SKU: ${p.sku}</p>
+                                            </td>
+                                            <td class="px-8 py-3 text-right font-bold text-slate-500 text-xs">${formatMoney(p.price)}</td>
+                                            <td class="px-8 py-3 w-24 text-center">
+                                                <button type="button" onclick="addToCart('${p.sku}')"
+                                                    class="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-all shadow-sm">
+                                                    <i class="fas fa-plus mr-1"></i> Add
+                                                </button>
+                                            </td>
+            `;
+                catalogTableBody.appendChild(tr);
+            }
+
+            if (!hasResults && lowerFilter) {
+                noResultsMessage.classList.remove('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+            }
+        }
+
+        // --- Interaction Handlers ---
+
+        window.addToCart = function (sku) {
+            console.log('Adding to cart SKU:', sku);
+            const product = catalog.find(p => p.sku === sku);
+            if (!product) {
+                console.error('Product not found:', sku);
+                return;
+            }
+
+            const existingItem = cart.find(i => i.sku === sku);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    lineItemKey: null,
+                    sku: product.sku,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1,
+                    imageUrl: product.imageUrl,
+                    displayImg: product.displayImg
+                });
+            }
+            renderCart();
+        };
+
+        window.removeItem = function (index) {
+            if (index >= 0 && index < cart.length) {
+                cart.splice(index, 1);
+                renderCart();
+            }
+        };
+
+        window.updateQuantity = function (index, delta) {
+            const item = cart[index];
+            if (!item) return;
+
+            const newQty = item.quantity + delta;
+            if (newQty <= 0) {
+                window.removeItem(index);
+            } else {
+                item.quantity = newQty;
+                renderCart();
+            }
+        };
+
+        window.setQuantity = function (index, value) {
+            const qty = parseInt(value);
+            if (isNaN(qty) || qty <= 0) {
+                if (confirm("Remove this item?")) {
+                    window.removeItem(index);
+                } else {
+                    renderCart(); // Revert to previous value
+                }
+            } else {
+                cart[index].quantity = qty;
+                renderCart();
+            }
+        };
+
+        // --- Event Listeners ---
+
+        if (productSearch) {
+            productSearch.addEventListener('input', (e) => {
+                renderCatalog(e.target.value);
+            });
+        }
+
+        // --- Init ---
+        renderCart();
+        renderCatalog();
+
+        // Debug: Check if elements exist
+        console.log('DOM Elements found:');
+        console.log('- cartTableBody:', !!cartTableBody);
+        console.log('- catalogTableBody:', !!catalogTableBody);
+        console.log('- catalog items count:', catalog.length);
+        console.log('- cart items count:', cart.length);
+    </script>
+</body>
+
+</html>

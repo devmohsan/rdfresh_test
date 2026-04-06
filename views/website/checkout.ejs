@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-slate-950 text-white overflow-x-hidden selection:bg-blue-500/30">
+        <%- include('partials/header') %>
+
+            <!-- Decorative Background Elements -->
+            <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+                <div
+                    class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse">
+                </div>
+                <div class="absolute top-[20%] -left-[10%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px]">
+                </div>
+            </div>
+
+            <main class="min-h-screen pt-40 pb-24 relative">
+                <div class="container mx-auto px-4 sm:px-6 max-w-5xl">
+                    <div class="mb-16 animate-fade-in">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-blue-500/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            Secure Transaction
+                        </div>
+                        <h1 class="text-5xl sm:text-6xl md:text-7xl font-black text-white tracking-tight mb-6">
+                            Final <span
+                                class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Steps.</span>
+                        </h1>
+                        <p class="text-slate-400 font-medium text-lg max-w-2xl">Initialize your connection and secure
+                            your premium filtration solutions.</p>
+                    </div>
+                    <% if (typeof error_msg !=='undefined' && error_msg && error_msg.length> 0) { %>
+                        <div class="mb-8 p-4 bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl font-bold">
+                            <%= error_msg %>
+                        </div>
+                        <% } %>
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                                <div class="lg:col-span-2">
+                                    <div
+                                        class="bg-slate-900 rounded-[2.5rem] p-8 sm:p-10 shadow-2xl border border-white/5 relative overflow-hidden group">
+                                        <div
+                                            class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-1000">
+                                        </div>
+                                        <h2 class="text-3xl font-black text-white mb-8 relative z-10">Billing
+                                            Information</h2>
+                                        <form id="checkoutForm" class="space-y-8 relative z-10">
+                                            <% const fullName=user?.name || '' ; const
+                                                nameParts=fullName.split(' ');
+                                            const firstName = user?.firstName || user?.first_name || nameParts[0] || '';
+                                            const lastName = user?.lastName || user?.last_name || (nameParts.length > 1 ? nameParts.slice(1).join(' ') : '');
+                                            %>
+                                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                                <div class="space-y-2">
+                                                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">First Name</label>
+                                                    <input type="text" name="firstName" value="<%= firstName %>" required 
+                                                        class="w-full px-6 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                                </div>
+                                                <div class="space-y-2">
+                                                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Last Name</label>
+                                                    <input type="text" name="lastName" value="<%= lastName %>" required 
+                                                        class="w-full px-6 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                                </div>
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Email Protocol</label>
+                                                <input type="email" name="email" value="<%= user?.email || '' %>" required 
+                                                    class="w-full px-6 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Secure Contact</label>
+                                                <input type="tel" name="phone" value="<%= user?.phone || '' %>" required 
+                                                    class="w-full px-6 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Delivery Destination</label>
+                                                <input type="text" name="address" value="<%= user?.address || '' %>" required 
+                                                    class="w-full px-6 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                            </div>
+                                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                                <div class="space-y-2">
+                                                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">City</label>
+                                                    <input type="text" name="city" value="<%= user?.city || '' %>" required 
+                                                        class="w-full px-4 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                                </div>
+                                                <div class="space-y-2">
+                                                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">State</label>
+                                                    <input type="text" name="state" value="<%= user?.state || '' %>" required 
+                                                        class="w-full px-4 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                                </div>
+                                                <div class="space-y-2">
+                                                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">ZIP</label>
+                                                    <input type="text" name="zip" value="<%= user?.zip || '' %>" required 
+                                                        class="w-full px-4 py-4 bg-white/5 rounded-2xl border border-white/5 text-white outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-600">
+                                                </div>
+                                            </div>
+                                        </form>
+</div>
+</div>
+                                <div class="lg:col-span-1">
+                                    <div class="bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl border-4 border-white/5 sticky top-32 overflow-hidden group">
+                                        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-1000"></div>
+                                        <h3 class="text-2xl font-black text-white mb-8 relative z-10">Order Summary</h3>
+                                        <div class="space-y-6 mb-8 relative z-10 scroll-smooth overflow-y-auto max-h-[300px] pr-2 no-scrollbar">
+                                            <% cartItems.forEach(item => { %>
+                                            <div class="flex items-center gap-4 group/item">
+                                                <div class="w-14 h-14 bg-slate-950 rounded-xl overflow-hidden flex-shrink-0 border border-white/5">
+                                                    <img src="<%= item.image %>" alt="<%= item.productName %>" class="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-700">
+                                                </div>
+                                                <div class="flex-grow">
+                                                    <p class="font-bold text-xs text-white leading-tight mb-1 group-hover/item:text-blue-400 transition-colors"><%= item.productName %></p>
+                                                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Qty: <%= item.quantity %></p>
+                                                </div>
+                                                <p class="font-black text-sm text-white tracking-widest">$<%= (item.price * item.quantity).toFixed(2) %></p>
+                                            </div>
+                                            <% }) %>
+                                        </div>
+                                        <div class="border-t border-white/10 pt-6 space-y-4 mb-8 relative z-10">
+                                            <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                                <span>Subtotal</span>
+                                                <span class="text-white text-sm">$<%= total.toFixed(2) %></span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                                <span>Logistics</span>
+                                                <span class="text-blue-400">Complimentary</span>
+                                            </div>
+                                            <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                                <span>Tax (8%)</span>
+                                                <span class="text-white text-sm">$<%= (total * 0.08).toFixed(2) %></span>
+                                            </div>
+                                            <div class="border-t border-white/10 pt-6 flex flex-col gap-1">
+                                                <span class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Total Value</span>
+                                                <span class="text-4xl font-black text-blue-400 tracking-tighter">$<%= (total * 1.08).toFixed(2) %></span>
+                                            </div>
+                                        </div>
+                                        <button onclick="processPayment()" id="paymentBtn" 
+                                            class="w-full py-6 bg-blue-600 text-white font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-blue-500 transition-all shadow-2xl shadow-blue-500/30 active:scale-95 relative z-10 flex items-center justify-center gap-3">
+                                            Deploy Transaction
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+</div>
+</div>
+</main>
+<%- include(footerPath) %>
+<script>
+    async function processPayment() {
+        const form = document.querySelector("#checkoutForm");
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        const btn = document.querySelector("#paymentBtn");
+        btn.disabled = true;
+        btn.innerHTML = `Processing...`;
+        try {
+            const formData = new FormData(form);
+            const billingInfo = Object.fromEntries(formData);
+            const response = await fetch(`/cart/checkout`, {
+                method: `POST`,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ billingInfo })
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `Server error`);
+            }
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = `/order-success?orderId=${data.orderId}`;
+            } else {
+                alert(data.message || `Payment failed. Please try again.`);
+                btn.disabled = false;
+                btn.innerHTML = `Complete Order`;
+            }
+        } catch (error) {
+            console.error(`Payment error:`, error);
+            alert(error.message === `Failed to fetch` ? `Network error. Please check your connection.` : error.message);
+            btn.disabled = false;
+            btn.innerHTML = `Complete Order`;
+        }
+    }
+</script>
+</body>
+</html>

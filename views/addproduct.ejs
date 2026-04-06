@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rdfresh | <%= mode==='edit' ? 'Edit' : 'Add' %> Product</title>
+    <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-form {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-[#F8FAFC]">
+    <div class="flex h-screen overflow-hidden">
+        <%- include('partials/sidebar') %>
+
+            <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+                <%- include('partials/header') %>
+
+                    <main class="flex-1 p-8">
+                        <div class="max-w-4xl mx-auto">
+                            <!-- Breadcrumbs -->
+                            <nav class="flex mb-8" aria-label="Breadcrumb">
+                                <ol
+                                    class="inline-flex items-center space-x-1 md:space-x-3 text-xs font-bold uppercase tracking-widest">
+                                    <li class="inline-flex items-center">
+                                        <a href="/admin/dashboard"
+                                            class="text-slate-400 hover:text-emerald-500 transition-colors">Dashboard</a>
+                                    </li>
+                                    <li>
+                                        <div class="flex items-center">
+                                            <svg class="w-3 h-3 text-slate-300 mx-1" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                            <a href="/admin/products"
+                                                class="text-slate-400 hover:text-emerald-500 transition-colors">Products</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="flex items-center">
+                                            <svg class="w-3 h-3 text-slate-300 mx-1" fill="currentColor"
+                                                viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                            <span class="text-slate-900">
+                                                <%= mode==='edit' ? 'Edit' : 'Add' %> Product
+                                            </span>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </nav>
+
+                            <div
+                                class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden animate-form">
+                                <!-- Header -->
+                                <div class="bg-slate-900 px-10 py-10 relative overflow-hidden">
+                                    <div
+                                        class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full -mr-32 -mt-32 blur-3xl">
+                                    </div>
+                                    <div class="relative z-10">
+                                        <h2 class="text-3xl font-black text-white tracking-tight">
+                                            <%= mode==='edit' ? 'Update Product' : 'Create New Product' %>
+                                        </h2>
+                                        <p class="text-slate-400 mt-2 font-medium">
+                                            Sync changes directly with ShipStation and your local inventory.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Form -->
+                                <div class="p-10">
+                                    <form
+                                        action="<%= mode === 'edit' ? '/admin/products/edit/' + product.id : '/admin/products/add' %>"
+                                        method="POST" enctype="multipart/form-data">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                                            <!-- Left Side -->
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <label
+                                                        class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Product
+                                                        Name</label>
+                                                    <input type="text" name="name" value="<%= product.name || '' %>"
+                                                        required
+                                                        class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all font-bold text-slate-900"
+                                                        placeholder="e.g. UltraFresh X-2000">
+                                                </div>
+
+                                                <div>
+                                                    <label
+                                                        class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">SKU
+                                                        (Stock Keeping Unit)</label>
+                                                    <input type="text" name="sku" value="<%= product.sku || '' %>"
+                                                        required <%=mode==='edit' ? 'readonly' : '' %>
+                                                    class="w-full px-5 py-4 bg-slate-50 border border-slate-100
+                                                    rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500
+                                                    focus:bg-white transition-all font-bold text-slate-900 <%=
+                                                        mode==='edit' ? 'opacity-60 cursor-not-allowed' : '' %>"
+                                                        placeholder="e.g. RF-ULTRA-2000">
+                                                </div>
+
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label
+                                                            class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Price
+                                                            ($)</label>
+                                                        <input type="number" step="0.01" name="price"
+                                                            value="<%= product.price || 0 %>" required
+                                                            class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all font-bold text-slate-900">
+                                                    </div>
+                                                    <div>
+                                                        <label
+                                                            class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Weight
+                                                            (Oz)</label>
+                                                        <input type="number" step="0.1" name="weightOz"
+                                                            value="<%= product.weightOz || 0 %>" required
+                                                            class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all font-bold text-slate-900">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Right Side -->
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <label
+                                                        class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Product
+                                                        Image</label>
+                                                    <div class="relative group">
+                                                        <input type="file" name="image" accept="image/*" id="imageInput"
+                                                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                                        <div
+                                                            class="w-full px-5 py-8 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center gap-3 group-hover:bg-white group-hover:border-emerald-500 transition-all">
+                                                            <div
+                                                                class="p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform">
+                                                                <i
+                                                                    class="fas fa-cloud-upload-alt text-slate-400 group-hover:text-emerald-500"></i>
+                                                            </div>
+                                                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest"
+                                                                id="fileName">
+                                                                <%= mode==='edit' && product.imageUrl
+                                                                    ? 'Change Current Image' : 'Click to Upload Image'
+                                                                    %>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <% if (mode==='edit' && product.imageUrl) { %>
+                                                        <div
+                                                            class="mt-4 p-2 bg-white rounded-2xl border border-slate-100 shadow-sm w-fit">
+                                                            <img src="<%= product.imageUrl %>" alt="Preview"
+                                                                class="h-20 w-20 object-cover rounded-xl">
+                                                        </div>
+                                                        <% } %>
+                                                </div>
+
+                                                <div>
+                                                    <label
+                                                        class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Internal
+                                                        Notes</label>
+                                                    <textarea name="internalNotes" rows="4"
+                                                        class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all font-bold text-slate-900 resize-none"
+                                                        placeholder="Describe features, maintenance, etc."><%= product.internalNotes || '' %></textarea>
+                                                </div>
+
+                                                <div>
+                                                    <label
+                                                        class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status</label>
+                                                    <div class="flex items-center gap-4">
+                                                        <label class="flex-1 cursor-pointer group">
+                                                            <input type="radio" name="active" value="true"
+                                                                class="hidden peer" <%=product.active !==false
+                                                                ? 'checked' : '' %>>
+                                                            <div
+                                                                class="px-5 py-4 rounded-2xl border border-slate-100 bg-slate-50 peer-checked:bg-emerald-500 peer-checked:border-emerald-500 peer-checked:text-white text-slate-500 font-black text-[10px] uppercase tracking-widest text-center transition-all">
+                                                                Active Listing
+                                                            </div>
+                                                        </label>
+                                                        <label class="flex-1 cursor-pointer group">
+                                                            <input type="radio" name="active" value="false"
+                                                                class="hidden peer" <%=product.active===false
+                                                                ? 'checked' : '' %>>
+                                                            <div
+                                                                class="px-5 py-4 rounded-2xl border border-slate-100 bg-slate-50 peer-checked:bg-rose-500 peer-checked:border-rose-500 peer-checked:text-white text-slate-500 font-black text-[10px] uppercase tracking-widest text-center transition-all">
+                                                                Hidden / Inactive
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="mt-12 flex items-center justify-between border-t border-slate-50 pt-10">
+                                            <a href="/admin/products"
+                                                class="text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-[0.2em] transition-colors flex items-center gap-2">
+                                                <i class="fas fa-arrow-left"></i>
+                                                Discard Changes
+                                            </a>
+                                            <button type="submit"
+                                                class="px-10 py-5 bg-slate-900 text-emerald-400 rounded-[1.5rem] font-black text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-white transition-all shadow-xl shadow-slate-200">
+                                                <%= mode==='edit' ? 'Update & Sync Record' : 'Create & Sync Listing' %>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+            </div>
+    </div>
+
+    <%- include('partials/script') %>
+        <script>
+            document.getElementById('imageInput').addEventListener('change', function (e) {
+                const fileName = e.target.files[0]?.name || 'Click to Upload Image';
+                document.getElementById('fileName').textContent = fileName;
+                if (fileName !== 'Click to Upload Image') {
+                    document.getElementById('fileName').classList.add('text-emerald-500');
+                }
+            });
+        </script>
+</body>
+
+</html>

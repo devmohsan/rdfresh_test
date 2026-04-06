@@ -1,0 +1,39 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const successMsg = '<%= typeof success_msg !== "undefined" ? success_msg : "" %>';
+    const errorMsg = '<%= typeof error_msg !== "undefined" ? error_msg : "" %>';
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    });
+
+    if (successMsg && successMsg !== 'null' && successMsg !== 'undefined') {
+      Toast.fire({
+        icon: 'success',
+        title: successMsg,
+        customClass: {
+          popup: 'rounded-2xl border-none shadow-xl'
+        }
+      });
+    }
+
+    if (errorMsg && errorMsg !== 'null' && errorMsg !== 'undefined') {
+      Toast.fire({
+        icon: 'error',
+        title: errorMsg,
+        customClass: {
+          popup: 'rounded-2xl border-none shadow-xl'
+        }
+      });
+    }
+  });
+</script>

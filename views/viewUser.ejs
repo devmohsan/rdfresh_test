@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rdfresh | User Details</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-[#F8FAFC]">
+  <div class="flex h-screen overflow-hidden">
+    <%- include('partials/sidebar') %>
+
+    <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+      <%- include('partials/header') %>
+
+      <main class="flex-1 p-8">
+        <div class="max-w-7xl mx-auto">
+          <!-- Header Section -->
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div>
+              <nav class="flex mb-4" aria-label="Breadcrumb">
+                <ol
+                  class="inline-flex items-center space-x-1 md:space-x-3 text-xs font-bold uppercase tracking-widest">
+                  <li class="inline-flex items-center">
+                    <a href="/dashboard"
+                      class="text-slate-400 hover:text-emerald-500 transition-colors">Dashboard</a>
+                  </li>
+                  <li>
+                    <div class="flex items-center">
+                      <svg class="w-3 h-3 text-slate-300 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clip-rule="evenodd"></path>
+                      </svg>
+                      <a href="/users" class="text-slate-400 hover:text-emerald-500 transition-colors">Users</a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="flex items-center">
+                      <svg class="w-3 h-3 text-slate-300 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clip-rule="evenodd"></path>
+                      </svg>
+                      <span class="text-slate-900">User Details</span>
+                    </div>
+                  </li>
+                </ol>
+              </nav>
+              <h1 class="text-4xl font-black text-slate-900 tracking-tight">User Profile</h1>
+              <p class="text-slate-500 mt-2 font-medium">Detailed information and activity overview.</p>
+            </div>
+
+            <a href="/users"
+              class="flex items-center gap-2 px-6 py-3 bg-white text-slate-600 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 border border-slate-100 transition-all shadow-sm">
+              <i class="fas fa-arrow-left"></i>
+              Back to Users
+            </a>
+          </div>
+
+          <!-- User Profile Card -->
+          <div
+            class="bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)] overflow-hidden mb-6">
+            <!-- Profile Header -->
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 p-8 text-white">
+              <div class="flex items-center gap-6">
+                <div
+                  class="w-20 h-20 rounded-2xl bg-emerald-500 flex items-center justify-center text-3xl font-black shadow-xl">
+                  <%= user.name.charAt(0).toUpperCase() %>
+                </div>
+                <div class="flex-1">
+                  <h2 class="text-3xl font-black mb-2"><%= user.name %></h2>
+                  <p class="text-slate-300 font-medium"><%= user.email %></p>
+                  <div class="flex items-center gap-4 mt-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider
+                      <%= user.status === 'approved' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' : 
+                         user.status === 'pending' ? 'bg-amber-500/20 text-amber-300 border border-amber-400/30' :
+                         'bg-rose-500/20 text-rose-300 border border-rose-400/30' %>">
+                      <%= user.status || 'pending' %>
+                    </span>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                      <%= user.role || 'User' %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- User Details -->
+            <div class="p-8">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Contact Information -->
+                <div>
+                  <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Contact Matrix</h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                      <div
+                        class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500">
+                        <i class="fas fa-envelope"></i>
+                      </div>
+                      <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Email</p>
+                        <p class="text-sm font-black text-slate-900"><%= user.email %></p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                      <div
+                        class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500">
+                        <i class="fas fa-phone"></i>
+                      </div>
+                      <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Phone</p>
+                        <p class="text-sm font-black text-slate-900"><%= user.phone || 'Not provided' %></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Account Information -->
+                <div>
+                  <h3 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Account Pulse</h3>
+                  <div class="space-y-4">
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                      <div
+                        class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center text-purple-500">
+                        <i class="fas fa-calendar-alt"></i>
+                      </div>
+                      <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Joined</p>
+                        <p class="text-sm font-black text-slate-900">
+                          <%= user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A' %>
+                        </p>
+                      </div>
+                    </div>
+                    <% if (user.totalResponses !== undefined) { %>
+                      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex justify-between text-xs font-black text-slate-400 uppercase tracking-widest mb-2">
+                          <span>Response Usage</span>
+                          <span>
+                            <%= (user.totalResponses - (user.remainingResponses || 0)) %> / <%= user.totalResponses %>
+                          </span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5 mb-2">
+                          <div class="bg-emerald-500 h-2.5 rounded-full"
+                            style="width: <%= ((user.totalResponses - (user.remainingResponses || 0)) / user.totalResponses * 100) %>%">
+                          </div>
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-500">
+                          <%= user.remainingResponses || 0 %> responses remaining
+                        </p>
+                      </div>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Purchased Packs Section -->
+          <div
+            class="bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)] overflow-hidden">
+            <div class="p-8 border-b border-slate-50">
+              <h2 class="text-xl font-black text-slate-900">Purchased Packs</h2>
+              <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Pack subscription history</p>
+            </div>
+
+            <div class="p-8">
+              <% if (purchasedPacks && purchasedPacks.length > 0) { %>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <% purchasedPacks.forEach(pack => {
+                    const remaining = pack.remainingResponse || 0;
+                    const isSelected = user.selected_pack === pack.packId;
+
+                    let statusLabel = '';
+                    let statusClass = '';
+
+                    if (remaining === 0 && isSelected) {
+                      statusLabel = 'Selected but Expired';
+                      statusClass = 'bg-amber-50 text-amber-600 border border-amber-100';
+                    } else if (remaining === 0) {
+                      statusLabel = 'Expired';
+                      statusClass = 'bg-rose-50 text-rose-600 border border-rose-100';
+                    } else if (remaining > 0 && isSelected) {
+                      statusLabel = 'Active';
+                      statusClass = 'bg-emerald-50 text-emerald-600 border border-emerald-100';
+                    } else {
+                      statusLabel = 'Inactive';
+                      statusClass = 'bg-slate-50 text-slate-600 border border-slate-100';
+                    }
+                  %>
+                    <div
+                      class="p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:shadow-lg hover:border-emerald-100 transition-all group">
+                      <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1">
+                          <h4 class="text-sm font-black text-slate-900 mb-2">Pack ID: <%= pack.packId %></h4>
+                          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">
+                            Purchased: <%= pack.purchasedDate ? new Date(pack.purchasedDate).toLocaleDateString() : 'N/A' %>
+                          </p>
+                          <p class="text-xs font-black text-slate-700">
+                            Remaining: <span class="text-emerald-600"><%= remaining %></span>
+                          </p>
+                        </div>
+                        <span
+                          class="inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider <%= statusClass %>">
+                          <%= statusLabel %>
+                        </span>
+                      </div>
+
+                      <% if (pack.expiryDate) { %>
+                        <div class="pt-4 border-t border-slate-200">
+                          <div class="flex items-center gap-2 text-xs text-slate-500">
+                            <i class="fas fa-clock"></i>
+                            <span class="font-bold">Expires: <%= new Date(pack.expiryDate).toLocaleDateString() %></span>
+                          </div>
+                        </div>
+                      <% } %>
+                    </div>
+                    <% }) %>
+                </div>
+                <% } else { %>
+                  <div class="text-center py-16">
+                    <div
+                      class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-300 mb-4 mx-auto">
+                      <i class="fas fa-box-open text-2xl"></i>
+                    </div>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest">No packs purchased yet</p>
+                  </div>
+                <% } %>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <%- include('partials/script') %>
+</body>
+
+</html>

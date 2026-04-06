@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rdfresh | Order Details</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-[#F8FAFC]">
+  <div class="flex h-screen overflow-hidden">
+    <%- include('partials/sidebar') %>
+
+      <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+        <%- include('partials/header') %>
+
+          <main class="flex-1 p-8">
+            <div class="max-w-5xl mx-auto">
+              <!-- Back Button & Quick Actions -->
+              <div class="flex items-center justify-between mb-8">
+                <a href="/orders"
+                  class="inline-flex items-center text-slate-500 hover:text-slate-900 font-bold uppercase tracking-widest text-xs transition-colors group">
+                  <div
+                    class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center mr-3 group-hover:border-emerald-500 group-hover:text-emerald-500 transition-all">
+                    <i class="fas fa-arrow-left"></i>
+                  </div>
+                  Back to Orders
+                </a>
+
+                <div class="flex items-center gap-3">
+                  <div class="px-4 py-2 bg-white rounded-xl border border-slate-100 shadow-sm flex items-center gap-2">
+                    <div
+                      class="w-2 h-2 rounded-full <%= order.signatureStatus === 'signed' ? 'bg-emerald-500' : 'bg-rose-500' %> animate-pulse">
+                    </div>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-700">
+                      Signature: <%= order.signatureStatus || 'Unsigned' %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Grid -->
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Left Side: Order & Items -->
+                <div class="lg:col-span-2 space-y-8">
+
+                  <!-- Order Info Card -->
+                  <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                    <div class="px-8 py-6 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
+                      <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Order
+                          Identifier</p>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">#<%= order.orderNumber %>
+                        </h2>
+                      </div>
+                      <div class="text-right">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Sync Date</p>
+                        <p class="text-xs font-bold text-slate-700">
+                          <%= order.lastSyncAt ? new Date(order.lastSyncAt).toLocaleString() : 'N/A' %>
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="p-8">
+                      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div>
+                          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Status</p>
+                          <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest 
+                        <%= order.status === 'delivered' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-slate-100 text-slate-600 border border-slate-200' %>">
+                            <%= order.status %>
+                          </span>
+                        </div>
+                        <div>
+                          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Total Amount
+                          </p>
+                          <p class="text-lg font-black text-slate-900">$<%= order.total_amount %>
+                          </p>
+                        </div>
+                        <div>
+                          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Payment</p>
+                          <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest 
+                        <%= order.payment_status === 'paid' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100' %>">
+                            <%= order.payment_status || 'pending' %>
+                          </span>
+                        </div>
+                        <div>
+                          <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Order Date</p>
+                          <p class="text-xs font-bold text-slate-700">
+                            <%= order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'N/A' %>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Items Table -->
+                  <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                    <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
+                      <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">Order Consumables</h3>
+                      <span
+                        class="px-3 py-1 bg-slate-900 text-emerald-400 rounded-full text-[10px] font-black uppercase tracking-widest">
+                        <%= order.items ? order.items.length : 0 %> Items
+                      </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                      <table class="w-full text-left">
+                        <thead>
+                          <tr class="bg-slate-50/50">
+                            <th class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                              Description</th>
+                            <th
+                              class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">
+                              Qty</th>
+                            <th
+                              class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                              Price</th>
+                            <th
+                              class="px-8 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                              Ext. Total</th>
+                          </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                          <% if (order.items && order.items.length> 0) { %>
+                            <% order.items.forEach(item=> { %>
+                              <tr class="group hover:bg-slate-50/30 transition-colors">
+                                <td class="px-8 py-5">
+                                  <div class="flex items-center gap-4">
+                                    <% if (item.imageUrl) { %>
+                                      <img src="<%= item.imageUrl %>"
+                                        class="w-12 h-12 rounded-2xl object-cover border border-slate-100 shadow-sm"
+                                        alt="">
+                                      <% } else { %>
+                                        <div
+                                          class="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 border border-slate-200">
+                                          <i class="fas fa-box text-xs"></i>
+                                        </div>
+                                        <% } %>
+                                          <div>
+                                            <p class="text-sm font-black text-slate-900 truncate max-w-[200px]">
+                                              <%= item.name %>
+                                            </p>
+                                            <p
+                                              class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                                              SKU: <%= item.sku || 'N/A' %>
+                                            </p>
+                                          </div>
+                                  </div>
+                                </td>
+                                <td class="px-8 py-5 text-center">
+                                  <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-50 text-slate-900 font-black text-xs border border-slate-100">
+                                    <%= item.quantity || 1 %>
+                                  </span>
+                                </td>
+                                <td class="px-8 py-5 text-right font-bold text-xs text-slate-500">$<%= item.price
+                                    || '0.00' %>
+                                </td>
+                                <td class="px-8 py-5 text-right font-black text-sm text-slate-900">$<%= ((item.price ||
+                                    0) * (item.quantity || 1)).toFixed(2) %>
+                                </td>
+                              </tr>
+                              <% }); %>
+                                <% } else { %>
+                                  <tr>
+                                    <td colspan="4"
+                                      class="px-8 py-12 text-center text-slate-400 font-bold uppercase tracking-widest text-xs">
+                                      No items indexed for this order
+                                    </td>
+                                  </tr>
+                                  <% } %>
+                        </tbody>
+                        <tfoot class="bg-slate-50/50">
+                          <tr>
+                            <td colspan="3"
+                              class="px-8 py-6 text-right text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                              Grand Aggregate</td>
+                            <td class="px-8 py-6 text-right text-lg font-black text-slate-900 tracking-tight">$<%=
+                                order.total_amount %>
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Post-Delivery Intelligence (Review & Signature) -->
+                  <% if (order.review || order.feedback || (order.signature && order.signature !=='null' )) { %>
+                    <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden p-8 mt-8">
+                      <div class="flex items-center gap-4 mb-8">
+                        <div
+                          class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500">
+                          <i class="fas fa-certificate text-lg"></i>
+                        </div>
+                        <div>
+                          <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">Delivery Attestation
+                          </h3>
+                          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Customer Validation
+                            & Feedback</p>
+                        </div>
+                      </div>
+
+                      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <% const reviewData=order.review || order.feedback || null; if (reviewData) { %>
+                          <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                              <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Satisfaction
+                                Level</p>
+                              <div class="flex items-center gap-1 text-amber-400">
+                                <% const stars=reviewData.stars || reviewData.rating || 0; for(let i=1; i <=5; i++) { %>
+                                  <i class="<%= i <= stars ? 'fas' : 'far' %> fa-star text-[10px]"></i>
+                                  <% } %>
+                              </div>
+                            </div>
+                            <div class="p-6 bg-slate-50 rounded-[2rem] border border-slate-100 relative">
+                              <i class="fas fa-quote-left absolute top-4 left-4 text-slate-200 text-xl"></i>
+                              <p class="text-xs font-bold text-slate-700 leading-relaxed relative z-10 pl-4">
+                                <%= reviewData.message || reviewData.comment || reviewData.feedback || reviewData.text
+                                  || 'No verbal feedback provided.' %>
+                              </p>
+                            </div>
+                          </div>
+                          <% } %>
+
+                            <% if (order.signature && order.signature !=='null' ) { %>
+                              <div class="space-y-4">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                  Authentication Signature</p>
+                                <div
+                                  class="h-32 bg-slate-50 rounded-[2rem] border border-slate-100 flex items-center justify-center overflow-hidden p-4">
+                                  <% let sigData=(order.signature || '' ).trim(); let sigSrc='' ; if (sigData && sigData
+                                    !=='null' ) { if (sigData.startsWith('http')) { sigSrc=sigData; } else if
+                                    (sigData.startsWith('data:image')) { sigSrc=sigData.replace(/\s/g, '' ); } else if
+                                    (sigData.length> 50) {
+                                    sigSrc = 'data:image/png;base64,' + sigData.replace(/\s/g, '');
+                                    }
+                                    }
+                                    %>
+                                    <% if (sigSrc) { %>
+                                      <div class="flex flex-col items-center w-full">
+                                        <img src="<%= sigSrc %>" class="max-h-24 max-w-full object-contain"
+                                          alt="Customer Signature"
+                                          onerror="this.style.display='none'; document.getElementById('debug-data').classList.remove('hidden');">
+
+                                        <div id="debug-data" class="w-full hidden mt-2">
+                                          <p
+                                            class="text-[9px] font-black text-rose-500 uppercase tracking-widest text-center">
+                                            Invalid Image Connection</p>
+                                          <div
+                                            class="p-2 bg-slate-100 rounded-xl border border-slate-200 overflow-auto max-h-24">
+                                            <code
+                                              class="text-[8px] break-all text-slate-500 font-mono"><%= order.signature %></code>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <% } else { %>
+                                        <p
+                                          class="text-xs text-slate-400 font-bold uppercase tracking-widest text-center">
+                                          No signature found</p>
+                                        <% } %>
+                                </div>
+                              </div>
+                              <% } %>
+                      </div>
+                    </div>
+                    <% } %>
+
+                </div>
+
+                <!-- Right Side: Logistics & Client -->
+                <div class="space-y-8">
+
+                  <!-- Shipping Card -->
+                  <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                      <div
+                        class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500">
+                        <i class="fas fa-truck-fast text-lg"></i>
+                      </div>
+                      <div>
+                        <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">Logistics</h3>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Carrier Details</p>
+                      </div>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Carrier Strategy
+                        </p>
+                        <p class="text-xs font-black text-slate-900 uppercase tracking-wider">
+                          <%= order.carrierCode || 'Unknown' %> - <%= order.serviceCode || 'Standard' %>
+                        </p>
+                      </div>
+                      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Dispatch Node</p>
+                        <p class="text-xs font-bold text-slate-700">
+                          <%= order.shipTo?.name %><br>
+                            <span class="text-slate-400 font-medium tracking-tight">
+                              <%= order.shipTo?.street1 %>, <%= order.shipTo?.city %><br>
+                                  <%= order.shipTo?.state %>, <%= order.shipTo?.postalCode %>
+                            </span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Client Card -->
+                  <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden p-8">
+                    <div class="flex items-center gap-4 mb-6">
+                      <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-emerald-400">
+                        <i class="fas fa-user-tie text-lg"></i>
+                      </div>
+                      <div>
+                        <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">Client Profile</h3>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Primary Contact</p>
+                      </div>
+                    </div>
+
+                    <div class="space-y-4">
+                      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-3">
+                        <div
+                          class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-900 font-black text-xs">
+                          <%= (order.billTo?.name || 'A' )[0].toUpperCase() %>
+                        </div>
+                        <div>
+                          <p class="text-xs font-black text-slate-900">
+                            <%= order.billTo?.name || 'Anonymous' %>
+                          </p>
+                          <p class="text-[10px] font-bold text-slate-400 truncate max-w-[150px]">
+                            <%= order.customerEmail %>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Affiliation</p>
+                        <p class="text-xs font-black text-slate-700 uppercase">
+                          <%= order.company?.name || 'Independent' %>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Footer Actions -->
+              <div class="mt-8 pt-8 border-t border-slate-200 flex flex-wrap gap-4">
+                <!-- <a href="/orders/edit/<%= order.id %>"
+                  class="px-8 py-4 bg-emerald-500 text-white rounded-3xl font-black text-xs uppercase tracking-[0.2em] hover:bg-emerald-600 transition-all shadow-xl shadow-emerald-200 flex items-center gap-2">
+                  <i class="fas fa-edit"></i> Modify Order
+                </a> -->
+                <button onclick="updateOrderStatus('<%= order.id %>', 'delivered')"
+                  class="px-8 py-4 bg-slate-900 text-emerald-400 rounded-3xl font-black text-xs uppercase tracking-[0.2em] hover:bg-slate-800 transition-all shadow-xl shadow-slate-200">
+                  Confirm Delivery
+                </button>
+              </div>
+            </div>
+          </main>
+      </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    function updateOrderStatus(orderId, status) {
+      Swal.fire({
+        title: 'UPDATE STATUS?',
+        text: `Change order lifecycle to ${status.toUpperCase()}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#0F172A',
+        confirmButtonText: 'CONFIRM',
+        customClass: { popup: 'rounded-[2.5rem]' }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch(`/orders/status/${orderId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `status=${status}`
+          }).then(() => window.location.reload());
+        }
+      });
+    }
+
+    function markAsPaid(orderId) {
+      Swal.fire({
+        title: 'SETTLE PAYMENT?',
+        text: 'Mark this financial transaction as completed?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#10B981',
+        confirmButtonText: 'SETTLE',
+        customClass: { popup: 'rounded-[2.5rem]' }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          fetch(`/orders/payment/${orderId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `payment_status=paid`
+          }).then(() => window.location.reload());
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

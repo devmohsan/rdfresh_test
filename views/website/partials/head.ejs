@@ -1,0 +1,304 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= typeof title !=='undefined' ? title : 'RD Fresh' %>
+    </title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Preload Critical Logo -->
+    <link rel="preload" as="image" href="/images/new-logo.png" fetchpriority="high">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                container: {
+                    center: true,
+                    padding: {
+                        DEFAULT: '1.5rem',
+                        sm: '2rem',
+                        lg: '4rem',
+                        xl: '5rem',
+                        '2xl': '6rem',
+                    },
+                },
+                extend: {
+                    maxWidth: {
+                        '8xl': '1440px',
+                        '9xl': '1600px',
+                    },
+                    screens: {
+                        '2xl': '1440px',
+                    },
+                    colors: {
+                        primary: '#10b981',
+                        secondary: '#064e3b',
+                        accent: '#2d9964',
+                        // Redefining colors to update theme globally
+                        emerald: {
+                            500: '#10b981',
+                            600: '#059669',
+                        },
+                        blue: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            400: '#10b981',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#1e293b', // Dark Slate/Navy
+                        },
+                        slate: {
+                            950: '#F8FAFC', // Base Background
+                            900: '#F1F5F9', // Section backgrounds
+                            800: '#E2E8F0', // Borders
+                            700: '#e2e8f0', // Secondary borders
+                            500: '#64748b', // Secondary text
+                            400: '#94a3b8', // Muted text
+                            300: '#cbd5e1', // Faded 
+                            50: '#0F172A',  // Deepest Navy (Main Text)
+                        }
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Essential Theme Contrast Overrides */
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #F8FAFC;
+            /* color: #0F172A; */
+        }
+
+        /* Force dark text on light backgrounds that were previously dark */
+        .bg-slate-950,
+        .bg-slate-900,
+        .bg-white {
+            background-color: #F8FAFC !important;
+            /* color: #0F172A !important; */
+        }
+
+        .bg-white {
+            background-color: #FFFFFF !important;
+        }
+
+        /* Handle text-white classes and other light text colors */
+        .bg-slate-950 .text-white,
+        .bg-slate-950 .text-slate-100,
+        .bg-slate-900 .text-white,
+        .bg-white .text-white,
+        .bg-white .text-slate-400,
+        .bg-white .text-gray-400 {
+            color: #0F172A !important;
+        }
+
+        /* Specific headling color from image (Dark Green) */
+        .text-secondary,
+        .text-slate-50 {
+            color: #064e3b !important;
+        }
+
+        /* Essential Button Consistency */
+        .bg-primary .text-white,
+        .bg-blue-600 .text-white,
+        .bg-emerald-600 .text-white,
+        .bg-slate-900 .bg-primary .text-white,
+        button.bg-primary .text-white {
+            color: #FFFFFF !important;
+        }
+
+        /* CTA Buttons should be Dark Navy like in the image */
+        .btn-cta {
+            background-color: #0F172A !important;
+            color: #FFFFFF !important;
+        }
+
+        /* Secondary text contrast */
+        .text-slate-500,
+        .text-gray-500 {
+            color: #64748b !important;
+        }
+
+        .text-slate-400,
+        .text-gray-400 {
+            color: #94a3b8 !important;
+        }
+
+        /* Border overrides for light theme visibility */
+        .border-white\/10,
+        .border-slate-800,
+        .border-slate-700 {
+            border-color: #e2e8f0 !important;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .reveal {
+            position: relative;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .hero-gradient {
+            background: #F8FAFC;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(to right, rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center, black, transparent 80%);
+            pointer-events: none;
+        }
+
+        .text-primary {
+            color: #10b981;
+        }
+
+        .bg-primary {
+            background-color: #10b981;
+        }
+
+        .text-secondary {
+            color: #064e3b;
+        }
+
+        .bg-secondary {
+            background-color: #064e3b;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .glow-emerald {
+            box-shadow: 0 0 50px -10px rgba(16, 185, 129, 0.3);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to bottom right, #064e3b, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(200%);
+                opacity: 0;
+            }
+        }
+
+        .animate-scan {
+            animation: scan 4s linear infinite;
+        }
+    </style>
+
+    <!-- Global Cart Count Script -->
+    <% if (user) { %>
+        <script>
+            // Update cart count on page load
+            document.addEventListener('DOMContentLoaded', async function () {
+                try {
+                    const response = await fetch('/cart/count');
+
+                    // If not authenticated, skip
+                    if (response.status === 401) {
+                        return;
+                    }
+
+                    const data = await response.json();
+
+                    // Update desktop badge
+                    const cartBadge = document.getElementById('cart-count');
+                    if (cartBadge && data.count !== undefined) {
+                        cartBadge.textContent = data.count;
+                        if (data.count > 0) {
+                            cartBadge.classList.remove('hidden');
+                        } else {
+                            cartBadge.classList.add('hidden');
+                        }
+                    }
+
+                    // Update mobile badge
+                    const cartBadgeMobile = document.getElementById('cart-count-mobile');
+                    if (cartBadgeMobile && data.count !== undefined) {
+                        cartBadgeMobile.textContent = data.count;
+                        if (data.count > 0) {
+                            cartBadgeMobile.classList.remove('hidden');
+                            cartBadgeMobile.classList.add('flex');
+                        } else {
+                            cartBadgeMobile.classList.add('hidden');
+                            cartBadgeMobile.classList.remove('flex');
+                        }
+                    }
+                } catch (error) {
+                    console.log('Cart count unavailable');
+                }
+            });
+        </script>
+        <% } %>
+</head>

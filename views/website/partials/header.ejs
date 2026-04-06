@@ -1,0 +1,387 @@
+<nav id="mainNav"
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-transparent py-4 md:py-6 lg:py-8">
+    <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
+        <!-- Logo Area -->
+        <div class="flex items-center gap-4 lg:gap-8 xl:gap-12 lg:mr-4">
+            <a href="/" class="flex items-center group shrink-0 relative transition-all duration-500">
+                <!-- Soft Focal Spotlight (Brightens the area behind the logo naturally) -->
+                <div
+                    class="absolute inset-x-0 inset-y-[-50%] bg-white/15 blur-[40px] rounded-full opacity-60 group-hover:opacity-100 transition-opacity duration-700">
+                </div>
+
+                <!-- Dynamic Interactive Aura -->
+                <div
+                    class="absolute inset-0 bg-blue-500/10 blur-[30px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                </div>
+
+                <img src="/images/new-logo.png" id="navLogo" alt="RD Fresh Logo"
+                    class="h-8 sm:h-12 md:h-14 lg:h-18 w-auto object-contain brightness-[1.05] contrast-[1.1] filter drop-shadow-[0_0_1px_rgba(255,255,255,0.7)] drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover:scale-105 transition-all duration-500 relative z-10">
+            </a>
+
+            <!-- Center Navigation Menus - Visible only on lg screens and above -->
+            <div class="hidden lg:flex items-center gap-6 xl:gap-10">
+                <% if (!user) { %>
+                    <a href="/"
+                        class="nav-link text-[11px] xl:text-[12px] font-black text-secondary hover:text-primary transition-all uppercase tracking-[0.2em] whitespace-nowrap">Home</a>
+                    <% } %>
+                        <% if (!user || (user.role !== 'distributor' && user.role !== 'affiliate')) { %>
+                            <a href="/#calculator"
+                                class="nav-link text-[11px] xl:text-[12px] font-black text-secondary hover:text-primary transition-all uppercase tracking-[0.2em] whitespace-nowrap">Calculator</a>
+                            <% } %>
+                                <a href="/shop"
+                                    class="nav-link text-[11px] xl:text-[12px] font-black text-secondary hover:text-primary transition-all uppercase tracking-[0.2em] whitespace-nowrap">Products</a>
+                                <% if (user) { %>
+                                    <a href="/my-orders"
+                                        class="nav-link text-[11px] xl:text-[12px] font-black text-secondary hover:text-primary transition-all uppercase tracking-[0.2em] whitespace-nowrap">My
+                                        Orders</a>
+                                    <a href="/resources"
+                                        class="nav-link text-[11px] xl:text-[12px] font-black text-secondary hover:text-primary transition-all uppercase tracking-[0.2em] whitespace-nowrap">Dashboard</a>
+                                    <% } else { %>
+                                        <a href="/login?restricted=resources"
+                                            class="nav-link text-[11px] xl:text-[12px] font-black text-secondary hover:text-primary transition-all uppercase tracking-[0.2em] whitespace-nowrap">Resources</a>
+                                        <a href="/login"
+                                            class="nav-link text-[11px] xl:text-[12px] font-black text-secondary hover:text-primary transition-all uppercase tracking-[0.2em] whitespace-nowrap">Portal</a>
+                                        <% } %>
+            </div>
+        </div>
+
+        <!-- Right Buttons -->
+        <div class="flex items-center gap-2 sm:gap-3 md:gap-4 lg:gap-5 xl:gap-6">
+            <!-- Download App Button - Hidden on small mobile, visible on md and above -->
+            <a href="#app-section"
+                class="hidden sm:inline-flex items-center px-6 py-2.5 text-secondary font-black text-[11px] uppercase tracking-[0.1em] rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-all whitespace-nowrap shadow-sm">
+                <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                Download
+            </a>
+
+            <% if (user) { %>
+                <!-- Shopping Cart Icon (Enabled) -->
+                <a href="/cart" class="relative p-2 sm:p-2.5 text-secondary hover:text-primary transition-all shrink-0">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <!-- Cart Badge -->
+                    <span id="cart-count"
+                        class="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 text-white text-[9px] font-black rounded-full flex items-center justify-center hidden">
+                        0
+                    </span>
+                </a>
+
+                <!-- User Profile & Logout -->
+                <div
+                    class="hidden sm:flex items-center gap-3 py-1.5 px-3 bg-slate-50 rounded-xl border border-slate-100">
+                    <% let displayName=user.name; if (!displayName) { const first=user.firstName || user.first_name
+                        || '' ; const last=user.lastName || user.last_name || '' ; displayName=(first + ' ' +
+                        last).trim(); } if (!displayName) displayName='User' ; %>
+                        <div
+                            class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white font-black text-[10px]">
+                            <%= displayName.charAt(0) %>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-black text-slate-900 leading-tight">
+                                <%= displayName %>
+                            </span>
+                            <a href="/logout"
+                                class="text-[9px] font-bold text-rose-500 uppercase tracking-widest hover:text-rose-600 transition-colors">Logout</a>
+                        </div>
+                </div>
+                <% } else { %>
+                    <!-- Shop Now Button - Core CTA -->
+                    <a href="/shop"
+                        class="px-4 py-2 sm:px-8 sm:py-3 bg-primary text-white font-black text-[10px] sm:text-[11px] uppercase tracking-[0.2em] rounded-lg sm:rounded-xl shadow-[0_10px_30px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_15px_35px_-12px_rgba(16,185,129,0.6)] hover:-translate-y-0.5 transition-all whitespace-nowrap shrink-0">
+                        Shop Now
+                    </a>
+                    <% } %>
+
+
+                        <!-- Mobile Menu Toggle -->
+                        <button id="mobileMenuBtn"
+                            class="lg:hidden p-1.5 sm:p-2 text-secondary active:scale-90 transition-all ml-1 shrink-0">
+                            <div class="w-5 h-4 sm:w-6 sm:h-5 flex flex-col justify-between items-end group">
+                                <span class="w-5 h-0.5 bg-primary rounded-full transition-all group-hover:w-4"></span>
+                                <span class="w-4 h-0.5 bg-secondary rounded-full transition-all group-hover:w-5"></span>
+                                <span class="w-3 h-0.5 bg-primary rounded-full transition-all group-hover:w-4"></span>
+                            </div>
+                        </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] opacity-0 pointer-events-none transition-all duration-500 lg:hidden">
+        <div
+            class="absolute right-0 top-0 bottom-0 w-[80vw] max-w-[320px] min-w-[280px] bg-white shadow-[-20px_0_80px_rgba(0,0,0,0.2)] translate-x-full transition-transform duration-500 ease-out flex flex-col">
+
+            <!-- Sidebar Header -->
+            <div class="p-5 flex items-center justify-between border-b border-slate-50">
+                <img src="/images/new-logo.png" alt="RD Fresh Logo" class="h-7 w-auto">
+                <button id="closeMenuBtn"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate text-slate-400 hover:text-slate-900 transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Scrollable Navigation Area -->
+            <div class="flex-1 bg-white text-black custom-scrollbar px-4 py-6">
+                <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-6 px-3">Main Navigation
+                </p>
+
+                <div class="space-y-1">
+                    <% if (!user) { %>
+                        <a href="/"
+                            class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate hover:bg-emerald-50 hover:text-emerald-600 hover:scale-[1.02] active:scale-95 transition-all group">
+                            Home
+                            <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                        <% } %>
+                            <% if (!user || (user.role !== 'distributor' && user.role !== 'affiliate')) { %>
+                                <a href="#calculator"
+                                    class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate hover:bg-emerald-50 hover:text-emerald-600 hover:scale-[1.02] active:scale-95 transition-all group">
+                                    Calculator
+                                    <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                                <% } %>
+                                    <a href="/shop"
+                                        class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate hover:bg-emerald-50 hover:text-emerald-600 hover:scale-[1.02] active:scale-95 transition-all group">
+                                        Products
+                                        <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+
+                                    <% if (user) { %>
+                                        <!-- Cart Link (Mobile - Disabled) -->
+                                        <a href="javascript:void(0)"
+                                            class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate cursor-default group">
+                                            <div class="flex items-center gap-3">
+                                                Shopping Cart
+                                                <span id="cart-count-mobile"
+                                                    class="hidden w-6 h-6 bg-emerald-500 text-white text-[10px] font-black rounded-full flex items-center justify-center">
+                                                    0
+                                                </span>
+                                            </div>
+                                            <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                    d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </a>
+                                        <% } %>
+
+                                            <% if (user) { %>
+                                                <a href="/my-orders"
+                                                    class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate hover:bg-emerald-50 hover:text-emerald-600 hover:scale-[1.02] active:scale-95 transition-all group">
+                                                    My Orders
+                                                    <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="3" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </a>
+                                                <a href="/resources"
+                                                    class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate hover:bg-emerald-50 hover:text-emerald-600 hover:scale-[1.02] active:scale-95 transition-all group">
+                                                    Dashboard
+                                                    <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="3" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </a>
+                                                <% } else { %>
+                                                    <a href="/login?restricted=resources"
+                                                        class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate hover:bg-emerald-50 hover:text-emerald-600 hover:scale-[1.02] active:scale-95 transition-all group">
+                                                        Resources
+                                                        <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="3" d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </a>
+                                                    <a href="/login"
+                                                        class="mobile-nav-link flex items-center justify-between p-3.5 rounded-2xl text-[17px] font-black text-slate hover:bg-emerald-50 hover:text-emerald-600 hover:scale-[1.02] active:scale-95 transition-all group">
+                                                        Customer Portal
+                                                        <svg class="w-5 h-5 text-emerald-500 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="3" d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </a>
+                                                    <% } %>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-10 pt-8 border-t border-slate-50 space-y-4">
+                    <a href="/#app-section"
+                        class="flex items-center justify-center w-full py-4 bg-slate text-slate-600 font-bold rounded-xl border border-slate-200 hover:bg-slate-100 hover:scale-[1.02] active:scale-95 transition-all text-sm">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        Download App
+                    </a>
+                    <% if (user) { %>
+                        <a href="/logout"
+                            class="flex items-center justify-center w-full py-5 bg-rose-50 text-rose-600 font-black uppercase tracking-[0.25em] text-xs rounded-xl active:scale-95 transition-all">
+                            Logout System
+                        </a>
+                        <% } else { %>
+                            <a href="/shop"
+                                class="flex items-center justify-center w-full py-5 bg-blue-600 text-white font-black uppercase tracking-[0.25em] text-xs rounded-xl hover:bg-blue-500 hover:scale-[1.02] active:scale-95 transition-all">
+                                Shop Now
+                            </a>
+                            <% } %>
+                </div>
+            </div>
+
+            <!-- Sidebar Footer -->
+            <div class="p-8 border-t border-slate-50 text-center">
+                <p class="text-[9px] font-bold text-slate-300 uppercase tracking-widest leading-relaxed">© 2026 RD Fresh
+                    Inc. <br> United States HQ</p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    const navbar = document.getElementById('mainNav');
+    const navLogo = document.getElementById('navLogo');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuContent = mobileMenu.querySelector('div');
+
+    function toggleMenu() {
+        const isOpen = !mobileMenu.classList.contains('opacity-0');
+        if (!isOpen) {
+            mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+            mobileMenuContent.classList.remove('translate-x-full');
+            document.body.style.overflow = 'hidden';
+        } else {
+            mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+            mobileMenuContent.classList.add('translate-x-full');
+            document.body.style.overflow = '';
+        }
+    }
+
+    mobileMenuBtn.addEventListener('click', toggleMenu);
+    closeMenuBtn?.addEventListener('click', toggleMenu);
+
+    mobileMenu.addEventListener('click', (e) => {
+        if (e.target === mobileMenu) toggleMenu();
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (!mobileMenu.classList.contains('opacity-0')) toggleMenu();
+        });
+    });
+
+    // Unified Scroll Effect
+    const updateHeader = () => {
+        const isScrolled = window.scrollY > 50;
+        const width = window.innerWidth;
+
+        if (isScrolled) {
+            navbar.classList.add('py-4', 'bg-white/90', 'backdrop-blur-2xl', 'border-b', 'border-slate-100', 'shadow-sm');
+            navbar.classList.remove('py-6', 'lg:py-8', 'bg-transparent');
+
+            if (width < 640) navLogo.style.height = '32px';
+            else if (width < 1024) navLogo.style.height = '38px';
+            else navLogo.style.height = '42px';
+        } else {
+            navbar.classList.remove('py-4', 'bg-white/90', 'backdrop-blur-2xl', 'border-b', 'border-slate-100', 'shadow-sm');
+            navbar.classList.add('py-6', 'lg:py-8', 'bg-transparent');
+            navLogo.style.height = '';
+        }
+    };
+
+    window.addEventListener('scroll', updateHeader);
+    window.addEventListener('resize', updateHeader);
+
+    // Global Cart Count Update
+    async function updateCartCount() {
+        try {
+            const response = await fetch('/cart/count');
+            if (response.status === 401) return;
+            const data = await response.json();
+            const cartBadge = document.getElementById('cart-count');
+            const mobileCartBadge = document.getElementById('cart-count-mobile'); // Matched with HTML ID
+
+            if (data.count !== undefined) {
+                if (cartBadge) {
+                    cartBadge.textContent = data.count;
+                    if (data.count > 0) cartBadge.classList.remove('hidden');
+                    else cartBadge.classList.add('hidden');
+                }
+                if (mobileCartBadge) {
+                    mobileCartBadge.textContent = data.count;
+                    if (data.count > 0) mobileCartBadge.classList.remove('hidden');
+                    else mobileCartBadge.classList.add('hidden');
+                }
+            }
+        } catch (error) { }
+    }
+
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+</script>
+
+<style>
+    /* Prevent layout shift and overflow */
+    @media (max-width: 480px) {
+        .xs\:hidden {
+            display: none;
+        }
+
+        .xs\:inline {
+            display: inline;
+        }
+    }
+
+    @media (min-width: 481px) {
+        .xs\:hidden {
+            display: none !important;
+        }
+
+        .xs\:inline {
+            display: inline !important;
+        }
+    }
+
+    /* Ensure the shop button text is handled correctly */
+    @media (max-width: 380px) {
+        #navLogo {
+            max-width: 100px;
+        }
+    }
+
+    /* Scrollbar Styling for Sidebar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+</style>

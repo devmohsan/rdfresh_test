@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-slate-950 text-slate-50 overflow-x-hidden">
+        <%- include('partials/header') %>
+
+            <main
+                class="min-h-screen flex items-center justify-center py-24 md:py-32 px-6 relative overflow-hidden hero-gradient">
+                <!-- Background Ornaments -->
+                <div class="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
+                    <div
+                        class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-100/40 rounded-full blur-[120px] animate-pulse">
+                    </div>
+                    <div
+                        class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-100/30 rounded-full blur-[120px]">
+                    </div>
+                </div>
+
+                <div
+                    class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 bg-slate-900 border border-white/5 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden animate-fade-in-up mx-auto relative z-10">
+
+                    <!-- Left Side: Benefits & Mission -->
+                    <div
+                        class="hidden lg:flex flex-col justify-between p-12 xl:p-16 bg-slate-900 text-white relative overflow-hidden">
+                        <!-- Decorative Pattern -->
+                        <div class="absolute inset-0 opacity-10"
+                            style="background-image: url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.4%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+                        </div>
+
+                        <div class="relative z-10">
+                            <a href="/" class="inline-block mb-12 group">
+                                <img src="/images/new-logo.png" alt="RD Fresh"
+                                    class="h-10 w-auto brightness-200 group-hover:scale-105 transition-transform">
+                            </a>
+                            <div class="space-y-6">
+                                <h2 class="text-4xl xl:text-5xl font-black tracking-tight leading-[1.1] text-white">
+                                    Start Your <br> <span class="text-blue-400">Fresh Journey.</span>
+                                </h2>
+                                <p class="text-slate-400 text-lg leading-relaxed max-w-sm font-medium">
+                                    Join the network of sustainable facilities saving money and the planet every day.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="relative z-10 space-y-10">
+                            <!-- Value Props -->
+                            <div class="space-y-8">
+                                <div class="flex gap-5">
+                                    <div
+                                        class="w-12 h-12 shrink-0 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base font-black text-white mb-1">Slash Energy Costs</h4>
+                                        <p class="text-sm text-slate-400 leading-relaxed">Reduce refrigeration energy
+                                            consumption by up to 15% immediately.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-5">
+                                    <div
+                                        class="w-12 h-12 shrink-0 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-base font-black text-white mb-1">50% Longer Shelf Life</h4>
+                                        <p class="text-sm text-slate-400 leading-relaxed">Keep your produce fresher for
+                                            longer and drastically reduce food waste.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-8 border-t border-white/10 flex items-center justify-between">
+                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none">
+                                    Global Sustainability Network</p>
+                                <div class="flex -space-x-3">
+                                    <img class="w-8 h-8 rounded-full border-2 border-slate-900 shadow-xl"
+                                        src="https://ui-avatars.com/api/?name=A&background=2D9964&color=fff" alt="">
+                                    <img class="w-8 h-8 rounded-full border-2 border-slate-900 shadow-xl"
+                                        src="https://ui-avatars.com/api/?name=B&background=0F172A&color=fff" alt="">
+                                    <div
+                                        class="w-8 h-8 rounded-full border-2 border-slate-900 bg-blue-600 flex items-center justify-center text-[8px] font-black text-white shadow-xl">
+                                        +1k</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Decor -->
+                        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]">
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Signup Form -->
+                    <div class="p-6 sm:p-10 md:p-16 lg:p-20 flex flex-col justify-center relative">
+                        <div class="space-y-8">
+                            <div class="text-center lg:text-left">
+                                <h3 class="text-3xl font-black text-white tracking-tight mb-2">Create Account</h3>
+                                <p class="text-slate-400 font-medium tracking-tight">Join the network of sustainable
+                                    facilities.</p>
+                            </div>
+
+                            <% if (success_msg && success_msg.length> 0) { %>
+                                <div
+                                    class="p-4 bg-blue-50 border border-blue-100 text-blue-600 rounded-2xl text-sm font-bold animate-fade-in-up">
+                                    <%= success_msg %>
+                                </div>
+                                <% } %>
+
+                                    <% if (error_msg && error_msg.length> 0) { %>
+                                        <div
+                                            class="p-4 bg-rose-50 border border-rose-100 text-rose-600 rounded-2xl text-sm font-bold animate-fade-in-up">
+                                            <%= error_msg %>
+                                        </div>
+                                        <% } %>
+
+                                            <form action="/signup" method="POST" class="space-y-5">
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                                    <div class="space-y-2">
+                                                        <label
+                                                            class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Full
+                                                            Name</label>
+                                                        <input type="text" name="name" required placeholder="John Doe"
+                                                            class="w-full bg-slate border-2 border-white/5 focus:border-blue-500 focus:bg-white/10 rounded-2xl px-6 py-4 outline-none transition-all font-bold text-white placeholder-slate-500">
+                                                    </div>
+                                                    <div class="space-y-2">
+                                                        <label
+                                                            class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Company</label>
+                                                        <input type="text" name="company" placeholder="RD Fresh Inc."
+                                                            class="w-full bg-slate border-2 border-white/5 focus:border-blue-500 focus:bg-white/10 rounded-2xl px-6 py-4 outline-none transition-all font-bold text-white placeholder-slate-500">
+                                                    </div>
+                                                </div>
+                                                <div class="space-y-2">
+                                                    <label
+                                                        class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Email
+                                                        Address</label>
+                                                    <input type="email" name="email" required
+                                                        placeholder="name@company.com"
+                                                        class="w-full bg-slate border-2 border-white/5 focus:border-blue-500 focus:bg-white/10 rounded-2xl px-6 py-4 outline-none transition-all font-bold text-white placeholder-slate-500">
+                                                </div>
+                                                <div class="space-y-2">
+                                                    <label
+                                                        class="text-[11px] font-black text-slate-400 uppercase tracking-widest">Password</label>
+                                                    <input type="password" name="password" required
+                                                        placeholder="••••••••"
+                                                        class="w-full bg-slate border-2 border-white/5 focus:border-blue-500 focus:bg-white/10 rounded-2xl px-6 py-4 outline-none transition-all font-bold text-white placeholder-slate-500">
+                                                </div>
+
+                                                <p
+                                                    class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
+                                                    By signing up, you agree to our <a href="#"
+                                                        class="text-blue-400 hover:underline transition-colors">Terms
+                                                        of Service</a>
+                                                    and <a href="#"
+                                                        class="text-blue-400 hover:underline transition-colors">Privacy
+                                                        Policy</a>.
+                                                </p>
+
+                                                <button type="submit"
+                                                    class="group w-full py-5 bg-blue-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-blue-500 transition-all shadow-xl shadow-blue-500/20 active:scale-[0.98] flex items-center justify-center gap-3">
+                                                    <span>Initialize Account</span>
+                                                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+
+                                            <div class="text-center pt-8 border-t border-slate-50">
+                                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                                    Already registered? <a href="/login"
+                                                        class="text-blue-400 hover:underline">Login to
+                                                        Portal</a>
+                                                </p>
+                                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('partials/footer') %>
+    </body>
+
+</html>

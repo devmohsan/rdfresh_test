@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-white text-secondary overflow-x-hidden selection:bg-primary/30">
+        <%- include('partials/header') %>
+
+            <main class="min-h-screen pt-32 pb-24 relative overflow-hidden">
+                <!-- Advanced Background Decorations -->
+                <div class="fixed top-0 left-0 w-full h-full -z-20 pointer-events-none opacity-40">
+                    <div
+                        class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-pulse">
+                    </div>
+                    <div
+                        class="absolute bottom-[-5%] left-[-5%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px]">
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-6 max-w-8xl">
+                    <!-- Premium Header -->
+                    <div class="text-center mb-12 reveal">
+                        <div class="inline-block px-4 py-1.5 bg-primary/10 rounded-full mb-6">
+                            <p class="text-[10px] font-black text-primary tracking-[0.3em] uppercase">RD Fresh
+                                Knowledge Center</p>
+                        </div>
+                        <h1
+                            class="text-4xl sm:text-6xl md:text-8xl font-black text-secondary tracking-[0.09em] leading-[0.8] mb-8 uppercase">
+                            The <span class="text-primary italic">Resource</span> Vault
+                        </h1>
+                        <p class="text-slate-500 font-bold uppercase tracking-widest text-lg max-w-2xl mx-auto px-4">
+                            Elite technical documentation, operational guides, and training resources for facility
+                            protection.
+                        </p>
+                    </div>
+
+                    <!-- Modern Tab Navigation -->
+                    <div class="flex justify-center mb-16 reveal px-4">
+                        <div
+                            class="p-2 bg-slate backdrop-blur-2xl rounded-[2.5rem] flex flex-col sm:flex-row gap-2 border border-slate-100 shadow-xl w-full sm:w-auto">
+                            <button onclick="switchTab('documents')" id="tab-documents"
+                                class="tab-btn active px-4 sm:px-10 py-3 sm:py-5 rounded-[2rem] text-[9px] sm:text-[11px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] transition-all duration-500 hover:scale-[1.02] active:scale-95 w-full sm:w-auto justify-center">
+                                <span class="flex items-center gap-3">
+                                    <div
+                                        class="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center group-active:scale-90 transition-transform">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
+                                    Technical Vault
+                                </span>
+                            </button>
+                            <button onclick="switchTab('videos')" id="tab-videos"
+                                class="tab-btn px-4 sm:px-10 py-3 sm:py-5 rounded-[2rem] text-[9px] sm:text-[11px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-slate-400 hover:text-secondary hover:bg-white/50 transition-all duration-500 hover:scale-[1.02] active:scale-95 w-full sm:w-auto justify-center">
+                                <span class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        </svg>
+                                    </div>
+                                    Video Library
+                                </span>
+                            </button>
+                            <button onclick="switchTab('how-it-works')" id="tab-how-it-works"
+                                class="tab-btn px-4 sm:px-10 py-3 sm:py-5 rounded-[2rem] text-[9px] sm:text-[11px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-slate-400 hover:text-secondary hover:bg-white/50 transition-all duration-500 hover:scale-[1.02] active:scale-95 w-full sm:w-auto justify-center">
+                                <span class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a2 2 0 00-1.96 1.414l-.726 1.451a2 2 0 01-2.454.912l-1.451-.726a2 2 0 00-1.414 1.96l.477 2.387a2 2 0 00.547 1.022l1.451.726c.74.37 1.57.14 2.1-.424l1.451-1.451a2 2 0 012.828 0l1.451 1.451c.53.564 1.36.794 2.1.424l1.451-.726a2 2 0 00.547-1.022l.477-2.387a2 2 0 00-1.414-1.96l-1.451-.726a2 2 0 01-.912-2.454l.726-1.451a2 2 0 00-1.414-1.96l-2.387-.477a2 2 0 00-1.022.547l-1.451 1.451a2 2 0 01-2.828 0l-1.451-1.451z" />
+                                        </svg>
+                                    </div>
+                                    How It Works
+                                </span>
+                            </button>
+                            <!-- <% if (user && user.role !=='distributor' ) { %>
+                                <button onclick="switchTab('affiliate')" id="tab-affiliate"
+                                    class="tab-btn px-4 sm:px-10 py-3 sm:py-5 rounded-[2rem] text-[9px] sm:text-[11px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-slate-400 hover:text-secondary hover:bg-white/50 transition-all duration-500 hover:scale-[1.02] active:scale-95 w-full sm:w-auto justify-center">
+                                    <span class="flex items-center gap-3">
+                                        <div class="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                        </div>
+                                        Vegiefresh Affiliate
+                                    </span>
+                                </button>
+                                <% } %> -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div id="tab-content" class="">
+                        <!-- DOCUMENTS TAB -->
+                        <div id="content-documents" class="tab-pane active animate-fade-in">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <% if (typeof sections !=='undefined' && sections.length> 0) { %>
+                                    <% sections.forEach((section, index)=> { %>
+                                        <div
+                                            class="<%= index === 0 ? 'lg:col-span-2' : '' %> bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-slate-100 reveal">
+                                            <div
+                                                class="flex items-center justify-between mb-10 pb-6 border-b border-slate-100">
+                                                <h3
+                                                    class="text-3xl font-black text-secondary flex items-center gap-4 tracking-tighter uppercase italic">
+                                                    <div
+                                                        class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20">
+                                                        <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2.5"
+                                                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.247 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                        </svg>
+                                                    </div>
+                                                    <%= section.title %>
+                                                </h3>
+                                            </div>
+
+                                            <div
+                                                class="grid grid-cols-1 <%= index === 0 ? 'md:grid-cols-2' : '' %> gap-4">
+                                                <% section.documents.forEach(doc=> { %>
+                                                    <% const isPdf=doc.fileName.toLowerCase().endsWith('.pdf'); const
+                                                        isImage=/\.(jpg|jpeg|png|webp)$/i.test(doc.fileName); const
+                                                        fileType=isPdf ? 'PDF' : (isImage ? 'IMG' : 'DOC' ); const
+                                                        typeColor=isPdf ? 'rose' : (isImage ? 'emerald' : 'blue' ); %>
+                                                        <div
+                                                            class="group flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-primary/5 rounded-3xl border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-2xl hover:shadow-primary/5 transition-all">
+                                                            <div class="flex items-center gap-6 mb-4 sm:mb-0">
+                                                                <div
+                                                                    class="w-14 h-14 shrink-0 rounded-2xl <%= typeColor === 'rose' ? 'bg-rose-500/10 text-rose-500' : (typeColor === 'emerald' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-primary/10 text-primary') %> flex items-center justify-center font-black text-xs shadow-sm ring-4 ring-white">
+                                                                    <%= fileType %>
+                                                                </div>
+                                                                <div class="overflow-hidden">
+                                                                    <p
+                                                                        class="text-base font-black text-secondary group-hover:text-primary transition-colors line-clamp-1">
+                                                                        <%= doc.title %>
+                                                                    </p>
+                                                                    <div class="flex items-center gap-3 mt-1">
+                                                                        <span
+                                                                            class="text-[9px] font-black uppercase tracking-widest text-primary bg-primary/10 px-2 py-0.5 rounded-full">Secure</span>
+                                                                        <span
+                                                                            class="text-[10px] font-bold text-slate-400">
+                                                                            <%= doc.fileSize %>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex items-center gap-2">
+                                                                <button
+                                                                    onclick="viewDocument('<%= doc.title %>', '<%= doc.url %>')"
+                                                                    class="px-6 py-3.5 bg-white text-secondary border border-slate-100 rounded-xl text-[10px] font-black uppercase tracking-[0.15em] hover:bg-primary hover:text-white hover:border-primary transition-all active:scale-95 shadow-lg shadow-slate-200/50">
+                                                                    View
+                                                                </button>
+                                                                <a href="<%= doc.url %>" download
+                                                                    class="p-3.5 bg-primary text-white rounded-xl hover:bg-secondary hover:scale-110 shadow-lg shadow-primary/20 transition-all">
+                                                                    <svg class="w-5 h-5" fill="none"
+                                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round"
+                                                                            stroke-linejoin="round" stroke-width="2.5"
+                                                                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                                    </svg>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <% }) %>
+                                            </div>
+                                        </div>
+                                        <% }) %>
+                                            <% } else { %>
+                                                <div
+                                                    class="lg:col-span-2 text-center py-24 bg-white rounded-[4rem] border border-dashed border-slate-200">
+                                                    <div
+                                                        class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                                                        <svg class="w-10 h-10 text-slate-300" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                        </svg>
+                                                    </div>
+                                                    <p class="text-slate-400 font-bold uppercase tracking-widest">No
+                                                        resources assigned to your profile yet.</p>
+                                                </div>
+                                                <% } %>
+                            </div>
+
+                            <!-- Test Reports Section -->
+                        </div>
+                    </div>
+
+                    <!-- VIDEOS TAB -->
+                    <div id="content-videos" class="tab-pane hidden animate-fade-in">
+                        <% if (user && user.role==='affiliate' ) { %>
+                            <!-- Coming Soon State for Affiliates -->
+                            <div
+                                class="bg-white rounded-[3rem] p-12 md:p-24 text-center border border-slate-100 shadow-sm relative overflow-hidden group mb-12">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent pointer-events-none">
+                                </div>
+                                <div
+                                    class="w-20 h-20 bg-emerald-50 rounded-[2.2rem] flex items-center justify-center mx-auto mb-10 shadow-inner ring-8 ring-white">
+                                    <svg class="w-10 h-10 text-emerald-500 animate-pulse" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-4xl md:text-5xl font-black text-secondary tracking-tighter mb-4 uppercase italic">
+                                    Partner <span class="text-emerald-500">Video Content</span></h3>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-10">Coming
+                                    Soon to Creator Studio</p>
+                                <div class="w-12 h-1.5 bg-emerald-500/20 rounded-full mx-auto mb-10"></div>
+                                <p
+                                    class="text-slate-500 font-bold uppercase tracking-widest text-sm max-w-xl mx-auto leading-relaxed px-6">
+                                    We are currently producing exclusive masterclasses and marketing asset training
+                                    videos for our affiliate partners. Check back shortly for premium content.
+                                </p>
+                            </div>
+                            <% } else { %>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <% const videos=[ { id: 'BGc7Vll5jQE' , title: 'The Future of Refrigeration' ,
+                                        category: 'Overview' , duration: '2:56' }, { id: 'u1ca6RnhqyE' ,
+                                        title: 'System Installation Guide' , category: 'Setup' , duration: '1:34' }, {
+                                        id: '2Q_cg1GrbMM' , title: 'System Maintenance' , category: 'Maintenance' ,
+                                        duration: '1:12' }]; %>
+                                        <% videos.forEach(vid=> { %>
+                                            <div
+                                                class="bg-white rounded-[3rem] overflow-hidden shadow-sm border border-slate-100 group hover:shadow-2xl transition-all duration-500 reveal">
+                                                <div class="aspect-video relative overflow-hidden bg-slate-100">
+                                                    <img src="https://img.youtube.com/vi/<%= vid.id %>/hqdefault.jpg"
+                                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                                    <div
+                                                        class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <button
+                                                            onclick="openVideoModal('<%= vid.id %>', '<%= vid.title %>')"
+                                                            class="w-20 h-20 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-2xl scale-75 group-hover:scale-100 transition-all duration-500">
+                                                            <svg class="w-8 h-8 fill-current ml-1" viewBox="0 0 24 24">
+                                                                <path d="M8 5v14l11-7z" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div
+                                                        class="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-lg text-white text-[10px] font-black">
+                                                        <%= vid.duration %>
+                                                    </div>
+                                                </div>
+                                                <div class="p-10">
+                                                    <div class="flex items-center justify-between mb-5">
+                                                        <span
+                                                            class="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] py-1.5 px-3 bg-emerald-50 rounded-lg">
+                                                            <%= vid.category %>
+                                                        </span>
+                                                        <div class="flex gap-1.5 opacity-30">
+                                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                                        </div>
+                                                    </div>
+                                                    <h4
+                                                        class="text-2xl font-black text-slate leading-tight group-hover:text-emerald-600 transition-colors">
+                                                        <%= vid.title %>
+                                                    </h4>
+                                                    <p class="text-slate-400 text-sm mt-3 font-medium">Explore the
+                                                        impact of
+                                                        RD Fresh on <%= vid.category.toLowerCase() %> efficiency.</p>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                </div>
+                                <% } %>
+                    </div>
+
+                    <!-- HOW IT WORKS TAB -->
+                    <div id="content-how-it-works" class="tab-pane hidden animate-fade-in">
+                        <% if (user && user.role==='affiliate' ) { %>
+                            <!-- AFFILIATE SPECIFIC "HOW IT WORKS" CONTENT -->
+                            <div class="space-y-12">
+                                <!-- Hero Section -->
+                                <div
+                                    class="bg-white rounded-[4rem] p-10 md:p-20 shadow-xl border border-slate-100 reveal relative overflow-hidden group">
+                                    <div
+                                        class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-emerald-500/5 to-transparent pointer-events-none">
+                                    </div>
+                                    <div class="relative z-10">
+                                        <div class="inline-block px-4 py-1.5 bg-emerald-500/10 rounded-full mb-8">
+                                            <p
+                                                class="text-[10px] font-black text-emerald-600 tracking-[0.3em] uppercase">
+                                                Revenue Transformation</p>
+                                        </div>
+                                        <h2
+                                            class="text-4xl md:text-7xl font-black text-secondary tracking-tighter mb-8 uppercase leading-[0.9]">
+                                            Turn Your Walk-In Cooler Technology<br><span
+                                                class="text-emerald-500 italic">into a New
+                                                Revenue Stream.</span>
+                                        </h2>
+                                        <p
+                                            class="text-slate-500 font-bold uppercase tracking-widest text-lg max-w-3xl leading-relaxed">
+                                            What if the same technology you rely on in your walk-in coolers could
+                                            generate a new quarterly revenue stream while showing your customers you
+                                            care about their health, their wallets, and the planet?
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- The Problem & Statistics -->
+                                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                                    <div
+                                        class="lg:col-span-12 bg-slate-900 rounded-[3rem] p-10 md:p-16 text-white relative overflow-hidden shadow-2xl">
+                                        <div
+                                            class="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10">
+                                        </div>
+                                        <div class="relative z-10 flex flex-col md:flex-row items-center gap-12">
+                                            <div class="shrink-0">
+                                                <div
+                                                    class="w-32 h-32 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20">
+                                                    <span
+                                                        class="text-5xl font-black text-emerald-400 font-mono">$2.9k</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <h4 class="text-2xl font-black uppercase tracking-tighter mb-4 italic">
+                                                    The $2,900 Opportunity</h4>
+                                                <p class="text-slate-400 font-medium text-lg leading-relaxed">
+                                                    The average family of four throws away approximately <span
+                                                        class="text-white">$2,900 worth of spoiled food every
+                                                        year</span>—and produce makes up the majority of that waste.
+                                                    Your customers are tired of seeing their money go into the trash,
+                                                    and right now, you are leaving that potential revenue on the table.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Meet VeggieFresh -->
+                                <div
+                                    class="bg-white rounded-[3rem] p-10 md:p-16 border border-slate-100 shadow-sm reveal">
+                                    <div class="flex flex-col md:flex-row items-start gap-12">
+                                        <div class="md:w-1/2">
+                                            <h3
+                                                class="text-3xl font-black text-secondary mb-8 uppercase italic tracking-tighter flex items-center gap-4">
+                                                <div
+                                                    class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20 text-xs">
+                                                    VF</div>
+                                                Meet VeggieFresh
+                                            </h3>
+                                            <p class="text-slate-500 font-bold text-lg leading-relaxed mb-8">
+                                                VeggieFresh is the home version of the exact RD FRESH technology you
+                                                already use in your restaurant's walk-in cooler to keep produce fresher
+                                                for longer.
+                                            </p>
+                                            <div class="space-y-6">
+                                                <div
+                                                    class="flex items-center gap-5 p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-emerald-500/30 transition-all group">
+                                                    <div
+                                                        class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
+                                                        <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p
+                                                            class="text-primary font-black uppercase text-sm tracking-widest mb-1">
+                                                            Simple to Use</p>
+                                                        <p class="text-primary text-xs font-bold uppercase">It is a
+                                                            small mineral pack that customers simply drop into their
+                                                            refrigerator drawer.</p>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="flex items-center gap-5 p-6 bg-slate-50 rounded-2xl border border-slate-100 hover:border-emerald-500/30 transition-all group">
+                                                    <div
+                                                        class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-emerald-500 group-hover:scale-110 transition-transform">
+                                                        <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2.5"
+                                                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                    </div>
+                                                    <div>
+                                                        <p
+                                                            class="text-primary font-black uppercase text-sm tracking-widest mb-1">
+                                                            Scientifically Effective</p>
+                                                        <p class="text-primary text-xs font-bold uppercase">The
+                                                            minerals absorb ethylene gas—the natural culprit behind food
+                                                            spoilage— keeping produce fresh up to 50% longer</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="md:w-1/2 bg-slate-50 rounded-[4rem] p-8 border border-slate-100 relative h-full">
+                                            <div
+                                                class="aspect-square bg-white rounded-[3rem] shadow-xl flex items-center justify-center border border-slate-100 relative overflow-hidden group">
+                                                <div
+                                                    class="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                </div>
+                                                <img src="/images/vegie_work.png" alt="VeggieFresh System"
+                                                    class="w-full h-full object-fit group-hover:scale-110 transition-transform duration-700">
+                                                <div
+                                                    class="absolute bottom-6 left-6 right-6 p-4 bg-white/80 backdrop-blur-md rounded-2xl text-center shadow-lg border border-white/20">
+                                                    <p
+                                                        class="text-[9px] font-black text-emerald-600 uppercase tracking-widest">
+                                                        VeggieFresh Retail System</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Business Opportunities -->
+                                <div class="reveal">
+                                    <div class="text-center mb-12">
+                                        <h3
+                                            class="text-3xl font-black text-secondary uppercase italic tracking-tighter mb-4">
+                                            Business Opportunities</h3>
+                                        <p class="text-slate-500 font-bold uppercase tracking-widest text-sm">We offer
+                                            two flexible ways to integrate VeggieFresh into your business model</p>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <!-- Option 1 -->
+                                        <div
+                                            class="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm hover:border-emerald-500/30 transition-all group relative overflow-hidden">
+                                            <div
+                                                class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl">
+                                            </div>
+                                            <div
+                                                class="w-14 h-14 rounded-2xl bg-emerald-500 text-white flex items-center justify-center font-black text-xl mb-8 shadow-lg shadow-emerald-500/20">
+                                                01</div>
+                                            <h4
+                                                class="text-2xl font-black text-secondary mb-6 uppercase italic tracking-tighter">
+                                                Digital Referral</h4>
+                                            <ul class="space-y-4 mb-8">
+                                                <li class="flex items-start gap-3">
+                                                    <svg class="w-5 h-5 text-emerald-500 mt-0.5" fill="currentColor"
+                                                        viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                                                    </svg>
+                                                    <span class="text-slate-500 font-bold text-sm leading-relaxed">You
+                                                        share your Unique QR Code or Link via email/social media and
+                                                        receive 20% Residual Commission on all orders we ship for
+                                                        you.</span>
+                                                </li>
+                                                <!-- <li class="flex items-start gap-3">
+                                                    <svg class="w-5 h-5 text-emerald-500 mt-0.5" fill="currentColor"
+                                                        viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                                                    </svg>
+                                                    <span
+                                                        class="text-emerald-600 font-black text-sm uppercase tracking-widest">20%
+                                                        Residual Commission</span>
+                                                </li> -->
+                                            </ul>
+                                        </div>
+                                        <!-- Option 2 -->
+                                        <div
+                                            class="bg-secondary rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden">
+                                            <div
+                                                class="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl">
+                                            </div>
+                                            <div
+                                                class="w-14 h-14 rounded-2xl bg-white text-secondary flex items-center justify-center font-black text-xl mb-8 shadow-lg shadow-emerald-500/20">
+                                                02</div>
+                                            <h4
+                                                class="text-2xl font-black text-white mb-6 uppercase italic tracking-tighter">
+                                                Inventory Wholesale</h4>
+                                            <ul class="space-y-4 mb-8">
+                                                <li class="flex items-start gap-3">
+                                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5" fill="currentColor"
+                                                        viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                                                    </svg>
+                                                    <span class="text-slate-300 font-bold text-sm leading-relaxed">Order
+                                                        your 12 Pack Countertop POP and 36 Refill Box or 48 Floor
+                                                        Display POP of Veggiefresh to put in your restaurant and receive
+                                                        a 50%-300% markup. Of course, Like Option 1 You can share your
+                                                        Unique QR Code or Link via email/social media and receive 20%
+                                                        Residual Commission on all online orders we ship for you.
+                                                    </span>
+                                                </li>
+                                                <!-- <li class="flex items-start gap-3">
+                                                    <svg class="w-5 h-5 text-emerald-400 mt-0.5" fill="currentColor"
+                                                        viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                                                    </svg>
+                                                    <span
+                                                        class="text-emerald-400 font-black text-sm uppercase tracking-widest">50%-300%
+                                                        Markup Earnings</span>
+                                                </li> -->
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Marketing Bonus Section -->
+                                <div
+                                    class="bg-emerald-500/5 rounded-[3rem] p-10 md:p-16 border-2 border-dashed border-emerald-500/20 reveal">
+                                    <div class="max-w-4xl mx-auto text-center">
+                                        <div class="inline-block px-3 py-1 bg-emerald-500 text-white rounded-full mb-6">
+                                            <p class="text-[9px] font-black uppercase tracking-widest">Special Affiliate
+                                                Bonus</p>
+                                        </div>
+                                        <h3
+                                            class="text-3xl font-black text-secondary leading-tight mb-8 mb-10 uppercase italic tracking-tighter">
+                                            Complimentary Launch Package</h3>
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                                            <div
+                                                class="p-4 bg-white rounded-2xl shadow-sm border border-emerald-500/10">
+                                                <p class="text-2xl font-black text-emerald-500">2500</p>
+                                                <p
+                                                    class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                                    Check Card Inserts</p>
+                                            </div>
+                                            <div
+                                                class="p-4 bg-white rounded-2xl shadow-sm border border-emerald-500/10">
+                                                <p class="text-2xl font-black text-emerald-500">50</p>
+                                                <p
+                                                    class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                                    Video Table Tents</p>
+                                            </div>
+                                            <div
+                                                class="p-4 bg-white rounded-2xl shadow-sm border border-emerald-500/10">
+                                                <p class="text-2xl font-black text-emerald-500">1000</p>
+                                                <p
+                                                    class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                                    To-Go Flyers</p>
+                                            </div>
+                                            <div
+                                                class="p-4 bg-white rounded-2xl shadow-sm border border-emerald-500/10">
+                                                <p class="text-2xl font-black text-emerald-500">Full</p>
+                                                <p
+                                                    class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                                    Marketing Kit</p>
+                                            </div>
+                                        </div>
+                                        <p
+                                            class="text-slate-500 font-bold uppercase tracking-widest text-xs leading-loose">
+                                            On Your First Order of Option 1 or Option 2, You will receive 2500 Check
+                                            Card Inserts, 50 Table Tents with Video QR Code, and 1000 To Go Flyers/
+                                            Handouts along with Marketing Ideas, Staff Training, plus much more to come.
+                                            Please note that with your 1st Order All Marketing Materials artwork is
+                                            provided free of charge for you to print yourself, or you can choose to
+                                            order online and have it shipped right to your door. Your Choice!!!
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Food for Thought -->
+                                <div
+                                    class="bg-slate-50 rounded-[2.5rem] p-10 border border-slate-100 italic relative overflow-hidden group hover:bg-white transition-all duration-700">
+                                    <div class="absolute top-4 left-6 text-emerald-500/20 text-7xl font-serif">“</div>
+                                    <div class="relative z-10 text-center max-w-2xl mx-auto">
+                                        <h4 class="text-xl font-black text-secondary uppercase tracking-widest mb-4">
+                                            Food for Thought…</h4>
+                                        <p class="text-slate-500 font-bold text-lg leading-relaxed">
+                                            Imagine Running a Contest for the Staff giving them an Opportunity to Earn
+                                            Extra Income by helping you promote this program at your location.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Section -->
+                                <div
+                                    class="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm reveal text-center mb-8">
+                                    <p class="text-slate-500 font-bold text-lg leading-relaxed">
+                                        Please feel free to contact us with any questions or suggestions. We would love
+                                        to hear your thoughts
+                                    </p>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <!-- DISTRIBUTOR / REGULAR USER "HOW IT WORKS" CONTENT -->
+                                <div class="space-y-12">
+                                    <% if (typeof howItWorksDoc !=='undefined' && howItWorksDoc) { %>
+                                        <!-- Featured Distributor Guide (Dynamic Manual) -->
+                                        <!-- <div -->
+                                        <!-- class="bg-primary/5 rounded-[3rem] p-8 md:p-12 border border-primary/20 mb-12 flex flex-col md:flex-row items-center justify-between gap-8 reveal"> -->
+                                        <!-- <div class="flex items-center gap-6"> -->
+                                        <!-- <div
+                                                    class="w-20 h-20 rounded-[2rem] bg-primary text-white flex items-center justify-center shadow-2xl shadow-primary/20 shrink-0">
+                                                    <svg class="w-10 h-10" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2.5"
+                                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.247 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                    </svg>
+                                                </div> -->
+                                        <!-- <div>
+                                                    <div
+                                                        class="inline-block px-3 py-1 bg-primary text-white rounded-full mb-2">
+                                                        <p class="text-[9px] font-black uppercase tracking-widest">
+                                                            Featured Guide</p>
+                                                    </div>
+                                                    <h3
+                                                        class="text-3xl font-black text-secondary tracking-tighter uppercase italic">
+                                                        <%= howItWorksDoc.title %>
+                                                    </h3>
+                                                    <p
+                                                        class="text-slate-500 font-bold uppercase tracking-widest text-sm mt-1">
+                                                        Official Distributor Operations Manual</p>
+                                                </div> -->
+                                        <!-- </div> -->
+                                        <!-- <div class="flex items-center gap-4">
+                                            <button onclick="viewDocument('<%= howItWorksDoc.title %>', '<%= howItWorksDoc.url %>')"
+                                                class="px-10 py-5 bg-secondary text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-primary transition-all shadow-xl active:scale-95">
+                                                Open Manual
+                                            </button>
+                                            <a href="<%= howItWorksDoc.url %>" download
+                                                class="p-5 bg-white border border-slate-100 text-primary rounded-2xl hover:bg-primary hover:text-white transition-all shadow-xl">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                </svg>
+                                            </a>
+                                        </div> -->
+                                        <!-- </div> -->
+                                        <% } %>
+
+                                            <!-- Header / About Section -->
+                                            <div
+                                                class="bg-white rounded-[4rem] p-10 md:p-20 shadow-xl border border-slate-100 reveal relative overflow-hidden group">
+                                                <div
+                                                    class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none">
+                                                </div>
+                                                <div class="relative z-10">
+                                                    <div
+                                                        class="inline-block px-4 py-1.5 bg-primary/10 rounded-full mb-8">
+                                                        <p
+                                                            class="text-[10px] font-black text-primary tracking-[0.3em] uppercase">
+                                                            Trusted Expertise</p>
+                                                    </div>
+                                                    <h2
+                                                        class="text-4xl md:text-7xl font-black text-secondary tracking-tighter mb-8 uppercase leading-[0.9]">
+                                                        Solutions as Unique <br><span class="text-primary italic">as
+                                                            Your Kitchen.</span>
+                                                    </h2>
+                                                    <h3
+                                                        class="text-2xl font-black text-secondary/60 uppercase italic tracking-tighter mb-8">
+                                                        About RD FRESH: 17 Years of Trusted Expertise</h3>
+
+                                                    <div
+                                                        class="max-w-4xl space-y-6 text-slate-500 font-bold text-lg leading-relaxed">
+                                                        <p>
+                                                            For nearly two decades, we've been helping the food service
+                                                            industry protect its bottom line. With 17 years of
+                                                            experience under our belts, we understand the daily
+                                                            challenges of commercial refrigeration better than anyone.
+                                                            We’ve seen it all—from slippery, high-humidity walk-ins to
+                                                            mysterious odors ruining fresh ingredients.
+                                                        </p>
+                                                        <p>
+                                                            At RD FRESH, we know that commercial refrigeration isn't
+                                                            "one-size-fits-all." Whether you're managing a display deli
+                                                            case or a massive walk-in cooler, you face unique challenges
+                                                            that cost your business money.
+                                                        </p>
+                                                        <p
+                                                            class="text-secondary font-black border-l-4 border-primary pl-6 py-2 bg-slate-50 rounded-r-2xl">
+                                                            Our goal is to help you eliminate costly moisture issues,
+                                                            prevent cross-contamination, and rescue wilting, browning
+                                                            produce before it goes to waste.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Three Targeted Solutions -->
+                                            <div>
+                                                <div class="text-center mb-16">
+                                                    <h3
+                                                        class="text-4xl font-black text-secondary tracking-tighter uppercase italic mb-4">
+                                                        Three Targeted Solutions for <span class="text-primary">Maximum
+                                                            Freshness.</span></h3>
+                                                    <p
+                                                        class="text-slate-500 font-bold uppercase tracking-widest text-sm">
+                                                        We customize a solution for your exact needs using our
+                                                        specialized technology</p>
+                                                </div>
+
+                                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                                    <!-- Moisture Bags -->
+                                                    <div
+                                                        class="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                                                        <div
+                                                            class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors">
+                                                        </div>
+                                                        <div
+                                                            class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-primary mb-8 shadow-inner">
+                                                            <svg class="w-8 h-8" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a2 2 0 00-1.96 1.414l-.726 1.451a2 2 0 01-2.454.912l-1.451-.726a2 2 0 00-1.414 1.96l.477 2.387a2 2 0 00.547 1.022l1.451.726c.74.37 1.57.14 2.1-.424l1.451-1.451a2 2 0 012.828 0l1.451 1.451c.53.564 1.36.794 2.1.424l1.451-.726a2 2 0 00.547-1.022l.477-2.387a2 2 0 00-1.414-1.96l-1.451-.726a2 2 0 01-.912-2.454l.726-1.451a2 2 0 00-1.414-1.96l-2.387-.477a2 2 0 00-1.022.547l-1.451 1.451a2 2 0 01-2.828 0l-1.451-1.451z" />
+                                                            </svg>
+                                                        </div>
+                                                        <h4
+                                                            class="text-2xl font-black text-secondary mb-4 uppercase italic tracking-tighter">
+                                                            Moisture Bags</h4>
+                                                        <p class="text-slate-500 font-bold text-sm leading-relaxed">
+                                                            Control humidity to stop bacterial proliferation and prevent
+                                                            slippery, dangerous walk-in floors. This keeps both your
+                                                            food fresher and your employees safer.
+                                                        </p>
+                                                    </div>
+
+                                                    <!-- Odor Bags -->
+                                                    <div
+                                                        class="bg-secondary rounded-[3rem] p-10 text-white shadow-xl hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                                                        <div
+                                                            class="absolute -bottom-10 -left-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl group-hover:bg-primary/20 transition-colors">
+                                                        </div>
+                                                        <div
+                                                            class="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-primary mb-8 shadow-inner">
+                                                            <svg class="w-8 h-8" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                                            </svg>
+                                                        </div>
+                                                        <h4
+                                                            class="text-2xl font-black text-white mb-4 uppercase italic tracking-tighter">
+                                                            Odor Bags</h4>
+                                                        <p class="text-slate-300 font-bold text-sm leading-relaxed">
+                                                            Neutralize strong smells and prevent flavor transfer. Say
+                                                            goodbye to costly food returns because a customer's "tomato
+                                                            tastes like onions."
+                                                        </p>
+                                                    </div>
+
+                                                    <!-- Produce Bags -->
+                                                    <div
+                                                        class="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                                                        <div
+                                                            class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors">
+                                                        </div>
+                                                        <div
+                                                            class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-primary mb-8 shadow-inner">
+                                                            <svg class="w-8 h-8" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
+                                                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                                            </svg>
+                                                        </div>
+                                                        <h4
+                                                            class="text-2xl font-black text-secondary mb-4 uppercase italic tracking-tighter">
+                                                            Produce Bags</h4>
+                                                        <p class="text-slate-500 font-bold text-sm leading-relaxed">
+                                                            Absorb ethylene gas emitted by fruits and vegetables. This
+                                                            slows ripening, keeping your produce crisp and fresh up to
+                                                            50% longer.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Built for any size -->
+                                            <div
+                                                class="bg-slate-900 rounded-[4rem] p-12 md:p-20 text-white reveal relative overflow-hidden group shadow-2xl">
+                                                <div
+                                                    class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20 pointer-events-none">
+                                                </div>
+                                                <div
+                                                    class="flex flex-col lg:flex-row items-center gap-16 relative z-10">
+                                                    <div class="lg:w-1/2">
+                                                        <h3
+                                                            class="text-4xl font-black mb-8 italic tracking-tighter uppercase">
+                                                            Built for Any Cooler, <br><span
+                                                                class="text-primary italic">Any Size.</span></h3>
+                                                        <p
+                                                            class="text-slate-400 font-bold text-lg leading-relaxed mb-8">
+                                                            No matter your setup or inventory, we can design a freshness
+                                                            strategy tailored specifically to your operation. We provide
+                                                            custom solutions for:
+                                                        </p>
+                                                        <div class="grid grid-cols-2 gap-6">
+                                                            <% const setups=["Small reach-ins", "Deli/Display cases"
+                                                                , "Dedicated walk-ins" , "All-in-one storage" ]; %>
+                                                                <% setups.forEach(s=> { %>
+                                                                    <div class="flex items-center gap-3">
+                                                                        <div
+                                                                            class="w-2 h-2 rounded-full bg-primary animate-pulse">
+                                                                        </div>
+                                                                        <span
+                                                                            class="text-xs font-black uppercase tracking-widest text-slate-300">
+                                                                            <%= s %>
+                                                                        </span>
+                                                                    </div>
+                                                                    <% }) %>
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="lg:w-1/2 bg-white/5 backdrop-blur-3xl rounded-[3rem] p-10 border border-white/10 text-center">
+                                                        <h4 class="text-xl font-black uppercase italic mb-6">Trusted
+                                                            Experience</h4>
+                                                        <p
+                                                            class="text-slate-400 font-medium text-sm leading-loose mb-8">
+                                                            Let us put our 17 years of industry knowledge to work to
+                                                            keep your ingredients fresher, your coolers safer, and your
+                                                            customers coming back.
+                                                        </p>
+                                                        <div
+                                                            class="inline-block px-8 py-4 bg-primary text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-2xl shadow-primary/20">
+                                                            17 Years of Expertise
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+
+                <% if (user && user.role !=='distributor' ) { %>
+                    <!-- VEGIEFRESH AFFILIATE TAB -->
+                    <div id="content-affiliate" class="tab-pane hidden animate-fade-in">
+                        <div
+                            class="bg-white rounded-[3rem] p-6 sm:p-10 md:p-20 shadow-xl border border-slate-100 reveal relative overflow-hidden group">
+                            <!-- Background Glow -->
+                            <div
+                                class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-emerald-500/5 to-transparent pointer-events-none">
+                            </div>
+
+                            <div class="relative z-10 max-w-4xl mx-auto text-center">
+                                <div class="inline-block px-4 py-1.5 bg-emerald-500/10 rounded-full mb-8">
+                                    <p class="text-[10px] font-black text-emerald-600 tracking-[0.3em] uppercase">
+                                        Partner Program</p>
+                                </div>
+                                <h2
+                                    class="text-5xl md:text-7xl font-black text-secondary tracking-tighter mb-8 uppercase leading-[0.9]">
+                                    Vegiefresh <br><span class="text-emerald-500 italic">Affiliate Program.</span>
+                                </h2>
+                                <p class="text-slate-500 font-bold uppercase tracking-widest text-lg mb-16 mx-auto">
+                                    Join our network of facility protection specialists and grow your business with
+                                    the
+                                    most effective mineral science ecosystem in the industry.
+                                </p>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                                    <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                                        <div
+                                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm mb-6 mx-auto">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <h4 class="text-lg font-black text-secondary uppercase mb-2">High Commission
+                                        </h4>
+                                        <p class="text-slate text-xs font-bold tracking-widest uppercase">Earn
+                                            premium rewards for every successful referral.</p>
+                                    </div>
+                                    <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                                        <div
+                                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm mb-6 mx-auto">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <h4 class="text-lg font-black text-secondary uppercase mb-2">Technical
+                                            Support
+                                        </h4>
+                                        <p class="text-slate text-xs font-bold tracking-widest uppercase">Direct
+                                            access to our laboratory and engineering experts.</p>
+                                    </div>
+                                    <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                                        <div
+                                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 shadow-sm mb-6 mx-auto">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                                            </svg>
+                                        </div>
+                                        <h4 class="text-lg font-black text-secondary uppercase mb-2">ROI Analytics
+                                        </h4>
+                                        <p class="text-slate text-xs font-bold tracking-widest uppercase">Powerful
+                                            data tools to validate performance to clients.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Partner Marketing Kit -->
+                                <div class="mb-20 text-left">
+                                    <h3
+                                        class="text-xl font-black text-secondary mb-8 flex items-center gap-4 tracking-tighter uppercase italic">
+                                        <div
+                                            class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                            </svg>
+                                        </div>
+                                        Partner Marketing Kit
+                                    </h3>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <% const affiliateDocs=[ { name: 'Affiliate Program Brochure' ,
+                                            file: 'VeggieFresh Affiliate Brochure (1).pdf' }, {
+                                            name: 'Affiliate Marketing Guide' ,
+                                            file: 'Restaurant Affiliate Marketing For VeggieFresh (1).pdf' }, {
+                                            name: 'Partner Marketing Kit (Overview)' ,
+                                            file: 'Restaurant Partner Marketing Kit (1).pdf' }, {
+                                            name: 'Affiliate Launch Checklist' ,
+                                            file: 'Restaurant Affiliate Launch Checklist (1).pdf' }, {
+                                            name: 'Server Scripts Guide' ,
+                                            file: 'Server Scripts For Freshness Packs (1).pdf' }, {
+                                            name: 'Table Tent Design' , file: 'Table Tent for VeggieFresh (1).pdf' }, {
+                                            name: 'Affiliate Card Insert' ,
+                                            file: 'VeggieFresh Affilate Card Insert (1).pdf' } ]; %>
+
+                                            <% affiliateDocs.forEach(doc=> { %>
+                                                <div
+                                                    class="flex items-center justify-between p-5 bg-emerald-500/5 rounded-3xl border border-emerald-500/10 group hover:bg-white hover:border-emerald-500/30 transition-all">
+                                                    <div class="flex items-center gap-4">
+                                                        <div
+                                                            class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-emerald-500 shadow-sm font-black text-[9px]">
+                                                            PDF
+                                                        </div>
+                                                        <p
+                                                            class="text-sm font-bold text-secondary group-hover:text-emerald-600 transition-colors">
+                                                            <%= doc.name %>
+                                                        </p>
+                                                    </div>
+                                                    <div class="flex gap-2">
+                                                        <button
+                                                            onclick="viewDocument('<%= doc.name %>', '/resources/affiliate/<%= doc.file %>')"
+                                                            class="p-2.5 text-emerald-500 hover:bg-emerald-50 rounded-lg transition-all">
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2.5"
+                                                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                            </svg>
+                                                        </button>
+                                                        <a href="/resources/affiliate/<%= doc.file %>" download
+                                                            class="p-2.5 text-emerald-500 hover:bg-emerald-50 rounded-lg transition-all">
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2.5"
+                                                                    d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                                    <a href="mailto:AR@rdfresh.com?subject=Affiliate Program Inquiry"
+                                        class="px-12 py-6 bg-secondary text-white rounded-3xl font-black uppercase tracking-[0.2em] text-[11px] hover:bg-slate-900 transition-all shadow-2xl">
+                                        Become an Affiliate
+                                    </a>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                        Inquiries: AR@rdfresh.com
+                                    </p>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                        </div>
+                        </div>
+
+                        <!-- Dedicated Support Footer -->
+                        <div
+                            class="mt-6 p-8 sm:p-12 md:p-16 bg-slate-900 rounded-[2rem] sm:rounded-[3rem] md:rounded-[4rem] text-center relative overflow-hidden reveal shadow-2xl border border-white/5">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent pointer-events-none">
+                            </div>
+                            <div class="relative z-10">
+                                <div
+                                    class="w-16 h-16 sm:w-20 sm:h-20 bg-blue-600 rounded-[1.5rem] sm:rounded-[2rem] flex items-center justify-center text-white mx-auto mb-8 sm:mb-10 shadow-2xl shadow-blue-500/30">
+                                    <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                </div>
+                                <h2
+                                    class="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-4 sm:mb-6 tracking-tight px-4">
+                                    Need Specialized
+                                    <span class="text-blue-400">Support?</span>
+                                </h2>
+                                <p
+                                    class="text-slate-400 max-w-xl mx-auto font-medium text-base sm:text-lg mb-8 sm:mb-12 leading-relaxed px-4">
+                                    Our
+                                    facility protection specialists are standing by to provide technical assistance,
+                                    customized
+                                    ROI analysis, and operational guidance.</p>
+                                <a href="mailto:AR@rdfresh.com"
+                                    class="inline-block px-8 sm:px-12 py-5 sm:py-6 bg-blue-600 text-white font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-xs rounded-2xl hover:scale-105 hover:bg-blue-500 transition-all shadow-2xl shadow-blue-500/40">Open
+                                    Support Ticket</a>
+                            </div>
+                            <div
+                                class="absolute -bottom-20 -right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] animate-pulse">
+                            </div>
+                            <div
+                                class="absolute -top-20 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] animate-float">
+                            </div>
+                        </div>
+                        </div>
+
+                        <!-- Video Viewer Modal -->
+                        <div id="videoModal"
+                            class="fixed inset-0 z-[150] hidden items-center justify-center p-4 md:p-8">
+                            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onclick="closeVideoModal()">
+                            </div>
+                            <div
+                                class="relative w-full max-w-5xl aspect-video rounded-[3rem] shadow-2xl overflow-hidden bg-black reveal group border border-white/10">
+                                <button onclick="closeVideoModal()"
+                                    class="absolute top-6 right-6 z-20 p-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all border border-white/20 backdrop-blur-md">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <div id="videoLoading"
+                                    class="absolute inset-0 flex items-center justify-center bg-slate-900 z-10 transition-opacity">
+                                    <div class="flex flex-col items-center gap-4">
+                                        <div
+                                            class="w-12 h-12 border-4 border-white/10 border-t-blue-500 rounded-full animate-spin">
+                                        </div>
+                                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                            Loading
+                                            Media...</p>
+                                    </div>
+                                </div>
+                                <iframe id="videoIframe" class="w-full h-full border-none" src=""
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen
+                                    onload="if(document.getElementById('videoLoading')) { document.getElementById('videoLoading').classList.add('opacity-0'); setTimeout(() => document.getElementById('videoLoading').classList.add('hidden'), 300); }"></iframe>
+                            </div>
+                        </div>
+
+                        <!-- Document Viewer Modal -->
+                        <div id="docViewerModal"
+                            class="fixed inset-0 z-[100] hidden items-center justify-center p-4 md:p-8">
+                            <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-xl" onclick="closeDocViewer()">
+                            </div>
+                            <div
+                                class="relative w-full max-w-6xl h-full max-h-[90vh] bg-slate-900 rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-fade-in border border-white/10">
+                                <!-- Modal Header -->
+                                <div
+                                    class="flex items-center justify-between p-6 border-b border-white/5 bg-slate-900/50">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h4 id="modalFileTitle" class="text-lg font-black text-white leading-tight">
+                                                Document Preview</h4>
+                                            <p
+                                                class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                                                Secure Online Viewer</p>
+                                        </div>
+                                    </div>
+                                    <button onclick="closeDocViewer()"
+                                        class="p-3 bg-white/5 border border-white/10 rounded-xl text-slate-400 hover:text-rose-500 hover:border-rose-500/50 transition-all backdrop-blur-md">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <!-- Modal Content (Iframe) -->
+                                <div class="flex-grow bg-slate-950 relative">
+                                    <div id="viewerLoading"
+                                        class="absolute inset-0 flex items-center justify-center bg-slate-900 z-10 transition-opacity">
+                                        <div class="flex flex-col items-center gap-4">
+                                            <div
+                                                class="w-12 h-12 border-4 border-white/5 border-t-blue-500 rounded-full animate-spin">
+                                            </div>
+                                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                Loading
+                                                Document...</p>
+                                        </div>
+                                    </div>
+                                    <iframe id="docIframe" class="w-full h-full border-none" src=""
+                                        onload="document.getElementById('viewerLoading').style.opacity = '0'; setTimeout(() => document.getElementById('viewerLoading').classList.add('hidden'), 300)"></iframe>
+                                </div>
+                                <!-- Modal Footer -->
+                                <div class="p-6 border-t border-white/5 flex items-center justify-between bg-slate-900">
+                                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">© 2024 RD
+                                        Fresh -
+                                        Confidential Material</p>
+                                    <a id="modalDownloadBtn" href="" download
+                                        class="px-6 py-3 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-500 transition-all shadow-lg shadow-blue-500/20">Download
+                                        File</a>
+                                </div>
+                            </div>
+                        </div>
+
+            </main>
+
+            <%- include('partials/footer') %>
+
+                <!-- Mammoth.js for DOCX preview on local -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+                <style>
+                    .paper-wrapper {
+                        max-width: 850px;
+                        margin: 0 auto;
+                        background: #0f172a;
+                        /* bg-slate-900 */
+                        padding: 4rem;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                        border-radius: 4px;
+                        min-height: 100%;
+                        border: 1px solid rgba(255, 255, 255, 0.05);
+                    }
+
+                    /* Tabs Styling */
+                    .tab-pane {
+                        transition: opacity 0.3s ease-in-out;
+                    }
+
+                    .tab-pane.hidden {
+                        display: none;
+                    }
+
+                    /* Premium Document Typography for Dark Mode */
+                    .doc-content h1 {
+                        font-size: 2.25rem;
+                        font-weight: 900;
+                        color: #ffffff;
+                        margin-bottom: 2rem;
+                        border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+                        padding-bottom: 1rem;
+                    }
+
+                    .doc-content h2 {
+                        font-size: 1.5rem;
+                        font-weight: 800;
+                        color: #f1f5f9;
+                        margin-top: 2rem;
+                        margin-bottom: 1rem;
+                    }
+
+                    .doc-content h3 {
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                        color: #e2e8f0;
+                        margin-top: 1.5rem;
+                        margin-bottom: 0.75rem;
+                    }
+
+                    .doc-content p {
+                        font-size: 1.125rem;
+                        line-height: 1.8;
+                        color: #94a3b8;
+                        margin-bottom: 1.25rem;
+                    }
+
+                    .doc-content ul,
+                    .doc-content ol {
+                        margin-left: 1.5rem;
+                        margin-bottom: 1.5rem;
+                        color: #94a3b8;
+                    }
+
+                    .doc-content li {
+                        margin-bottom: 0.5rem;
+                        font-size: 1.125rem;
+                        line-height: 1.6;
+                    }
+
+                    .doc-content table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 2rem;
+                    }
+
+                    .doc-content td,
+                    .doc-content th {
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        padding: 0.75rem;
+                        text-align: left;
+                        color: #cbd5e1;
+                    }
+
+                    /* Tabs Styling */
+                    .tab-pane {
+                        transition: opacity 0.3s ease-in-out;
+                    }
+
+                    .tab-pane.hidden {
+                        display: none;
+                    }
+
+                    .tab-btn.active {
+                        background-color: #10b981;
+                        color: white !important;
+                        border-color: #10b981;
+                        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+                    }
+
+                    @keyframes fade-in {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    @keyframes float {
+
+                        0%,
+                        100% {
+                            transform: translateY(0) scale(1);
+                        }
+
+                        50% {
+                            transform: translateY(-20px) scale(1.05);
+                        }
+                    }
+
+                    @keyframes float-delayed {
+
+                        0%,
+                        100% {
+                            transform: translateY(0) rotate(0);
+                        }
+
+                        50% {
+                            transform: translateY(20px) rotate(5deg);
+                        }
+                    }
+
+                    .animate-float {
+                        animation: float 8s ease-in-out infinite;
+                    }
+
+                    .animate-float-delayed {
+                        animation: float-delayed 12s ease-in-out infinite;
+                    }
+
+                    .animate-fade-in {
+                        animation: fade-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                    }
+                </style>
+
+                <script>
+                    function switchTab(tabName) {
+                        const panes = document.querySelectorAll('.tab-pane');
+                        const buttons = document.querySelectorAll('.tab-btn');
+
+                        panes.forEach(p => { p.classList.add('hidden'); p.classList.remove('active'); });
+                        buttons.forEach(b => {
+                            b.classList.remove('active');
+                            b.classList.add('text-slate-500');
+                        });
+
+                        const activePane = document.getElementById('content-' + tabName);
+                        activePane.classList.remove('hidden');
+                        activePane.classList.add('active');
+
+                        const activeBtn = document.getElementById('tab-' + tabName);
+                        activeBtn.classList.add('active');
+                        activeBtn.classList.remove('text-primary');
+
+                        if (typeof reveal === 'function') setTimeout(reveal, 100);
+                    }
+
+                    function openVideoModal(youtubeId, title) {
+                        const modal = document.getElementById('videoModal');
+                        const iframe = document.getElementById('videoIframe');
+                        const loader = document.getElementById('videoLoading');
+
+                        loader.classList.remove('hidden', 'opacity-0');
+                        iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeVideoModal() {
+                        const modal = document.getElementById('videoModal');
+                        const iframe = document.getElementById('videoIframe');
+                        iframe.src = "";
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                        document.body.style.overflow = '';
+                    }
+
+                    async function viewDocument(name, path) {
+                        const modal = document.getElementById('docViewerModal');
+                        const iframe = document.getElementById('docIframe');
+                        const title = document.getElementById('modalFileTitle');
+                        const downloadBtn = document.getElementById('modalDownloadBtn');
+                        const loader = document.getElementById('viewerLoading');
+
+                        let previewContainer = document.getElementById('docxPreview');
+                        if (!previewContainer) {
+                            previewContainer = document.createElement('div');
+                            previewContainer.id = 'docxPreview';
+                            previewContainer.className = 'absolute inset-0 overflow-y-auto bg-slate-950 hidden z-0 py-12';
+                            iframe.parentElement.appendChild(previewContainer);
+                        }
+
+                        loader.classList.remove('hidden');
+                        loader.style.opacity = '1';
+                        iframe.classList.add('hidden');
+                        previewContainer.classList.add('hidden');
+                        previewContainer.innerHTML = "";
+                        iframe.src = "";
+
+                        title.innerText = name;
+                        downloadBtn.href = path;
+
+                        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                        // Robust extension check
+                        const ext = path.split(/[#?]/)[0].split('.').pop().trim().toLowerCase();
+                        const isDoc = ext === 'docx' || ext === 'doc';
+                        const isRemote = path.startsWith('http');
+
+                        // Use Mammoth for local DOCX files on localhost, otherwise Google Viewer for remote
+                        if (isDoc && !isRemote && isLocalhost) {
+                            try {
+                                const response = await fetch(path);
+                                const arrayBuffer = await response.arrayBuffer();
+                                const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                                previewContainer.innerHTML = `<div class="paper-wrapper doc-content shadow-2xl my-12">${result.value}</div><div class="h-24"></div>`;
+                                previewContainer.classList.remove('hidden');
+                                setTimeout(() => {
+                                    loader.style.opacity = '0';
+                                    setTimeout(() => loader.classList.add('hidden'), 300);
+                                }, 100);
+                            } catch (error) {
+                                console.error("Mammoth Error:", error);
+                                iframe.src = path;
+                                iframe.classList.remove('hidden');
+                            }
+                        } else {
+                            let viewerUrl = path;
+                            if (isDoc) {
+                                // Google Viewer requires full absolute URL
+                                const fullUrl = isRemote ? path : window.location.origin + path;
+                                viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(fullUrl)}&embedded=true`;
+                            }
+                            iframe.src = viewerUrl;
+                            iframe.classList.remove('hidden');
+                        }
+
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeDocViewer() {
+                        const modal = document.getElementById('docViewerModal');
+                        const iframe = document.getElementById('docIframe');
+                        const previewContainer = document.getElementById('docxPreview');
+                        const loader = document.getElementById('viewerLoading');
+
+                        iframe.src = "";
+                        if (previewContainer) {
+                            previewContainer.innerHTML = "";
+                            previewContainer.classList.add('hidden');
+                        }
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                        loader.classList.add('hidden');
+                        document.body.style.overflow = '';
+                    }
+
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') closeDocViewer();
+                    });
+                </script>
+    </body>
+
+</html>

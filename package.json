@@ -1,0 +1,39 @@
+{
+  "name": "Rdfresh",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "bcrypt": "^6.0.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "csv-parser": "^3.2.0",
+    "dayjs": "^1.11.13",
+    "dotenv": "^17.0.1",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "firebase-admin": "^13.4.0",
+    "intuit-oauth": "^4.2.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.1",
+    "node-cron": "^4.2.1",
+    "node-quickbooks": "^2.0.47",
+    "nodemailer": "^7.0.12",
+    "nodemon": "^3.1.10",
+    "punycode": "^2.3.1",
+    "tailwind": "^4.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11"
+  }
+}

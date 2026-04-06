@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-slate-950 text-white overflow-x-hidden selection:bg-blue-500/30">
+        <%- include('partials/header') %>
+
+            <main class="min-h-screen pt-32 pb-24 relative">
+                <!-- Decorative Background -->
+                <div class="fixed inset-0 pointer-events-none -z-10">
+                    <div
+                        class="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] animate-pulse">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px]"></div>
+                </div>
+
+                <div class="container mx-auto px-4 sm:px-6 max-w-7xl">
+                    <!-- Header -->
+                    <div class="mb-16 animate-fade-in">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-4 border border-blue-500/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            Secure Checkout
+                        </div>
+                        <h1 class="text-5xl sm:text-6xl md:text-7xl font-black text-white tracking-tight mb-6">
+                            Shopping <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Cart</span>
+                        </h1>
+                        <p class="text-slate-400 font-medium text-lg leading-relaxed max-w-2xl">
+                            Review your selection of premium fresh produce and atmosphere control solutions before
+                            proceeding.
+                        </p>
+                    </div>
+
+                    <div id="cart-content">
+                        <% if (cartItems.length===0) { %>
+                            <%- include('partials/empty-cart') %>
+                                <% } else { %>
+                                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                                        <!-- Cart Items List -->
+                                        <div class="lg:col-span-2 space-y-8" id="items-list">
+                                            <% cartItems.forEach(function(item) { %>
+                                                <div id="cart-item-<%= item.productId %>"
+                                                    class="cart-item bg-slate-900 rounded-[2.5rem] p-6 sm:p-8 shadow-2xl border border-white/5 flex flex-col sm:flex-row gap-8 items-start sm:items-center group hover:-translate-y-1 transition-all duration-500 relative overflow-hidden">
+
+                                                    <!-- Product Image -->
+                                                    <div
+                                                        class="w-full sm:w-40 h-40 bg-slate-950 rounded-3xl overflow-hidden flex-shrink-0 border border-white/5 relative transition-colors">
+                                                        <img src="<%= item.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=200' %>"
+                                                            alt="<%= item.productName %>"
+                                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100">
+                                                    </div>
+
+                                                    <!-- Product Details -->
+                                                    <div class="flex-grow w-full sm:w-auto">
+                                                        <div class="mb-6">
+                                                            <h3
+                                                                class="text-2xl font-black text-white mb-2 group-hover:text-blue-400 transition-colors">
+                                                                <%= item.productName %>
+                                                            </h3>
+                                                            <p
+                                                                class="text-3xl font-black text-blue-400 mb-4 tracking-tighter">
+                                                                $<span class="item-price-<%= item.productId %>">
+                                                                    <%= item.price.toFixed(2) %>
+                                                                </span>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="flex items-center gap-6">
+                                                            <!-- Quantity Controls -->
+                                                            <div
+                                                                class="flex items-center bg-white/5 rounded-2xl p-1 border border-white/5">
+                                                                <button
+                                                                    onclick="changeQuantity('<%= item.productId %>', -1, <%= item.price %>)"
+                                                                    class="w-12 h-12 bg-slate-800 hover:bg-blue-600 hover:text-white shadow-sm rounded-xl flex items-center justify-center font-black text-slate-300 transition-all active:scale-90 border border-white/5">
+                                                                    −
+                                                                </button>
+                                                                <span id="qty-<%= item.productId %>"
+                                                                    class="w-14 text-center font-black text-xl text-white">
+                                                                    <%= item.quantity %>
+                                                                </span>
+                                                                <button
+                                                                    onclick="changeQuantity('<%= item.productId %>', 1, <%= item.price %>)"
+                                                                    class="w-12 h-12 bg-slate-800 hover:bg-blue-600 hover:text-white shadow-sm rounded-xl flex items-center justify-center font-black text-slate-300 transition-all active:scale-90 border border-white/5">
+                                                                    +
+                                                                </button>
+                                                            </div>
+
+                                                            <button onclick="removeItem('<%= item.productId %>')"
+                                                                class="px-6 py-3 text-rose-500 hover:bg-rose-500/10 rounded-2xl font-black text-xs uppercase tracking-widest transition-all">
+                                                                Remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Item Total -->
+                                                    <div
+                                                        class="text-right w-full sm:w-auto pt-6 sm:pt-0 border-t sm:border-t-0 border-white/5">
+                                                        <p
+                                                            class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-2">
+                                                            Item Subtotal</p>
+                                                        <p id="subtotal-<%= item.productId %>"
+                                                            class="text-3xl font-black text-white tracking-tighter">
+                                                            $<%= (item.price * item.quantity).toFixed(2) %>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                        </div>
+
+                                        <!-- Order Summary -->
+                                        <div class="lg:col-span-1">
+                                            <div
+                                                class="bg-slate-900 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden group sticky top-32 border-4 border-white/5">
+                                                <h3 class="text-3xl font-black text-white mb-10 relative z-10">Financial
+                                                    Overview</h3>
+
+                                                <div class="space-y-6 mb-12 relative z-10">
+                                                    <div class="flex justify-between items-center group/line">
+                                                        <span
+                                                            class="text-slate-400 font-bold text-xs uppercase tracking-[0.2em] group-hover/line:text-white transition-colors">Subtotal</span>
+                                                        <span id="summary-subtotal"
+                                                            class="font-black text-white text-lg">$<%= total.toFixed(2)
+                                                                %></span>
+                                                    </div>
+                                                    <div class="flex justify-between items-center group/line">
+                                                        <span
+                                                            class="text-slate-400 font-bold text-xs uppercase tracking-[0.2em] group-hover/line:text-white transition-colors">Logistics</span>
+                                                        <span
+                                                            class="font-black text-blue-400 text-[10px] uppercase tracking-[0.2em]">Complimentary</span>
+                                                    </div>
+                                                    <div class="flex justify-between items-center group/line">
+                                                        <span
+                                                            class="text-slate-400 font-bold text-xs uppercase tracking-[0.2em] group-hover/line:text-white transition-colors">Tax
+                                                            (8%)</span>
+                                                        <span id="summary-tax" class="font-black text-white text-lg">$
+                                                            <%= (total * 0.08).toFixed(2) %>
+                                                        </span>
+                                                    </div>
+                                                    <div class="pt-8 border-t border-white/10">
+                                                        <div class="flex flex-col gap-2">
+                                                            <span
+                                                                class="text-slate-400 font-black text-[10px] uppercase tracking-[0.3em]">Estimated
+                                                                Total</span>
+                                                            <span id="summary-total"
+                                                                class="text-5xl font-black text-blue-400 tracking-tighter">$
+                                                                <%= (total * 1.08).toFixed(2) %>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="relative z-10 space-y-4">
+                                                    <a href="/cart/checkout"
+                                                        class="flex items-center justify-center gap-4 w-full py-6 bg-blue-600 text-white font-black uppercase tracking-[0.2em] text-xs rounded-3xl hover:bg-blue-500 transition-all shadow-2xl shadow-blue-500/40 active:scale-95 group/btn overflow-hidden relative">
+                                                        <span class="relative z-10">Proceed to Checkout</span>
+                                                        <svg class="w-5 h-5 relative z-10 group-hover/btn:translate-x-1 transition-transform"
+                                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                                        </svg>
+                                                    </a>
+
+                                                    <button onclick="showClearCartModal()" type="button"
+                                                        class="w-full py-4 text-slate-400 hover:text-rose-400 font-black text-[10px] uppercase tracking-[0.2em] transition-all">
+                                                        Empty Entire Cart
+                                                    </button>
+                                                </div>
+
+                                                <!-- Decor -->
+                                                <div
+                                                    class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Modals -->
+            <%- include('partials/cart-modals') %>
+
+                <%- include('partials/footer') %>
+
+                    <script>
+                        let pendingRemoveProductId = null;
+
+                        async function changeQuantity(productId, delta, price) {
+                            const qtyElement = document.getElementById(`qty-${productId}`);
+                            const subtotalElement = document.getElementById(`subtotal-${productId}`);
+                            const currentQty = parseInt(qtyElement.textContent);
+                            const newQty = currentQty + delta;
+
+                            if (newQty < 0) return;
+
+                            // Optimistic UI update
+                            qtyElement.textContent = newQty;
+                            subtotalElement.textContent = `$${(price * newQty).toFixed(2)}`;
+
+                            try {
+                                const response = await fetch('/cart/update', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ productId, quantity: newQty })
+                                });
+
+                                const data = await response.json();
+
+                                if (data.success) {
+                                    if (newQty === 0) {
+                                        removeItemFromDOM(productId);
+                                    }
+                                    // Update summaries with server-side totals
+                                    updateSummaryUI(data.totals);
+
+                                    // Update header cart count
+                                    if (typeof updateCartCount === 'function') updateCartCount();
+                                } else {
+                                    // Rollback
+                                    qtyElement.textContent = currentQty;
+                                    subtotalElement.textContent = `$${(price * currentQty).toFixed(2)}`;
+                                    alert(data.message || 'Error updating cart');
+                                }
+                            } catch (error) {
+                                // Rollback
+                                qtyElement.textContent = currentQty;
+                                subtotalElement.textContent = `$${(price * currentQty).toFixed(2)}`;
+                                console.error('Error:', error);
+                            }
+                        }
+
+                        function updateSummaryUI(totals) {
+                            const subRef = document.getElementById('summary-subtotal');
+                            const taxRef = document.getElementById('summary-tax');
+                            const totRef = document.getElementById('summary-total');
+
+                            if (subRef) subRef.textContent = `$${totals.subtotal.toFixed(2)}`;
+                            if (taxRef) taxRef.textContent = `$${totals.tax.toFixed(2)}`;
+                            if (totRef) totRef.textContent = `$${totals.total.toFixed(2)}`;
+                        }
+
+                        function removeItemFromDOM(productId) {
+                            const itemElement = document.getElementById(`cart-item-${productId}`);
+                            if (!itemElement) return;
+
+                            itemElement.classList.add('opacity-0', 'scale-95', '-translate-x-10');
+
+                            setTimeout(() => {
+                                itemElement.remove();
+                                const remainingItems = document.querySelectorAll('.cart-item');
+                                if (remainingItems.length === 0) {
+                                    location.reload(); // Show empty state if no items left
+                                }
+                            }, 500);
+                        }
+
+                        function removeItem(productId) {
+                            pendingRemoveProductId = productId;
+                            showRemoveModal();
+                        }
+
+                        async function confirmRemove() {
+                            if (!pendingRemoveProductId) return;
+
+                            try {
+                                const response = await fetch('/cart/remove', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ productId: pendingRemoveProductId })
+                                });
+
+                                const data = await response.json();
+
+                                if (data.success) {
+                                    closeRemoveModal();
+                                    removeItemFromDOM(pendingRemoveProductId);
+                                    if (data.totals) updateSummaryUI(data.totals);
+
+                                    // Success toast
+                                    showToast('Item removed successfully!');
+                                    if (typeof updateCartCount === 'function') updateCartCount();
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                            }
+                        }
+
+                        async function confirmClearCart() {
+                            try {
+                                const response = await fetch('/cart/clear', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' }
+                                });
+
+                                const data = await response.json();
+                                if (data.success) {
+                                    location.reload();
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                            }
+                        }
+
+                        function showToast(message) {
+                            const toast = document.createElement('div');
+                            toast.className = 'fixed top-24 right-6 bg-blue-600 text-white px-8 py-4 rounded-[2rem] shadow-2xl z-[200] flex items-center gap-4 animate-slide-in font-black text-sm uppercase tracking-widest border border-white/10 backdrop-blur-xl';
+                            toast.innerHTML = `
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    ${message}
+                `;
+                            document.body.appendChild(toast);
+                            setTimeout(() => {
+                                toast.classList.add('opacity-0', 'translate-x-[200px]');
+                                setTimeout(() => toast.remove(), 500);
+                            }, 3000);
+                        }
+
+                        // Modal helpers
+                        function showRemoveModal() {
+                            const modal = document.getElementById('removeModal');
+                            const content = document.getElementById('removeModalContent');
+                            if (!modal) return;
+                            modal.classList.remove('opacity-0', 'pointer-events-none');
+                            setTimeout(() => content.classList.replace('scale-95', 'scale-100'), 10);
+                        }
+
+                        function closeRemoveModal() {
+                            const modal = document.getElementById('removeModal');
+                            const content = document.getElementById('removeModalContent');
+                            if (!modal) return;
+                            content.classList.replace('scale-100', 'scale-95');
+                            setTimeout(() => {
+                                modal.classList.add('opacity-0', 'pointer-events-none');
+                                pendingRemoveProductId = null;
+                            }, 300);
+                        }
+
+                        function showClearCartModal() {
+                            const modal = document.getElementById('clearCartModal');
+                            const content = document.getElementById('clearCartModalContent');
+                            if (!modal) return;
+                            modal.classList.remove('opacity-0', 'pointer-events-none');
+                            setTimeout(() => content.classList.replace('scale-95', 'scale-100'), 10);
+                        }
+
+                        function closeClearCartModal() {
+                            const modal = document.getElementById('clearCartModal');
+                            const content = document.getElementById('clearCartModalContent');
+                            if (!modal) return;
+                            content.classList.replace('scale-100', 'scale-95');
+                            setTimeout(() => modal.classList.add('opacity-0', 'pointer-events-none'), 300);
+                        }
+                    </script>
+
+                    <style>
+                        .animate-fade-in {
+                            animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                        }
+
+                        @keyframes fadeIn {
+                            from {
+                                opacity: 0;
+                                transform: translateY(20px);
+                            }
+
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+
+                        @keyframes slide-in {
+                            from {
+                                transform: translateX(100%);
+                                opacity: 0;
+                            }
+
+                            to {
+                                transform: translateX(0);
+                                opacity: 1;
+                            }
+                        }
+
+                        .animate-slide-in {
+                            animation: slide-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                        }
+
+                        .cart-item {
+                            will-change: transform, opacity;
+                            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                        }
+                    </style>
+    </body>
+
+</html>

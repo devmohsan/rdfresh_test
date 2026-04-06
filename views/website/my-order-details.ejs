@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-slate-950 text-white overflow-x-hidden selection:bg-blue-500/30">
+        <%- include('partials/header') %>
+
+            <!-- Decorative Background -->
+            <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+                <div
+                    class="absolute top-[5%] -left-[5%] w-[35%] h-[35%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse">
+                </div>
+                <div class="absolute bottom-[5%] -right-[5%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-[120px]">
+                </div>
+            </div>
+
+            <main class="min-h-screen pt-32 pb-24 relative">
+                <div class="container mx-auto px-4 sm:px-6 max-w-5xl">
+                    <!-- Navigation & Breadcrumb -->
+                    <div class="mb-12 animate-fade-in">
+                        <a href="/my-orders"
+                            class="group inline-flex items-center gap-4 px-6 py-3 bg-slate-900 hover:bg-white text-slate-500 hover:text-slate-950 rounded-2xl shadow-2xl border border-white/5 transition-all duration-500 transform hover:-translate-x-1">
+                            <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            <span class="font-black text-[11px] uppercase tracking-[0.2em]">All Orders</span>
+                        </a>
+                    </div>
+
+                    <!-- Page Header Card-->
+                    <div
+                        class="bg-slate-900 rounded-[3rem] p-8 sm:p-12 mb-12 shadow-2xl shadow-slate-900/20 relative overflow-hidden group animate-fade-in">
+                        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                            <div>
+                                <!-- main div    -->
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span
+                                        class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-[9px] font-black uppercase tracking-[0.2em] border border-blue-500/20">Official
+                                        Transaction</span>
+                                    <span
+                                        class="text-slate-600 text-[10px] font-black uppercase tracking-widest">•</span>
+                                    <span class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">
+                                        <%= new Date(order.orderDate || order.createdAt).toLocaleDateString('en-US', {
+                                            month: 'long' , day: 'numeric' , year: 'numeric' }) %>
+                                    </span>
+                                </div>
+                                <h1
+                                    class="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tighter mb-2">
+                                    Order <span
+                                        class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">#
+                                        <%= order.orderNumber || order.id.toString().slice(-8).toUpperCase() %>
+                                    </span>
+                                </h1>
+                            </div>
+
+                            <% let statusConfig={ class: "bg-blue-600 shadow-blue-500/20" , text: order.status
+                                || 'Processing' , icon: "M5 13l4 4L19 7" }; if (order.status==='awaiting_shipment' ) {
+                                statusConfig={ class: "bg-amber-500 shadow-amber-500/20" , text: "Awaiting Shipment" ,
+                                icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" }; } else if
+                                (order.status==='cancelled' ) { statusConfig={ class: "bg-rose-500 shadow-rose-500/20" ,
+                                text: "Cancelled" , icon: "M6 18L18 6M6 6l12 12" }; } %>
+                                <div
+                                    class="<%= statusConfig.class %> px-8 py-4 rounded-3xl text-white shadow-2xl flex items-center gap-4 transition-transform group-hover:scale-105 duration-500">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                            d="<%= statusConfig.icon %>"></path>
+                                    </svg>
+                                    <span class="font-black text-xs uppercase tracking-[0.25em]">
+                                        <%= statusConfig.text.replace(/_/g, ' ' ) %>
+                                    </span>
+                                </div>
+                        </div>
+
+                        <!-- Abstract Decor -->
+                        <div
+                            class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-blue-500/20 transition-all duration-1000">
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-32 h-32 bg-slate-950/50 rounded-full -ml-16 -mb-16">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                        <!-- Main Content -->
+                        <div class="lg:col-span-2 space-y-8 animate-fade-in" style="animation-delay: 0.1s">
+
+                            <!-- Items Purchased Container -->
+                            <div
+                                class="bg-slate-900 rounded-[3rem] p-8 sm:p-10 shadow-2xl border border-white/5 relative overflow-hidden">
+                                <h2 class="text-2xl font-black text-white mb-10 flex items-center gap-4">
+                                    Manifest Details
+                                    <span
+                                        class="w-8 h-8 rounded-xl bg-slate-950 border border-white/5 flex items-center justify-center text-xs font-black text-slate-500">
+                                        <%= order.items ? order.items.length : 0 %>
+                                    </span>
+                                </h2>
+
+                                <div class="space-y-10">
+                                    <% if (order.items && order.items.length> 0) { %>
+                                        <% order.items.forEach((item, idx)=> { %>
+                                            <div class="flex flex-col sm:flex-row items-center gap-8 group">
+                                                <div class="relative flex-shrink-0">
+                                                    <div
+                                                        class="w-24 h-24 rounded-[2rem] bg-slate-950 border border-white/5 p-1 flex items-center justify-center overflow-hidden shadow-sm group-hover:shadow-blue-500/10 transition-all duration-500">
+                                                        <img src="<%= item.imageUrl || item.image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=200' %>"
+                                                            alt="<%= item.name || item.productName %>"
+                                                            class="w-full h-full object-cover rounded-2xl group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100">
+                                                    </div>
+                                                    <div
+                                                        class="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-black border-4 border-slate-900 shadow-lg">
+                                                        <%= item.quantity %>
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex-grow text-center sm:text-left">
+                                                    <h4
+                                                        class="font-black text-white text-xl tracking-tight mb-2 group-hover:text-blue-400 transition-colors">
+                                                        <%= item.name || item.productName %>
+                                                    </h4>
+                                                    <div
+                                                        class="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs font-black uppercase tracking-widest">
+                                                        <span class="text-slate-500">SKU: <%= item.sku || 'N/A' %>
+                                                        </span>
+                                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-800"></span>
+                                                        <span class="text-blue-400">$<%= (item.price || item.unitPrice
+                                                                || 0).toFixed(2) %> ea</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-right flex-shrink-0 hidden sm:block">
+                                                    <p
+                                                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                                        Subtotal</p>
+                                                    <p class="text-xl font-black text-white tracking-tighter">
+                                                        $<%= ((item.price || item.unitPrice || 0) *
+                                                            item.quantity).toFixed(2) %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <% if (idx < order.items.length - 1) { %>
+                                                <div class="h-px bg-white/5 w-full"></div>
+                                                <% } %>
+                                                    <% }) %>
+                                                        <% } %>
+                                </div>
+                            </div>
+
+                            <!-- Shipping & Billing Cards -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                <!-- Shipping -->
+                                <div
+                                    class="bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl border border-white/5 group hover:border-blue-500/30 transition-colors">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                            </path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-black text-white mb-4 tracking-tight">Delivery Point
+                                    </h3>
+                                    <div class="font-bold text-slate-400 space-y-1.5">
+                                        <p class="text-white font-black">
+                                            <%= order.shipTo?.name || 'Authorized Client' %>
+                                        </p>
+                                        <p class="text-sm leading-relaxed">
+                                            <%= order.shipTo?.street1 %><br>
+                                                <% if (order.shipTo?.street2) { %>
+                                                    <%= order.shipTo?.street2 %><br>
+                                                        <% } %>
+                                                            <%= order.shipTo?.city %>, <%= order.shipTo?.state %>
+                                                                    <%= order.shipTo?.postalCode %><br>
+                                                                        <span
+                                                                            class="text-[10px] uppercase font-black tracking-widest opacity-50">
+                                                                            <%= order.shipTo?.country || 'USA' %>
+                                                                        </span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Contact -->
+                                <div
+                                    class="bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl border border-white/5 group hover:border-blue-500/30 transition-colors">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-black text-white mb-4 tracking-tight">Digital Contact
+                                    </h3>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <p
+                                                class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                                Email Node</p>
+                                            <p class="font-bold text-slate-300 truncate">
+                                                <%= order.customerEmail || 'N/A' %>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p
+                                                class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                                Phone Line</p>
+                                            <p class="font-bold text-slate-300">
+                                                <%= order.shipTo?.phone || 'N/A' %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar Summary -->
+                        <aside class="space-y-8 sticky top-32 animate-fade-in" style="animation-delay: 0.2s">
+                            <div
+                                class="bg-slate-900 rounded-[3rem] p-8 sm:p-10 shadow-2xl relative overflow-hidden group">
+                                <h2 class="text-2xl font-black text-white mb-10 relative z-10">Financial Receipt</h2>
+
+                                <div class="space-y-6 mb-10 relative z-10">
+                                    <div class="flex justify-between items-center group/line">
+                                        <span
+                                            class="text-slate-400 font-bold text-xs uppercase tracking-widest group-hover/line:text-white transition-colors">Subtotal</span>
+                                        <span class="text-white font-black">$<%= (order.subtotal || (order.total_amount
+                                                - (order.taxAmount || 0)) || 0).toFixed(2) %></span>
+                                    </div>
+                                    <div class="flex justify-between items-center group/line">
+                                        <span
+                                            class="text-slate-400 font-bold text-xs uppercase tracking-widest group-hover/line:text-white transition-colors">Sales
+                                            Tax</span>
+                                        <span class="text-red-400 font-black">+$<%= (order.taxAmount || order.tax ||
+                                                0).toFixed(2) %></span>
+                                    </div>
+                                    <div class="flex justify-between items-center group/line">
+                                        <span
+                                            class="text-slate-500 font-bold text-xs uppercase tracking-widest group-hover/line:text-white transition-colors">Logistics</span>
+                                        <span
+                                            class="text-blue-400 font-black uppercase text-[10px] tracking-widest">Complimentary</span>
+                                    </div>
+
+                                    <div class="h-px bg-white/10 w-full my-4"></div>
+
+                                    <div class="flex flex-col gap-2">
+                                        <span
+                                            class="text-slate-500 font-black text-[10px] uppercase tracking-[0.3em]">Grand
+                                            Total</span>
+                                        <span class="text-5xl font-black text-blue-400 tracking-tighter">$<%=
+                                                (order.total_amount || order.total || 0).toFixed(2) %></span>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Verified Seal -->
+                                <div
+                                    class="bg-white/5 rounded-3xl p-6 border border-white/10 text-center relative z-10">
+                                    <div class="flex flex-col items-center gap-4">
+                                        <div class="w-16 h-1 w-white/20 rounded-full mb-2"></div>
+                                        <img src="/images/new-logo.png" alt="RD Fresh"
+                                            class="h-6 brightness-0 invert opacity-50">
+                                        <div
+                                            class="px-6 py-2 bg-blue-600 rounded-xl font-black text-white text-[9px] uppercase tracking-[0.3em] shadow-xl shadow-blue-500/20">
+                                            Paid via QuickBooks
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Backdrop Decor -->
+                                <div
+                                    class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-1000">
+                                </div>
+                            </div>
+
+                            <!-- Print/Help Links -->
+                            <div class="bg-slate-900 rounded-3xl p-6 border border-white/5 text-center">
+                                <button onclick="window.print()"
+                                    class="text-[10px] font-black text-slate-500 uppercase tracking-widest hover:text-blue-400 transition-colors flex items-center justify-center gap-3 w-full">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                                        </path>
+                                    </svg>
+                                    Download Paper Receipt
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('partials/footer') %>
+
+                <style>
+                    @keyframes fade-in {
+                        from {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    .animate-fade-in {
+                        animation: fade-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                    }
+
+                    @media print {
+
+                        .fixed,
+                        nav,
+                        footer,
+                        aside button,
+                        .animate-fade-in a {
+                            display: none !important;
+                        }
+
+                        main {
+                            padding-top: 0 !important;
+                        }
+
+                        .bg-slate-900 {
+                            background: #0f172a !important;
+                            color-adjust: exact;
+                            -webkit-print-color-adjust: exact;
+                        }
+
+                        .bg-white {
+                            background: white !important;
+                        }
+
+                        .container {
+                            max-width: 100% !important;
+                            width: 100% !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                        }
+                    }
+                </style>
+    </body>
+
+</html>

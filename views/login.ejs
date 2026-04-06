@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Rdfresh Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[#f8fafc] flex items-center justify-center min-h-screen relative overflow-hidden px-4">
+  <!-- Background Accents -->
+  <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-100 rounded-full blur-[120px]"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-50 rounded-full blur-[120px]"></div>
+
+  <div class="w-full max-w-[440px] z-10">
+    <!-- Logo / Branding -->
+    <div class="text-center mb-8 animate-float">
+      <div class="inline-flex p-4 bg-white rounded-3xl shadow-sm border border-slate-100 mb-4">
+        <img src="/images/new-logo.png" alt="Rdfresh Logo" class="h-20 w-auto object-contain">
+      </div>
+      <h1 class="text-slate-900 text-2xl font-bold tracking-tight">Rdfresh Admin</h1>
+      <p class="text-slate-500 text-sm mt-2 font-medium">Please sign in to manage your business</p>
+    </div>
+
+    <div class="glass-panel p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] relative">
+      <!-- Flash Messages -->
+      <% if (typeof error_msg !=='undefined' && error_msg.length> 0) { %>
+        <div
+          class="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div class="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <p class="text-sm font-semibold text-rose-600">
+            <%= error_msg %>
+          </p>
+        </div>
+        <% } %>
+
+          <form action="/admin/login" method="POST" class="space-y-6">
+            <!-- Email Field -->
+            <div>
+              <label for="email"
+                class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5 ml-1">Email
+                Address</label>
+              <div class="group relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-slate-400 group-focus-within:text-emerald-500 transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                  </svg>
+                </div>
+                <input type="email" id="email" name="email"
+                  class="w-full pl-11 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 focus:bg-white transition-all text-slate-900 font-medium placeholder:text-slate-400"
+                  placeholder="admin@rdfresh.com" required>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div>
+              <label for="password"
+                class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2.5 ml-1">Password</label>
+              <div class="group relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-slate-400 group-focus-within:text-emerald-500 transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <input type="password" id="password" name="password"
+                  class="w-full pl-11 pr-4 py-4 bg-slate-50/50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 focus:bg-white transition-all text-slate-900 font-medium placeholder:text-slate-400"
+                  placeholder="••••••••••••" required>
+              </div>
+            </div>
+
+            <!-- Remember -->
+            <div class="flex items-center justify-between pt-2">
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" name="remember"
+                  class="w-5 h-5 rounded-lg border-slate-300 text-emerald-600 focus:ring-emerald-500/20 transition-all cursor-pointer">
+                <span class="text-sm font-semibold text-slate-600 group-hover:text-slate-900 transition-colors">Keep me
+                  signed in</span>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+              class="w-full py-4.5 bg-slate-900 text-white rounded-2xl font-bold hover:bg-emerald-600 transform hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-emerald-500/20">
+              <span>Sign In</span>
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </button>
+          </form>
+
+          <p class="mt-8 text-center text-sm font-medium text-slate-400">
+            Having trouble? <a href="mailto:support@rdfresh.com"
+              class="text-emerald-600 hover:text-emerald-700 font-bold transition-colors underline underline-offset-4">Contact
+              Support</a>
+          </p>
+    </div>
+
+    <div class="mt-8 text-center">
+      <p class="text-slate-400 text-xs font-bold uppercase tracking-[0.2em]">© 2026 Rdfresh Admin Panel</p>
+    </div>
+  </div>
+</body>
+
+</html>

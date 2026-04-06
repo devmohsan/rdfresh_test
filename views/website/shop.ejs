@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-white text-secondary overflow-x-hidden selection:bg-primary/30">
+
+        <%- include('partials/header') %>
+
+            <!-- Decorative Background Elements -->
+            <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+                <div
+                    class="absolute -top-[10%] -right-[10%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px] animate-pulse">
+                </div>
+                <div class="absolute top-[20%] -left-[10%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px]">
+                </div>
+            </div>
+
+            <main class="pt-40 pb-24 relative">
+                <section class="container mx-auto px-6 max-w-8xl">
+                    <div class="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8 reveal">
+                        <div class="max-w-2xl">
+                            <div class="inline-block px-4 py-1.5 bg-primary/10 rounded-full mb-6">
+                                <p class="text-[10px] font-black text-primary tracking-[0.3em] uppercase">Core
+                                    Collection</p>
+                            </div>
+                            <h1
+                                class="text-4xl sm:text-6xl md:text-8xl font-black text-secondary tracking-tighter leading-[0.8] mb-8 uppercase">
+                                Professional <br><span class="text-primary italic">Solutions.</span>
+                            </h1>
+                            <p class="text-slate-500 font-bold text-xl uppercase tracking-widest leading-relaxed">
+                                Precision-engineered atmosphere control for high-performance commercial refrigeration.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                        <% if (products && products.length> 0) { %>
+                            <% products.forEach(product=> { %>
+                                <!-- Product Card -->
+                                <div
+                                    class="bg-white rounded-[3rem] overflow-hidden shadow-xl shadow-slate-200/50 border border-slate-100 group flex flex-col transition-all duration-500 hover:shadow-2xl hover:-translate-y-2">
+                                    <div class="h-72 bg-slate-50 relative overflow-hidden">
+                                        <% const img=product.imageUrl
+                                            || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600'
+                                            ; const price=parseFloat(product.price || 0).toFixed(2); %>
+                                            <a href="/product/<%= product.productId %>" class="block w-full h-full">
+                                                <img src="<%= img %>" alt="<%= product.name %>" loading="lazy"
+                                                    class="product-image cursor-pointer w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-90 group-hover:opacity-100">
+                                            </a>
+                                            <div
+                                                class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-40 pointer-events-none">
+                                            </div>
+                                    </div>
+                                    <div class="p-10 flex-grow flex flex-col">
+                                        <div class="flex justify-between items-start mb-6">
+                                            <div class="flex-grow pr-4">
+                                                <h3
+                                                    class="text-2xl font-black text-secondary mb-2 leading-tight group-hover:text-primary transition-colors uppercase">
+                                                    <%= product.name %> - <%= product.description.substring(0, 25) %>
+                                                </h3>
+                                                <div
+                                                    class="inline-block px-3 py-1 bg-slate rounded-lg border border-slate-100">
+                                                    <p
+                                                        class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                        SKU: <%= product.sku %>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="text-right">
+                                                <p class="text-3xl font-black text-secondary tracking-tighter">$<%=
+                                                        price %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p class="text-slate-500 font-medium text-sm mb-10 leading-relaxed flex-grow">
+                                            <%= product.description
+                                                || 'High-performance refrigeration solution designed for professional commercial storage environments.'
+                                                %>
+                                        </p>
+                                        <button
+                                            class="add-to-cart-btn w-full py-5 bg-secondary text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-2xl hover:bg-primary hover:text-white hover:shadow-xl hover:shadow-primary/20 transition-all duration-500"
+                                            data-id="<%= product.productId %>" data-name="<%= product.name %>"
+                                            data-price="<%= product.price || 0 %>"
+                                            data-image="<%= product.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600' %>">
+                                            Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                                <% }) %>
+                                    <% } else { %>
+                                        <!-- Empty State -->
+                                        <div
+                                            class="col-span-full py-32 text-center bg-slate-50 rounded-[4rem] border border-slate-100 relative overflow-hidden">
+                                            <div
+                                                class="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl">
+                                            </div>
+                                            <div
+                                                class="w-24 h-24 bg-primary/10 rounded-[2rem] flex items-center justify-center mx-auto mb-8 border border-primary/10 rotate-3">
+                                                <svg class="w-10 h-10 text-primary" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5"
+                                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <h2
+                                                class="text-5xl font-black text-secondary mb-4 tracking-tighter uppercase">
+                                                Vessels are
+                                                empty.</h2>
+                                            <p
+                                                class="text-slate-500 font-bold uppercase tracking-widest text-lg max-w-md mx-auto mb-10">
+                                                We're
+                                                currently replenishing our stock. Explore our technology while you wait.
+                                            </p>
+                                            <a href="/"
+                                                class="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white font-black text-[11px] uppercase tracking-widest rounded-2xl hover:bg-secondary hover:text-white transition-all duration-500">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                                </svg>
+                                                Return to Port
+                                            </a>
+                                        </div>
+                                        <% } %>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Product Detail Modal (DEACTIVATED) -->
+            <!-- 
+            <div id="productModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+                <div class="absolute inset-0 backdrop-blur-md transition-opacity duration-500 opacity-0"
+                    id="modalBackdrop"></div>
+
+                <div class="relative bg-white w-full max-w-4xl max-h-[90vh] rounded-[3rem] overflow-hidden shadow-2xl transition-all duration-500 scale-90 opacity-0 translate-y-10"
+                    id="modalContainer">
+                    <button id="closeModal"
+                        class="absolute top-6 right-6 z-10 w-12 h-12 flex items-center justify-center bg-slate-100 text-secondary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+
+                    <div class="flex flex-col md:flex-row h-full">
+                        <div class="md:w-1/2 h-[300px] md:h-auto bg-slate-50 overflow-hidden">
+                            <img id="modalImage" src="" alt="" class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="md:w-1/2 p-8 md:p-12 overflow-y-auto">
+                            <div class="mb-8">
+                                <div class="inline-block px-4 py-1.5 bg-primary/10 rounded-full mb-4">
+                                    <p id="modalSku" class="text-[10px] font-black text-primary tracking-[0.3em] uppercase"></p>
+                                </div>
+                                <h2 id="modalName" class="text-3xl md:text-4xl font-black text-secondary uppercase leading-none mb-4"></h2>
+                                <p id="modalPrice" class="text-2xl font-black text-primary tracking-tighter"></p>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4 border-b border-slate-100 pb-2">Technical Specifications</h4>
+                                    <p id="modalDescription" class="text-slate-500 font-medium text-lg leading-relaxed"></p>
+                                </div>
+
+                                <div class="pt-8">
+                                    <button id="modalAddToCart" class="w-full py-5 bg-secondary text-white font-black text-[11px] uppercase tracking-[0.2em] rounded-2xl hover:bg-primary hover:shadow-xl hover:shadow-primary/20 transition-all duration-500">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+
+            <%- include('partials/footer') %>
+
+                <style>
+                    @keyframes slide-in {
+                        from {
+                            transform: translateX(400px);
+                            opacity: 0;
+                        }
+
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+
+                    .animate-slide-in {
+                        animation: slide-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                    }
+
+                    .reveal {
+                        opacity: 0;
+                        transform: translateY(20px);
+                        transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+                    }
+
+                    .reveal.active {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                </style>
+
+                <script>
+                    // Scroll Reveal logic
+                    function reveal() {
+                        const reveals = document.querySelectorAll(".reveal");
+                        reveals.forEach(el => {
+                            const windowHeight = window.innerHeight;
+                            const elementTop = el.getBoundingClientRect().top;
+                            const elementVisible = 150;
+                            if (elementTop < windowHeight - elementVisible) {
+                                el.classList.add("active");
+                            }
+                        });
+                    }
+                    window.addEventListener("scroll", reveal);
+                    window.addEventListener("load", reveal);
+
+                    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                        btn.addEventListener('click', async (e) => {
+                        <% if (!user) { %>
+                                window.location.href = '/login';
+                                return;
+                        <% } %>
+
+                        const productId = btn.getAttribute('data-id');
+                            const productName = btn.getAttribute('data-name');
+                            const price = btn.getAttribute('data-price');
+                            const image = btn.getAttribute('data-image');
+
+                            try {
+                                const response = await fetch('/cart/add', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ productId, productName, price, image, quantity: 1 })
+                                });
+
+                                const data = await response.json();
+
+                                if (response.status === 401) {
+                                    alert(data.message || 'Please login to add items to cart');
+                                    window.location.href = data.redirectTo || '/login';
+                                    return;
+                                }
+
+                                if (data.success) {
+                                    // Show toast
+                                    const toast = document.createElement('div');
+                                    toast.className = 'fixed top-24 right-6 bg-blue-600 text-white px-8 py-5 rounded-[2rem] shadow-2xl z-50 flex items-center gap-4 animate-slide-in border border-white/10 backdrop-blur-xl';
+                                    toast.innerHTML = `
+                                    <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-black text-sm uppercase tracking-wider">${productName}</p>
+                                        <p class="text-xs font-bold text-blue-100/80">Inventory updated. Heading to cart...</p>
+                                    </div>
+                                `;
+                                    document.body.appendChild(toast);
+
+                                    setTimeout(() => {
+                                        window.location.href = '/cart';
+                                    }, 1500);
+                                } else {
+                                    alert(data.message || 'Error adding to cart');
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                                alert('Error adding to cart. Please try again.');
+                            }
+                        });
+                    });
+
+                    /*
+                    // Modal logic
+                    const modal = document.getElementById('productModal');
+                    const modalBackdrop = document.getElementById('modalBackdrop');
+                    const modalContainer = document.getElementById('modalContainer');
+                    const closeModal = document.getElementById('closeModal');
+
+                    function openProductModal(data) {
+                        document.getElementById('modalImage').src = data.image;
+                        document.getElementById('modalName').textContent = data.name;
+                        document.getElementById('modalPrice').textContent = `$${data.price}`;
+                        document.getElementById('modalSku').textContent = `SKU: ${data.sku}`;
+                        document.getElementById('modalDescription').textContent = data.description;
+
+                        const modalAddBtn = document.getElementById('modalAddToCart');
+                        modalAddBtn.onclick = () => {
+                            const originalBtn = document.querySelector(`.add-to-cart-btn[data-id="${data.id}"]`);
+                            if (originalBtn) originalBtn.click();
+                            closeProductModal();
+                        };
+
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+
+                        setTimeout(() => {
+                            modalBackdrop.classList.remove('opacity-0');
+                            modalContainer.classList.remove('opacity-0', 'scale-90', 'translate-y-10');
+                        }, 50);
+                    }
+
+                    function closeProductModal() {
+                        modalBackdrop.classList.add('opacity-0');
+                        modalContainer.classList.add('opacity-0', 'scale-90', 'translate-y-10');
+
+                        setTimeout(() => {
+                            modal.classList.add('hidden');
+                            modal.classList.remove('flex');
+                        }, 500);
+                    }
+
+                    document.querySelectorAll('.product-image').forEach(img => {
+                        img.addEventListener('click', () => {
+                            const data = {
+                                id: img.getAttribute('data-id'),
+                                name: img.getAttribute('data-name'),
+                                price: img.getAttribute('data-price'),
+                                sku: img.getAttribute('data-sku'),
+                                description: img.getAttribute('data-description'),
+                                image: img.getAttribute('data-image')
+                            };
+                            openProductModal(data);
+                        });
+                    });
+
+                    if (closeModal) closeModal.addEventListener('click', closeProductModal);
+                    if (modalBackdrop) modalBackdrop.addEventListener('click', closeProductModal);
+                    */
+
+                </script>
+    </body>
+
+</html>

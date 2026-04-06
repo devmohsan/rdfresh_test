@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-slate-950 text-slate-50 overflow-x-hidden">
+        <%- include('partials/header') %>
+
+            <main
+                class="min-h-screen flex items-center justify-center py-24 md:py-32 px-6 relative overflow-hidden hero-gradient">
+                <!-- Background Ornaments -->
+                <div class="absolute top-0 left-0 w-full h-full pointer-events-none -z-10">
+                    <div
+                        class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse">
+                    </div>
+                    <div
+                        class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-400/10 rounded-full blur-[120px]">
+                    </div>
+                </div>
+
+                <div
+                    class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 bg-slate-900 border border-white/5 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden animate-fade-in mx-auto relative z-10">
+                    <!-- Left Side: Distributor Benefits -->
+                    <div
+                        class="hidden lg:flex flex-col justify-between p-12 xl:p-16 bg-slate-900 text-white relative overflow-hidden border-r border-white/5">
+                        <!-- Technical Decor -->
+                        <div class="absolute inset-0 opacity-5 pointer-events-none">
+                            <div class="absolute inset-0"
+                                style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 40px 40px;">
+                            </div>
+                        </div>
+
+                        <div class="relative z-10">
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-8 border border-blue-500/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                Partner Network
+                            </div>
+                            <div class="space-y-6">
+                                <h2 class="text-4xl xl:text-5xl font-black tracking-tight leading-[1.1] text-white">
+                                    Distributor <br> <span class="text-blue-400 font-black tracking-tighter">Command
+                                        Center.</span>
+                                </h2>
+                                <p class="text-slate-400 text-lg leading-relaxed max-w-sm font-medium">
+                                    Access your partnership dashboard to manage inventory, track wholesale orders, and
+                                    view technical assets.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="relative z-10 space-y-8">
+                            <!-- Feature Highlight -->
+                            <div class="space-y-5">
+                                <div class="flex items-center gap-4 group">
+                                    <div
+                                        class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 border border-blue-500/20 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-200 uppercase tracking-widest text-[10px]">
+                                        Tier-Based Wholesale Pricing</p>
+                                </div>
+                                <div class="flex items-center gap-4 group">
+                                    <div
+                                        class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 border border-blue-500/20 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <p class="text-sm font-bold text-slate-200 uppercase tracking-widest text-[10px]">
+                                        Sales Performance Analytics</p>
+                                </div>
+                            </div>
+
+                            <div class="pt-8 border-t border-white/5">
+                                <div
+                                    class="flex items-center gap-4 py-4 px-6 bg-white/5 rounded-2xl border border-white/5">
+                                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                            Security Status</p>
+                                        <p
+                                            class="text-[10px] font-black text-white uppercase tracking-widest leading-none mt-1">
+                                            Encrypted Partner Session</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gradient Glow -->
+                        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-600/10 rounded-full blur-[100px]">
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Login Form -->
+                    <div class="p-8 sm:p-12 md:p-16 lg:p-20 flex flex-col justify-center relative bg-slate-900/50">
+                        <div class="max-w-sm mx-auto w-full space-y-10">
+                            <div class="text-center lg:text-left">
+                                <h3 class="text-3xl font-black text-white tracking-tight mb-2">Partner Login</h3>
+                                <p class="text-slate-500 font-medium leading-relaxed">Credential verification required
+                                    for network access.</p>
+                            </div>
+
+                            <% if (typeof success_msg !=='undefined' && success_msg && success_msg.length> 0) { %>
+                                <div
+                                    class="p-4 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-2xl text-[11px] font-black uppercase tracking-widest animate-fade-in text-center">
+                                    <%= success_msg %>
+                                </div>
+                                <% } %>
+
+                                    <% if (typeof error_msg !=='undefined' && error_msg && error_msg.length> 0) { %>
+                                        <div
+                                            class="p-4 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-2xl text-[11px] font-black uppercase tracking-widest animate-fade-in text-center">
+                                            <%= error_msg %>
+                                        </div>
+                                        <% } %>
+
+                                            <form action="/distributor/login" method="POST" class="space-y-6">
+                                                <div class="space-y-2">
+                                                    <label
+                                                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Business
+                                                        Email</label>
+                                                    <input type="email" name="email" required
+                                                        placeholder="partner@business.com"
+                                                        class="w-full bg-white/5 border border-white/10 focus:border-blue-500 focus:bg-white/10 rounded-2xl px-6 py-4 outline-none transition-all font-bold text-white placeholder-slate-600">
+                                                </div>
+                                                <div class="space-y-2">
+                                                    <div class="flex justify-between items-center">
+                                                        <label
+                                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Password</label>
+                                                        <a href="#"
+                                                            class="text-[10px] font-black text-blue-500 uppercase tracking-widest hover:underline">Support</a>
+                                                    </div>
+                                                    <input type="password" name="password" required
+                                                        placeholder="••••••••"
+                                                        class="w-full bg-white/5 border border-white/10 focus:border-blue-500 focus:bg-white/10 rounded-2xl px-6 py-4 outline-none transition-all font-bold text-white placeholder-slate-600">
+                                                </div>
+
+                                                <button type="submit"
+                                                    class="w-full py-5 bg-blue-600 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded-2xl hover:bg-blue-500 transition-all shadow-2xl shadow-blue-500/20 active:scale-[0.98] flex items-center justify-center gap-4">
+                                                    <span>Authenticate Access</span>
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+
+                                            <div class="text-center pt-8 border-t border-white/5">
+                                                <p
+                                                    class="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] leading-relaxed">
+                                                    Not a partner yet? <a href="/distributor-inquiry"
+                                                        class="text-blue-500/70 hover:text-blue-400 transition-colors">Submit
+                                                        Inquiry</a>
+                                                </p>
+                                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('partials/footer') %>
+
+                <style>
+                    @keyframes fade-in {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    .animate-fade-in {
+                        animation: fade-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                    }
+                </style>
+    </body>
+
+</html>

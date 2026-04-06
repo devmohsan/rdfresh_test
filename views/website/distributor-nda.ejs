@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-slate-950 text-slate-50 overflow-x-hidden">
+        <%- include('partials/header') %>
+
+            <main class="min-h-screen py-32 px-6 hero-gradient flex items-center justify-center">
+                <div
+                    class="max-w-4xl w-full bg-slate-900 border border-white/5 rounded-[2.5rem] md:rounded-[3.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden animate-fade-in relative z-10">
+                    <div class="p-8 md:p-16">
+                        <!-- Header -->
+                        <div class="text-center mb-12">
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 border border-amber-500/20">
+                                <i class="fas fa-file-contract"></i> Legal Protocol Required
+                            </div>
+                            <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+                                Non-Disclosure <br><span class="text-blue-500 font-black">Agreement (NDA).</span>
+                            </h1>
+                            <p class="text-slate-400 mt-4 font-medium max-w-lg mx-auto">
+                                In order to access the RD Fresh Distributor Network and proprietary resources, you must
+                                acknowledge and accept our confidentiality terms.
+                            </p>
+                        </div>
+
+                        <!-- NDA Content Box -->
+                        <div
+                            class="bg-slate-950/50 border border-white/5 rounded-3xl p-8 md:p-10 mb-10 h-80 overflow-y-auto custom-scrollbar">
+                            <div
+                                class="prose prose-invert max-w-none text-slate-400 text-sm leading-relaxed space-y-6 font-medium">
+                                <section>
+                                    <h3 class="text-white font-black uppercase tracking-widest text-xs mb-4">1.
+                                        Confidential Information</h3>
+                                    <p>Confidential Information includes all proprietary material, business plans,
+                                        technical data, pricing models, marketing strategies, and any information
+                                        disclosed by RD Fresh to the Distributor, whether orally or in writing.</p>
+                                </section>
+                                <section>
+                                    <h3 class="text-white font-black uppercase tracking-widest text-xs mb-4">2.
+                                        Non-Disclosure Obligations</h3>
+                                    <p>Distributor agrees to hold the Confidential Information in strict confidence and
+                                        shall not disclose it to any third party without prior written consent. The
+                                        Distributor shall use the same degree of care to protect the Confidential
+                                        Information as it uses to protect its own confidential information of like
+                                        nature, but in no event less than reasonable care.</p>
+                                </section>
+                                <section>
+                                    <h3 class="text-white font-black uppercase tracking-widest text-xs mb-4">3.
+                                        Competitive Protection</h3>
+                                    <p>Distributor shall not use the Confidential Information for any purpose other than
+                                        to evaluate or maintain a business relationship with RD Fresh. This includes a
+                                        strict prohibition on developing competing technologies or services based on the
+                                        provided data.</p>
+                                </section>
+                                <section>
+                                    <h3 class="text-white font-black uppercase tracking-widest text-xs mb-4">4. Term of
+                                        Agreement</h3>
+                                    <p>The obligations under this agreement shall remain in effect for a period of five
+                                        (5) years from the date of last disclosure of Confidential Information,
+                                        regardless of the status of the partnership.</p>
+                                </section>
+                            </div>
+                        </div>
+
+                        <!-- Acceptance Form -->
+                        <form action="/distributor/accept-nda" method="POST" class="space-y-8">
+                            <div
+                                class="flex items-start gap-4 p-6 bg-white/5 rounded-2xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all group">
+                                <div class="mt-1">
+                                    <input type="checkbox" id="ndaConsent" required name="ndaConsent"
+                                        class="w-6 h-6 rounded-lg border-white/10 bg-slate-900 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer">
+                                </div>
+                                <label for="ndaConsent"
+                                    class="text-sm font-bold text-slate-300 cursor-pointer group-hover:text-white transition-colors">
+                                    I have read, understood, and hereby agree to be bound by the terms of the
+                                    Non-Disclosure Agreement. I acknowledge that I am an authorized representative of my
+                                    business.
+                                </label>
+                            </div>
+
+                            <div
+                                class="flex flex-col md:flex-row gap-4 items-center justify-between pt-6 border-t border-white/5">
+                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                    Authorized for: <span class="text-blue-400">
+                                        <%= user.name %>
+                                    </span>
+                                </p>
+                                <button type="submit"
+                                    class="w-full md:w-auto px-12 py-5 bg-blue-600 text-white font-black uppercase tracking-[0.3em] text-[10px] rounded-[1.5rem] hover:bg-blue-500 transition-all shadow-2xl shadow-blue-500/20 active:scale-[0.98] flex items-center justify-center gap-4">
+                                    <span>Execute Agreement</span>
+                                    <i class="fas fa-signature"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('partials/footer') %>
+
+                <style>
+                    .custom-scrollbar::-webkit-scrollbar {
+                        width: 4px;
+                    }
+
+                    .custom-scrollbar::-webkit-scrollbar-thumb {
+                        background: rgba(255, 255, 255, 0.1);
+                        border-radius: 10px;
+                    }
+
+                    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                        background: #3b82f6;
+                    }
+
+                    @keyframes fade-in {
+                        from {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    .animate-fade-in {
+                        animation: fade-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+                    }
+                </style>
+    </body>
+
+</html>

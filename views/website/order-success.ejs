@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head') %>
+
+    <body class="bg-slate-950 text-white overflow-x-hidden selection:bg-blue-500/30">
+        <%- include('partials/header') %>
+
+            <!-- Decorative Background Elements -->
+            <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+                <div
+                    class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse">
+                </div>
+                <div class="absolute top-[20%] -left-[10%] w-[30%] h-[30%] bg-blue-500/5 rounded-full blur-[100px]">
+                </div>
+            </div>
+
+            <main class="min-h-screen pt-32 pb-24">
+                <div class="container mx-auto px-4 sm:px-6 max-w-2xl text-center">
+                    <!-- Success Animation Placeholder -->
+                    <div class="mb-12 relative flex justify-center">
+                        <div
+                            class="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center animate-bounce shadow-2xl shadow-blue-500/30">
+                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <!-- Decorative Orbs -->
+                        <div class="absolute -top-4 -left-4 w-6 h-6 bg-blue-400 rounded-full animate-pulse"></div>
+                        <div
+                            class="absolute -bottom-2 -right-6 w-4 h-4 bg-blue-500 rounded-full animate-pulse delay-75">
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <h1 class="text-4xl sm:text-5xl md:text-7xl font-black text-white tracking-tight mb-6">
+                        Order <span
+                            class="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Confirmed!</span>
+                    </h1>
+
+                    <div
+                        class="bg-slate-900 rounded-[3rem] p-8 md:p-12 shadow-2xl border border-white/5 mb-10 text-left relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-1000">
+                        </div>
+                        <% if (locals.notSyncedYet) { %>
+                            <div class="text-center py-10">
+                                <div
+                                    class="mb-8 inline-flex items-center justify-center p-6 bg-blue-500/10 rounded-3xl border border-blue-500/20">
+                                    <svg class="w-10 h-10 text-blue-500 animate-spin" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-black text-white mb-3">Syncing System Data</h3>
+                                <p class="text-slate-400 font-medium max-w-sm mx-auto">Initializing your order
+                                    connection. Your detailed dashboard will be ready within 5 minutes.</p>
+                                <div class="mt-6 inline-block px-4 py-1 bg-white/5 rounded-lg">
+                                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Protocol
+                                        ID: #<%= order.orderId %>
+                                    </p>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <div
+                                    class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10 pb-8 border-b border-white/5 relative z-10">
+                                    <div>
+                                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                            Order Number</p>
+                                        <p class="text-2xl font-black text-white">#<%= order.orderId %>
+                                        </p>
+                                    </div>
+                                    <div class="text-left sm:text-right">
+                                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
+                                            Transaction Date</p>
+                                        <p class="text-lg font-bold text-slate-300">
+                                            <%= new Date(order.createdAt).toLocaleDateString() %>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-8 relative z-10">
+                                    <% order.items.forEach(item=> { %>
+                                        <div class="flex items-center gap-6 group/item">
+                                            <div
+                                                class="w-16 h-16 bg-slate-950 rounded-2xl overflow-hidden border border-white/5 flex-shrink-0">
+                                                <img src="<%= item.image %>" alt="<%= item.productName %>"
+                                                    class="w-full h-full object-cover group-hover/item:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100">
+                                            </div>
+                                            <div class="flex-grow">
+                                                <h3
+                                                    class="font-black text-white text-lg truncate max-w-[200px] sm:max-w-md group-hover/item:text-blue-400 transition-colors">
+                                                    <%= item.productName %>
+                                                </h3>
+                                                <p
+                                                    class="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                                    Quantity: <%= item.quantity %>
+                                                </p>
+                                            </div>
+                                            <p class="font-black text-white text-lg tracking-widest">$<%= (item.price *
+                                                    item.quantity).toFixed(2) %>
+                                            </p>
+                                        </div>
+                                        <% }) %>
+                                </div>
+
+                                <div
+                                    class="mt-10 pt-10 border-t-2 border-dashed border-white/5 space-y-4 relative z-10">
+                                    <div
+                                        class="flex justify-between items-center text-slate-500 font-black text-[10px] uppercase tracking-widest">
+                                        <span>Subtotal Analysis</span>
+                                        <span class="text-white text-lg tracking-widest">$<%= order.subtotal.toFixed(2)
+                                                %></span>
+                                    </div>
+                                    <div
+                                        class="flex justify-between items-center text-slate-500 font-black text-[10px] uppercase tracking-widest">
+                                        <span>Tax Logistics (8%)</span>
+                                        <span class="text-white text-lg tracking-widest">$<%= order.tax.toFixed(2) %>
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between items-center pt-6 mt-6 border-t border-white/10">
+                                        <div class="flex flex-col">
+                                            <span
+                                                class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Total
+                                                Value Paid</span>
+                                            <span class="text-4xl font-black text-blue-400 tracking-tighter">$<%=
+                                                    order.total.toFixed(2) %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                        <a href="/"
+                            class="w-full sm:w-auto px-10 py-5 bg-slate-800 text-slate-400 font-black uppercase tracking-widest text-[11px] rounded-2xl hover:bg-slate-700 hover:text-white transition-all">
+                            Continue Journey
+                        </a>
+                        <a href="/my-orders"
+                            class="w-full sm:w-auto px-10 py-5 bg-white text-slate-950 font-black uppercase tracking-widest text-[11px] rounded-2xl hover:bg-blue-600 hover:text-white hover:shadow-xl hover:shadow-blue-600/20 transition-all active:scale-95 flex items-center justify-center gap-2">
+                            Access Dashboard
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- <p class="mt-12 text-slate-400 font-medium italic">
+                        A confirmation email has been sent to <span class="text-slate-600 font-bold">
+                            <%= order.email %>
+                        </span>
+                    </p> -->
+                </div>
+            </main>
+
+            <%- include('partials/footer') %>
+    </body>
+
+</html>

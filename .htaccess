@@ -1,0 +1,19 @@
+# <IfModule mod_rewrite.c>
+
+# Header set Cache-Control "no-store, no-cache, must-revalidate"
+# RewriteEngine On
+
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP_HOST} ^(www\.)?rdfresh\.com$ [NC]
+# RewriteRule ^(.*)$ https://rdfresh.com/$1 [L,R=301]
+# </IfModule>
+
+<IfModule mod_rewrite.c>
+
+Header set Cache-Control "no-store, no-cache, must-revalidate"
+RewriteEngine On
+
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^(www\.)?rdfresh\.com$ [NC]
+RewriteRule ^(.*)$ https://rdfresh.com/$1 [L,R=301]
+</IfModule>

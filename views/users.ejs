@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rdfresh | Users Management</title>
+  <link rel="stylesheet" href="/css/output.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-entry {
+      animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 0;
+    }
+
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.3s;
+    }
+
+    .delay-4 {
+      animation-delay: 0.4s;
+    }
+  </style>
+</head>
+
+<body class="bg-[#F8FAFC]">
+  <div class="flex h-screen overflow-hidden">
+    <%- include('partials/sidebar') %>
+
+      <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+        <%- include('partials/header') %>
+
+          <main class="flex-1 p-8">
+            <div class="max-w-7xl mx-auto">
+              <!-- Premium Header Section -->
+              <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 animate-entry">
+                <div>
+                  <nav class="flex mb-4" aria-label="Breadcrumb">
+                    <ol
+                      class="inline-flex items-center space-x-1 md:space-x-3 text-xs font-bold uppercase tracking-widest">
+                      <li class="inline-flex items-center">
+                        <a href="/admin/dashboard"
+                          class="text-slate-400 hover:text-emerald-500 transition-colors">Dashboard</a>
+                      </li>
+                      <li>
+                        <div class="flex items-center">
+                          <svg class="w-3 h-3 text-slate-300 mx-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              clip-rule="evenodd"></path>
+                          </svg>
+                          <span class="text-slate-900">Users</span>
+                        </div>
+                      </li>
+                    </ol>
+                  </nav>
+                  <h1 class="text-4xl font-black text-slate-900 tracking-tight">Staff Management</h1>
+                  <p class="text-slate-500 mt-2 font-medium">
+                    Manage all system users and their access levels.
+                  </p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <a href="/admin/users/add"
+                    class="flex items-center gap-2 px-6 py-3 bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-200">
+                    <i class="fas fa-plus"></i>
+                    Add User
+                  </a>
+                  <div
+                    class="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-2 px-4 py-3">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-xs font-black text-slate-700 uppercase tracking-widest">
+                      <%= users.length %> Total Users
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stats Overview Cards -->
+              <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10 animate-entry delay-1">
+                <div
+                  class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 group">
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Network</p>
+                      <p class="text-2xl font-black text-slate-900">
+                        <%= users.length %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 group">
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Pulse</p>
+                      <p class="text-2xl font-black text-slate-900">
+                        <%= users.filter(u=> u.status === 'approved').length %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 group">
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Pending Queue</p>
+                      <p class="text-2xl font-black text-slate-900">
+                        <%= users.filter(u=> u.status === 'pending').length %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 group">
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-all duration-300">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                          d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Suspended</p>
+                      <p class="text-2xl font-black text-slate-900">
+                        <%= users.filter(u=> u.status === 'suspended').length %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Users Data Table Card -->
+              <div
+                class="bg-white rounded-[2.5rem] border border-slate-100 shadow-[0_20px_50px_rgba(0,0,0,0.02)] overflow-hidden animate-entry delay-2">
+                <div class="p-8 border-b border-slate-50 flex items-center justify-between flex-wrap gap-4">
+                  <div class="relative w-full md:w-96">
+                    <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                      </svg>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="Search by name, email, or role..."
+                      class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-emerald-500 transition-all outline-none font-medium text-sm">
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <select id="statusFilter"
+                      class="px-4 py-3 bg-slate-50 border border-transparent rounded-xl focus:bg-white focus:border-emerald-500 transition-all outline-none font-medium text-sm">
+                      <option value="">All Status</option>
+                      <option value="approved">Approved</option>
+                      <option value="pending">Pending</option>
+                      <option value="suspended">Suspended</option>
+                    </select>
+                    <select id="roleFilter"
+                      class="px-4 py-3 bg-slate-50 border border-transparent rounded-xl focus:bg-white focus:border-emerald-500 transition-all outline-none font-medium text-sm">
+                      <option value="">All Roles</option>
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="p-0 overflow-x-auto">
+                  <% /* Pagination (must be in outer scope because footer uses these vars) */ const itemsPerPage=10;
+                    const currentPage=parseInt(query?.page) || 1; const startIndex=(currentPage - 1) * itemsPerPage;
+                    const endIndex=Math.min(startIndex + itemsPerPage, users.length); const
+                    paginatedItems=users.slice(startIndex, endIndex); const totalPages=Math.ceil(users.length /
+                    itemsPerPage); %>
+
+                    <table class="w-full text-left border-collapse">
+                      <thead>
+                        <tr class="bg-slate-50/50">
+                          <th
+                            class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                            User Profile</th>
+                          <th
+                            class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                            Contact Matrix</th>
+                          <th
+                            class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                            Status Pulse</th>
+                          <th
+                            class="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 text-center">
+                            Operations</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-50">
+                        <% if (users.length===0) { %>
+                          <tr>
+                            <td colspan="4" class="px-8 py-20 text-center">
+                              <div class="flex flex-col items-center">
+                                <div
+                                  class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-300 mb-4">
+                                  <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                  </svg>
+                                </div>
+                                <p class="text-slate-400 font-bold uppercase tracking-widest">
+                                  No users found in the system
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                          <% } else { %>
+                            <% paginatedItems.forEach(user=> { %>
+                              <tr class="group hover:bg-slate-50/50 transition-colors user-row"
+                                data-status="<%= user.status || '' %>" data-role="<%= user.role || '' %>"
+                                data-name="<%= (user.name || '').toLowerCase() %>"
+                                data-email="<%= (user.email || '').toLowerCase() %>">
+
+                                <!-- User Profile Column -->
+                                <td class="px-8 py-6">
+                                  <div class="flex items-center gap-4">
+                                    <div
+                                      class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-emerald-400 font-black text-xs group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-md">
+                                      <%= (user.name || 'U' ).charAt(0).toUpperCase() %>
+                                    </div>
+                                    <div>
+                                      <p class="text-sm font-black text-slate-900 leading-none mb-1.5">
+                                        <%= user.name || 'Unknown User' %>
+                                      </p>
+                                      <p
+                                        class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter capitalize">
+                                        <i class="fas fa-user-tag mr-1"></i>
+                                        <%= user.role || 'Employee' %>
+                                      </p>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <!-- Contact Matrix Column -->
+                                <td class="px-8 py-6">
+                                  <div class="flex flex-col gap-1">
+                                    <div class="flex items-center gap-2">
+                                      <span class="text-[11px] font-black text-slate-900">
+                                        <%= user.email %>
+                                      </span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 font-medium">
+                                      <i class="fas fa-phone text-[9px] mr-1"></i>
+                                      <%= user.phone || 'N/A' %>
+                                    </p>
+                                  </div>
+                                </td>
+
+                                <!-- Status Pulse Column -->
+                                <td class="px-8 py-6">
+                                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider w-fit
+                            <%= user.status === 'approved' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 
+                               user.status === 'pending' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                               'bg-rose-50 text-rose-600 border border-rose-100' %>">
+                                    <div class="w-1.5 h-1.5 rounded-full mr-1.5 
+                              <%= user.status === 'approved' ? 'bg-emerald-500' : 
+                                 user.status === 'pending' ? 'bg-amber-500' :
+                                 'bg-rose-500' %>"></div>
+                                    <%= user.status || 'pending' %>
+                                  </span>
+                                </td>
+
+                                <!-- Operations Column -->
+                                <td class="px-8 py-6">
+                                  <div class="flex items-center justify-center gap-2">
+                                    <a href="/admin/users/view/<%= user.id %>"
+                                      class="p-2.5 bg-slate-900 text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition-all shadow-md group/btn">
+                                      <svg class="w-4 h-4 transition-transform group-hover/btn:scale-110" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                      </svg>
+                                    </a>
+
+                                    <!-- Alert/Notify Button -->
+                                    <% const safeName=(user.name || 'User' ).split("'").join("") %>
+                                      <button
+                                        onclick="openAlertModal('<%= user.id %>', '<%= safeName %>', <%= JSON.stringify(user.unsignedOrders || []) %>)"
+                                        class="relative p-2.5 bg-white text-emerald-400 border border-emerald-100 rounded-xl hover:bg-emerald-50 hover:text-emerald-600 transition-all shadow-sm group/alert">
+                                        <i
+                                          class="fas fa-bell text-xs transition-transform group-hover/alert:scale-110"></i>
+                                        <% if (user.unsignedCount> 0) { %>
+                                          <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                                            <span
+                                              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                                            <span
+                                              class="relative inline-flex rounded-full h-4 w-4 bg-rose-500 text-[8px] text-white items-center justify-center font-black">
+                                              <%= user.unsignedCount %>
+                                            </span>
+                                          </span>
+                                          <% } %>
+                                      </button>
+
+                                      <!-- Approve/Status Change Button -->
+                                      <% if (user.status==='pending' ) { %>
+                                        <button onclick="approveUser('<%= user.id %>', '<%= safeName %>')"
+                                          class="p-2.5 bg-white text-emerald-400 border border-emerald-100 rounded-xl hover:bg-emerald-50 hover:text-emerald-600 transition-all shadow-sm">
+                                          <i class="fas fa-check text-xs"></i>
+                                        </button>
+                                        <% } else if (user.status==='approved' ) { %>
+                                          <button onclick="suspendUser('<%= user.id %>', '<%= safeName %>')"
+                                            class="p-2.5 bg-white text-amber-400 border border-amber-100 rounded-xl hover:bg-amber-50 hover:text-amber-600 transition-all shadow-sm">
+                                            <i class="fas fa-pause text-xs"></i>
+                                          </button>
+                                          <% } else if (user.status==='suspended' ) { %>
+                                            <button onclick="approveUser('<%= user.id %>', '<%= safeName %>')"
+                                              class="p-2.5 bg-white text-emerald-400 border border-emerald-100 rounded-xl hover:bg-emerald-50 hover:text-emerald-600 transition-all shadow-sm">
+                                              <i class="fas fa-play text-xs"></i>
+                                            </button>
+                                            <% } %>
+
+                                              <!-- Delete Button -->
+                                              <button onclick="confirmDelete('<%= user.id %>', '<%= safeName %>')"
+                                                class="p-2.5 bg-white text-rose-400 border border-rose-100 rounded-xl hover:bg-rose-50 hover:text-rose-600 transition-all shadow-sm">
+                                                <i class="fas fa-trash text-xs"></i>
+                                              </button>
+                                  </div>
+                                </td>
+                              </tr>
+
+                              <!-- Hidden Forms -->
+                              <form action="/admin/users/delete/<%= user.id %>" method="POST" class="hidden"
+                                id="deleteForm-<%= user.id %>"></form>
+                              <form action="/admin/users/approve/<%= user.id %>" method="POST" class="hidden"
+                                id="approveForm-<%= user.id %>"></form>
+                              <form action="/admin/users/suspend/<%= user.id %>" method="POST" class="hidden"
+                                id="suspendForm-<%= user.id %>"></form>
+                              <% }); %>
+                                <% } %>
+                      </tbody>
+                    </table>
+                </div>
+
+                <!-- Premium Sliding Pagination -->
+                <% if (totalPages> 1) { %>
+                  <div
+                    class="px-8 py-8 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-3">
+                      <div class="p-2 bg-emerald-50 rounded-lg text-emerald-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                          </path>
+                        </svg>
+                      </div>
+                      <p class="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">
+                        Showing <span class="text-slate-900">
+                          <%= startIndex + 1 %>
+                        </span> to <span class="text-slate-900">
+                          <%= endIndex %>
+                        </span> of <span class="text-slate-900">
+                          <%= users.length %>
+                        </span> users
+                      </p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      <% if (currentPage> 1) { %>
+                        <a href="/admin/users?page=<%= currentPage - 1 %>"
+                          class="group flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-black text-slate-600 hover:border-emerald-500 hover:text-emerald-600 transition-all shadow-sm">
+                          <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7">
+                            </path>
+                          </svg>
+                          PREV
+                        </a>
+                        <% } %>
+
+                          <div class="flex items-center mx-2 gap-1.5">
+                            <% let startPage=Math.max(1, currentPage - 2); let endPage=Math.min(totalPages, startPage +
+                              4); if (endPage===totalPages) startPage=Math.max(1, endPage - 4); for(let i=startPage; i
+                              <=endPage; i++) { %>
+                              <a href="/admin/users?page=<%= i %>"
+                                class="w-10 h-10 flex items-center justify-center rounded-xl text-xs font-black transition-all duration-300
+                      <%= i === currentPage ? 'bg-slate-900 text-emerald-400 shadow-xl shadow-slate-900/20 scale-110 z-10' : 'bg-white text-slate-400 border border-slate-100 hover:bg-slate-50 hover:text-slate-900' %>">
+                                <%= i %>
+                              </a>
+                              <% } %>
+                          </div>
+
+                          <% if (currentPage < totalPages) { %>
+                            <a href="/admin/users?page=<%= currentPage + 1 %>"
+                              class="group flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-black text-slate-600 hover:border-emerald-500 hover:text-emerald-600 transition-all shadow-sm">
+                              NEXT
+                              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7">
+                                </path>
+                              </svg>
+                            </a>
+                            <% } %>
+                    </div>
+                  </div>
+                  <% } %>
+              </div>
+            </div>
+          </main>
+      </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // Filter users
+    function filterUsers() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter')?.value || '';
+      const roleFilter = document.getElementById('roleFilter')?.value || '';
+
+      const userRows = document.querySelectorAll('.user-row');
+
+      userRows.forEach(row => {
+        let show = true;
+        const status = row.getAttribute('data-status');
+        const role = row.getAttribute('data-role');
+        const name = row.getAttribute('data-name');
+        const email = row.getAttribute('data-email');
+
+        // Search filter
+        if (searchTerm) {
+          if (!name.includes(searchTerm) && !email.includes(searchTerm)) {
+            show = false;
+          }
+        }
+
+        // Status filter
+        if (statusFilter && status !== statusFilter) {
+          show = false;
+        }
+
+        // Role filter
+        if (roleFilter && role !== roleFilter) {
+          show = false;
+        }
+
+        row.style.display = show ? '' : 'none';
+      });
+    }
+
+    // Initialize filters
+    document.addEventListener('DOMContentLoaded', function () {
+      const searchInput = document.getElementById('searchInput');
+      const statusFilter = document.getElementById('statusFilter');
+      const roleFilter = document.getElementById('roleFilter');
+
+      if (searchInput) searchInput.addEventListener('input', filterUsers);
+      if (statusFilter) statusFilter.addEventListener('change', filterUsers);
+      if (roleFilter) roleFilter.addEventListener('change', filterUsers);
+    });
+
+    // Delete user confirmation
+    function confirmDelete(userId, userName) {
+      Swal.fire({
+        title: 'EXECUTE DELETION?',
+        text: `User "${userName}" will be permanently removed from the system.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f43f5e',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'DELETE USER',
+        cancelButtonText: 'CANCEL',
+        reverseButtons: true,
+        customClass: {
+          popup: 'rounded-[1.5rem] border-none shadow-2xl',
+          confirmButton: 'rounded-xl px-8 py-3 font-black text-xs uppercase tracking-widest',
+          cancelButton: 'rounded-xl px-8 py-3 font-black text-xs uppercase tracking-widest'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById(`deleteForm-${userId}`).submit();
+        }
+      });
+    }
+
+    // Approve user
+    function approveUser(userId, userName) {
+      Swal.fire({
+        title: 'APPROVE USER?',
+        text: `Grant "${userName}" full access to the system?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'APPROVE',
+        cancelButtonText: 'CANCEL',
+        reverseButtons: true,
+        customClass: {
+          popup: 'rounded-[1.5rem] border-none shadow-2xl',
+          confirmButton: 'rounded-xl px-8 py-3 font-black text-xs uppercase tracking-widest',
+          cancelButton: 'rounded-xl px-8 py-3 font-black text-xs uppercase tracking-widest'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById(`approveForm-${userId}`).submit();
+        }
+      });
+    }
+
+    // Suspend user
+    function suspendUser(userId, userName) {
+      Swal.fire({
+        title: 'SUSPEND USER?',
+        text: `Revoke "${userName}" access to the system?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#f59e0b',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'SUSPEND',
+        cancelButtonText: 'CANCEL',
+        reverseButtons: true,
+        customClass: {
+          popup: 'rounded-[1.5rem] border-none shadow-2xl',
+          confirmButton: 'rounded-xl px-8 py-3 font-black text-xs uppercase tracking-widest',
+          cancelButton: 'rounded-xl px-8 py-3 font-black text-xs uppercase tracking-widest'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById(`suspendForm-${userId}`).submit();
+        }
+      });
+    }
+
+    // --- Alert Notification Modal Logic ---
+
+    function openAlertModal(userId, userName, unsignedOrders) {
+      document.getElementById('notifyTo').value = userId;
+      document.getElementById('modalUserName').innerText = userName;
+
+      const ordersList = document.getElementById('ordersPreviewList');
+      ordersList.innerHTML = '';
+
+      if (unsignedOrders && unsignedOrders.length > 0) {
+        unsignedOrders.forEach(order => {
+          const orderDiv = document.createElement('div');
+          orderDiv.className = 'p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/30 transition-all group cursor-pointer active:scale-95';
+          orderDiv.onclick = () => selectOrder(order.orderNumber, order.status, order.total_amount);
+
+          orderDiv.innerHTML = `
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-[10px] font-black text-slate-900 uppercase">#${order.orderNumber}</span>
+              <span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-md text-[8px] font-black uppercase tracking-tighter">Unsigned</span>
+            </div>
+            <p class="text-[11px] font-bold text-slate-600 line-clamp-1">${order.customerEmail}</p>
+            <div class="mt-2 flex justify-between items-center">
+              <span class="text-[10px] text-slate-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis">${new Date(order.orderDate).toLocaleDateString()}</span>
+              <span class="text-xs font-black text-slate-900 ml-2">$${order.total_amount}</span>
+            </div>
+          `;
+          ordersList.appendChild(orderDiv);
+        });
+      } else {
+        ordersList.innerHTML = `
+          <div class="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No signature alerts</p>
+          </div>
+        `;
+      }
+
+      document.getElementById('alertModal').classList.remove('hidden');
+      document.getElementById('alertModal').classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAlertModal() {
+      document.getElementById('alertModal').classList.add('hidden');
+      document.getElementById('alertModal').classList.remove('flex');
+      document.body.style.overflow = '';
+      document.getElementById('alertForm').reset();
+    }
+
+    async function sendNotification(event) {
+      event.preventDefault();
+
+      const title = document.getElementById('alertTitle').value;
+      const message = document.getElementById('alertMessage').value;
+      const notifyTo = document.getElementById('notifyTo').value;
+
+      if (!title || !message) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Required Fields',
+          text: 'Please enter both title and message.',
+          confirmButtonColor: '#10b981'
+        });
+        return;
+      }
+
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>SENDING...';
+
+      try {
+        const response = await fetch('/api/notifications/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ title, message, notifyTo })
+        });
+
+        const result = await response.json();
+
+        if (result.ok) {
+          closeAlertModal();
+          Swal.fire({
+            icon: 'success',
+            title: 'ALERT SENT',
+            text: 'Notification has been successfully delivered.',
+            confirmButtonColor: '#10b981',
+            timer: 2000,
+            timerProgressBar: true
+          });
+        } else {
+          throw new Error(result.error || 'Failed to send alert');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'SEND FAILED',
+          text: error.message || 'An unexpected error occurred.',
+          confirmButtonColor: '#f43f5e'
+        });
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    }
+
+    function selectOrder(orderNumber, status, amount) {
+      const messageField = document.getElementById('alertMessage');
+      const titleField = document.getElementById('alertTitle');
+
+      titleField.value = `Order ${orderNumber} Update`;
+      messageField.value = `Hi, regarding your order ${orderNumber} (${status}), the total amount is $${amount}. [Add your custom message here]`;
+
+      // Visual feedback: briefly highlight the message field
+      messageField.classList.add('border-emerald-500', 'ring-2', 'ring-emerald-200');
+      setTimeout(() => {
+        messageField.classList.remove('border-emerald-500', 'ring-2', 'ring-emerald-200');
+      }, 1000);
+    }
+  </script>
+
+  <!-- Notification Alert Modal -->
+  <div id="alertModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div
+      class="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+      <!-- Modal Header -->
+      <div class="bg-slate-900 p-8 flex items-center justify-between">
+        <div>
+          <h3 class="text-2xl font-black text-white tracking-tight">Send User Alert</h3>
+          <p class="text-emerald-400 text-xs font-black uppercase tracking-widest mt-1">
+            Target: <span id="modalUserName" class="text-white">User Name</span>
+          </p>
+        </div>
+        <button onclick="closeAlertModal()"
+          class="w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-xl flex items-center justify-center transition-all">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="p-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Form Side -->
+          <form id="alertForm" onsubmit="sendNotification(event)" class="space-y-6">
+            <input type="hidden" id="notifyTo">
+
+            <div class="space-y-2">
+              <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Alert Title</label>
+              <input type="text" id="alertTitle" required placeholder="Important Update..."
+                class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all outline-none font-bold text-sm">
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Message
+                Content</label>
+              <textarea id="alertMessage" required rows="4" placeholder="Type your message here..."
+                class="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all outline-none font-medium text-sm resize-none"></textarea>
+            </div>
+
+            <button type="submit"
+              class="w-full py-4 bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-200 flex items-center justify-center">
+              <i class="fas fa-paper-plane mr-2"></i> DISPATCH ALERT
+            </button>
+          </form>
+
+          <!-- Dummy Orders Preview Side -->
+          <div class="space-y-4">
+            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Recent Activity
+              Context</label>
+            <div id="ordersPreviewList" class="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+              <!-- Orders will be injected here via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 10px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #cbd5e1;
+    }
+  </style>
+
+  <%- include('partials/script') %>
+</body>
+
+</html>

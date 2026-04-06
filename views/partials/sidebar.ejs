@@ -1,0 +1,145 @@
+<div id="sidebarBackdrop"
+  class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0"></div>
+
+<div id="sidebar"
+  class="w-72 bg-slate-50 text-slate-600 h-screen flex flex-col border-r border-slate-200 fixed md:relative z-50 transition-all duration-300 ease-in-out overflow-hidden shadow-2xl md:shadow-sm -translate-x-full md:translate-x-0 md:w-72">
+  <!-- Sidebar Header -->
+  <div class="px-8 py-12">
+    <div class="flex items-center gap-3 group cursor-pointer">
+      <div class="w-1.5 h-8 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.4)]"></div>
+      <div>
+        <h2 class="text-2xl font-black text-slate-900 tracking-tighter uppercase leading-none">Rdfresh</h2>
+        <p class="text-[9px] font-bold text-slate-400 tracking-[0.3em] mt-1.5 uppercase">Professional System</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex-1 px-4 space-y-2 overflow-y-auto custom-scrollbar">
+    <div class="px-4 mb-8">
+      <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] opacity-80">Main Console</p>
+    </div>
+
+    <!-- Dashboard -->
+    <a href="/admin/dashboard"
+      class="flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-bold transition-all duration-300 group <%= currentPath === '/admin/dashboard' ? 'bg-white shadow-xl shadow-slate-200/50 text-emerald-600 border border-slate-100' : 'text-slate-500 hover:bg-white hover:shadow-lg hover:shadow-slate-200/30' %>">
+      <div
+        class="p-2.5 rounded-xl transition-all duration-300 <%= currentPath === '/admin/dashboard' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-emerald-500' %>">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+        </svg>
+      </div>
+      <span class="group-hover:translate-x-1 transition-transform">Dashboard Overview</span>
+    </a>
+
+    <!-- Orders -->
+    <a href="/admin/orders"
+      class="flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-bold transition-all duration-300 group <%= currentPath === '/admin/orders' ? 'bg-white shadow-xl shadow-slate-200/50 text-emerald-600 border border-slate-100' : 'text-slate-500 hover:bg-white hover:shadow-lg hover:shadow-slate-200/30' %>">
+      <div
+        class="p-2.5 rounded-xl transition-all duration-300 <%= currentPath === '/admin/orders' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-emerald-500' %>">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+      <span class="group-hover:translate-x-1 transition-transform">Order Records </span>
+    </a>
+
+    <!-- Employees -->
+    <a href="/admin/users"
+      class="flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-bold transition-all duration-300 group <%= currentPath === '/admin/users' ? 'bg-white shadow-xl shadow-slate-200/50 text-emerald-600 border border-slate-100' : 'text-slate-500 hover:bg-white hover:shadow-lg hover:shadow-slate-200/30' %>">
+      <div
+        class="p-2.5 rounded-xl transition-all duration-300 <%= currentPath === '/admin/users' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-emerald-500' %>">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3z" />
+        </svg>
+      </div>
+      <span class="group-hover:translate-x-1 transition-transform">Users Management</span>
+    </a>
+
+    <!-- Inquiries -->
+    <a href="/admin/inquiries"
+      class="flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-bold transition-all duration-300 group <%= currentPath === '/admin/inquiries' ? 'bg-white shadow-xl shadow-slate-200/50 text-emerald-600 border border-slate-100' : 'text-slate-500 hover:bg-white hover:shadow-lg hover:shadow-slate-200/30' %>">
+      <div
+        class="p-2.5 rounded-xl transition-all duration-300 <%= currentPath === '/admin/inquiries' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-emerald-500' %>">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+        </svg>
+      </div>
+      <span class="group-hover:translate-x-1 transition-transform">Partnership Inquiries</span>
+    </a>
+
+    <!-- Products -->
+    <a href="/admin/products"
+      class="flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-bold transition-all duration-300 group <%= currentPath === '/admin/products' ? 'bg-white shadow-xl shadow-slate-200/50 text-emerald-600 border border-slate-100' : 'text-slate-500 hover:bg-white hover:shadow-lg hover:shadow-slate-200/30' %>">
+      <div
+        class="p-2.5 rounded-xl transition-all duration-300 <%= currentPath === '/admin/products' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-emerald-500' %>">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+      <span class="group-hover:translate-x-1 transition-transform">Product Inventory</span>
+    </a>
+
+    <!-- FAQ -->
+    <a href="/admin/faq"
+      class="flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-bold transition-all duration-300 group <%= currentPath === '/admin/faq' ? 'bg-white shadow-xl shadow-slate-200/50 text-emerald-600 border border-slate-100' : 'text-slate-500 hover:bg-white hover:shadow-lg hover:shadow-slate-200/30' %>">
+      <div
+        class="p-2.5 rounded-xl transition-all duration-300 <%= currentPath === '/admin/faq' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-50 group-hover:text-emerald-500' %>">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+      <span class="group-hover:translate-x-1 transition-transform">FAQ Management</span>
+    </a>
+  </nav>
+
+  <!-- Sidebar Footer -->
+  <div class="p-6">
+    <div class="p-6 rounded-[2.5rem] bg-white border border-slate-100 shadow-xl shadow-slate-200/40">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="relative">
+          <div
+            class="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-emerald-400 font-black text-lg shadow-xl">
+            <%= admin.name.charAt(0).toUpperCase() %>
+          </div>
+          <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></div>
+        </div>
+        <div class="overflow-hidden">
+          <p class="text-xs font-black text-slate-900 leading-none mb-1.5 truncate">
+            <%= admin.name %>
+          </p>
+          <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Administrator</p>
+        </div>
+      </div>
+      <form action="/admin/logout" method="POST">
+        <button type="submit"
+          class="block w-full py-3.5 rounded-2xl bg-slate-50 hover:bg-rose-50 border border-slate-100 hover:border-rose-100 text-slate-500 hover:text-rose-600 text-[10px] font-black text-center uppercase tracking-[0.2em] transition-all duration-300">
+          Sign Out Portal
+        </button>
+      </form>
+    </div>
+
+    <p class="text-[9px] font-bold text-slate-400 text-center mt-8 uppercase tracking-[0.3em] opacity-40">© 2026 Rdfresh
+      Core</p>
+  </div>
+</div>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+  }
+</style>
