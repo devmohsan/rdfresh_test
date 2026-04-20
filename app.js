@@ -69,6 +69,16 @@ app.use(async (req, res, next) => {
     next();
 });
 
+
+// --- PREVENT CACHING (Critical for Logout & Reverse Proxy) ---
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
+app.set('etag', false);
+
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // --- WEBSITE ROUTES (Public) ---
@@ -92,15 +102,10 @@ const quickbooksRoutes = require('./router/quickbooks');
 app.use('/quickbooks', quickbooksRoutes);
 
 
-app.use((req, res, next) => {
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
-  next();
-});
 
-app.set('etag', false);
+
 const PORT = process.env.PORT || 3001;
+
 app.listen(PORT,'0.0.0.0', () => {
     console.log(`✅ Server running at http://localhost:${PORT}`);
     console.log(`🚀 Admin panel at http://localhost:${PORT}/admin`);

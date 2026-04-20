@@ -4,15 +4,129 @@ const admin = require('firebase-admin');
 
 const { getSettings } = require('./settingsService');
 
+const { sendPushNotification } = require('./fcmService');
+
+/**
+ * Handles strict notification flow: 
+ * 1. Find User by Email (in specified collection)
+ * 2. Send FCM Push Notification FIRST
+ * 3. Save to Firestore ONLY if FCM succeeds
+ */
+async function triggerStrictNotification({ title, message, email, collectionName = 'users', type, data = {} }) {
+    try {
+        // 1. Find User to get ID and Tokens
+        let userSnapshot = await db.collection(collectionName).where('email', '==', email).limit(1).get();
+
+        // Alternative: If admin_users uses doc ID as email or has a different structure
+        if (userSnapshot.empty && collectionName === 'users') {
+            const doc = await db.collection('users').doc(email).get();
+            if (doc.exists) {
+                userSnapshot = { empty: false, docs: [doc] };
+            }
+        }
+
+        if (userSnapshot.empty) {
+            console.log(`⚠️ User not found for ${email} in ${collectionName}. Skipping.`);
+            return;
+        }
+
+        const userDoc = userSnapshot.docs[0];
+        const userId = userDoc.id;
+        const userData = userDoc.data();
+        const tokens = userData.fcmTokens;
+
+        if (!Array.isArray(tokens) || tokens.length === 0) {
+            console.log(`⚠️ No FCM tokens for user ${userId}. Skipping DB save per rules.`);
+            return;
+        }
+
+        // 2. Send FCM Push Notification FIRST
+        let anySuccess = false;
+        for (const token of tokens) {
+            if (!token) continue;
+            const res = await sendPushNotification(token, title, message, { type, ...data });
+            if (res.success) anySuccess = true;
+        }
+
+        // 3. Save to Firestore ONLY if at least one FCM message was successful
+        if (anySuccess) {
+            const docRef = db.collection('notifications').doc();
+            await docRef.set({
+                id: docRef.id,
+                title,
+                message,
+                notifyTo: userId, // Store Document ID instead of email
+                type,
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                readBy: [],
+                ...data
+            });
+            console.log(`✅ Notification recorded in DB for ${userId} (FCM Success)`);
+        } else {
+            console.log(`❌ FCM failure for ${userId}. Notification NOT saved to DB.`);
+        }
+    } catch (err) {
+        console.error('❌ Error in triggerStrictNotification:', err.message);
+    }
+}
+
+async function runComplianceReminders() {
+    console.log('⏰ Running Compliance Reminders (24h/5-Day Check)...');
+    try {
+        const now = new Date();
+        const unsignedSnapshot = await db.collection('orders')
+            .where('status', '==', 'delivered')
+            .where('signatureStatus', '==', 'unsigned')
+            .get();
+
+        for (const orderDoc of unsignedSnapshot.docs) {
+            const order = orderDoc.data();
+            if (!order.deliveredAt) continue;
+
+            const deliveredAt = new Date(order.deliveredAt);
+            const diffTime = Math.abs(now - deliveredAt);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            // 1. 24h Reminder (To Customer)
+            await triggerStrictNotification({
+                title: '✍️ Signature Required',
+                message: `Reminder: Order #${order.orderNumber} is delivered. Please complete your signature.`,
+                email: order.customerEmail,
+                collectionName: 'users',
+                type: 'signature_reminder',
+                data: { orderId: orderDoc.id }
+            });
+
+            // 2. 5-Day Admin Escalation
+            if (diffDays >= 5) {
+                const admins = await db.collection('admin_users').get();
+                for (const adminDoc of admins.docs) {
+                    const adminData = adminDoc.data();
+                    await triggerStrictNotification({
+                        title: '⚠️ Compliance Escalation',
+                        message: `Order #${order.orderNumber} (${order.customerEmail}) delivered 5+ days but unsigned.`,
+                        email: adminData.email || adminDoc.id,
+                        collectionName: 'admin_users',
+                        type: 'admin_escalation',
+                        data: { orderId: orderDoc.id }
+                    });
+                }
+            }
+        }
+    } catch (err) {
+        console.error('❌ Error in runComplianceReminders:', err.message);
+    }
+}
+
 async function syncShipStationOrders() {
     console.log('🔄 Starting ShipStation to Firebase Sync...');
     try {
         const settings = await getSettings();
         const API_KEY = settings.API_KEY || process.env.API_KEY;
         const API_SK = settings.API_SK || process.env.API_SK;
-        
+
         const auth = Buffer.from(`${API_KEY}:${API_SK}`).toString('base64');
-        
+
         // Fetch last 100 orders to ensure we catch updates
         const response = await fetch('https://ssapi.shipstation.com/orders?sortDir=desc', {
             method: 'GET',
@@ -70,7 +184,7 @@ async function syncShipStationOrders() {
                     sku: item.sku,
                     quantity: item.quantity,
                     price: item.unitPrice,
-                    unitPrice: item.unitPrice, 
+                    unitPrice: item.unitPrice,
                     imageUrl: item.imageUrl,
                     type: 'standard' // Default type as ShipStation items don't have veg/non-veg natively
                 })),
@@ -86,15 +200,29 @@ async function syncShipStationOrders() {
                 });
             } else {
                 const existingData = doc.data();
-                // Skip update if status is already 'delivered'
-                if (existingData.status === 'delivered') {
-                    console.log(`ℹ️ Skipping update for order #${orderId} - already 'delivered'`);
-                    continue;
+
+                // --- CUSTOM COMPLIANCE LOGIC: Detect Delivery ---
+                if (existingData.status !== 'delivered' && orderData.status === 'delivered') {
+                    console.log(`📡 Order Delivered Transition: #${orderId}`);
+                    orderData.deliveredAt = new Date().toISOString();
+
+                    // Trigger Delivery Notification to Customer
+                    await triggerStrictNotification({
+                        title: '📦 Order Delivered',
+                        message: `Order #${orderData.orderNumber} has been delivered. Please sign to complete installation.`,
+                        email: orderData.customerEmail,
+                        type: 'delivery_alert',
+                        data: { orderId: orderId }
+                    });
+                } else if (existingData.deliveredAt) {
+                    // Carry forward deliveredAt if already exists
+                    orderData.deliveredAt = existingData.deliveredAt;
                 }
+
                 // Existing order: Update everything EXCEPT signatureStatus
                 await orderRef.update(orderData);
             }
-            
+
             updateCount++;
         }
 
@@ -113,7 +241,7 @@ async function syncShipStationProducts() {
         const API_SK = settings.API_SK || process.env.API_SK;
 
         const auth = Buffer.from(`${API_KEY}:${API_SK}`).toString('base64');
-        
+
         const response = await fetch('https://ssapi.shipstation.com/products?pageSize=100', {
             method: 'GET',
             headers: {
@@ -159,13 +287,13 @@ async function syncShipStationProducts() {
             };
 
             await productRef.set(productData, { merge: true });
-            
+
             // if (ssImageUrl) {
             //     console.log(`✅ Synced product ${product.sku} with image: ${ssImageUrl}`);
             // } else {
             //     console.log(`⚠️ Product ${product.sku} synced without image (null in ShipStation)`);
             // }
-            
+
             syncCount++;
         }
 
@@ -176,16 +304,23 @@ async function syncShipStationProducts() {
     }
 }
 
-// Schedule the task to run every 15 minutes
+// Schedule background tasks
 function startSyncJob() {
+    // Sync Orders every 30 mins
     cron.schedule('*/30 * * * *', () => {
         syncShipStationOrders();
         // syncShipStationProducts();
     });
 
+    // Run Compliance Reminders every day at 9:00 AM
+    cron.schedule('0 9 * * *', () => {
+        runComplianceReminders();
+    });
+
     // Run once immediately on start
     syncShipStationOrders();
     // syncShipStationProducts();
+    runComplianceReminders(); // Optional: run once at startup
 }
 
 module.exports = { startSyncJob, syncShipStationOrders, syncShipStationProducts };

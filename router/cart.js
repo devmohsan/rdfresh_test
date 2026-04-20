@@ -6,49 +6,49 @@ const jwt = require('jsonwebtoken');
 // Custom authentication middleware for cart (handles both API and page requests)
 const cartAuth = (req, res, next) => {
     const token = req.cookies?.token;
-    
+
     if (!token) {
         // Check if this is an API request
-        const isApiRequest = req.xhr || 
-                            req.headers.accept?.indexOf('json') > -1 || 
-                            req.path.includes('/add') || 
-                            req.path.includes('/update') || 
-                            req.path.includes('/remove') || 
-                            req.path.includes('/count');
-        
+        const isApiRequest = req.xhr ||
+            req.headers.accept?.indexOf('json') > -1 ||
+            req.path.includes('/add') ||
+            req.path.includes('/update') ||
+            req.path.includes('/remove') ||
+            req.path.includes('/count');
+
         if (isApiRequest) {
-            return res.status(401).json({ 
-                success: false, 
+            return res.status(401).json({
+                success: false,
                 message: 'Please login to access cart',
                 redirectTo: '/login'
             });
         }
-        
+
         req.flash('error_msg', 'Please login to access cart');
         return res.redirect('/login');
     }
-    
+
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
     } catch (err) {
         // Invalid/expired token
-        const isApiRequest = req.xhr || 
-                            req.headers.accept?.indexOf('json') > -1 || 
-                            req.path.includes('/add') || 
-                            req.path.includes('/update') || 
-                            req.path.includes('/remove') || 
-                            req.path.includes('/count');
-        
+        const isApiRequest = req.xhr ||
+            req.headers.accept?.indexOf('json') > -1 ||
+            req.path.includes('/add') ||
+            req.path.includes('/update') ||
+            req.path.includes('/remove') ||
+            req.path.includes('/count');
+
         if (isApiRequest) {
-            return res.status(401).json({ 
-                success: false, 
+            return res.status(401).json({
+                success: false,
                 message: 'Session expired. Please login again.',
                 redirectTo: '/login'
             });
         }
-        
+
         req.flash('error_msg', 'Session expired. Please login again.');
         res.redirect('/login');
     }
@@ -60,22 +60,22 @@ router.get('/', cartAuth, async (req, res) => {
         const userId = req.user.id;
         const cartRef = db.collection('carts').doc(userId);
         const cartDoc = await cartRef.get();
-        
-        
-        console.log('db docs', cartDoc);
+
+
+        // console.log('db docs', cartDoc);
         let cartItems = [];
         let total = 0;
-        
+
         if (cartDoc.exists) {
             const cartData = cartDoc.data();
             cartItems = cartData.items || [];
             total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
-            console.log('total', total);
-        }else{
+
+            // console.log('total', total);
+        } else {
             cartItems = [];
         }
-        
+
         res.render('website/cart', {
             title: 'Shopping Cart - RD Fresh',
             user: req.user,
@@ -97,24 +97,24 @@ router.get('/checkout', cartAuth, async (req, res) => {
         const userId = req.user.id;
         const cartRef = db.collection('carts').doc(userId);
         const cartDoc = await cartRef.get();
-        
+
         let cartItems = [];
         let total = 0;
-        
+
         if (cartDoc.exists) {
             cartItems = cartDoc.data().items || [];
             total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         }
-        
+
         if (cartItems.length === 0) {
             req.flash('error_msg', 'Your cart is empty');
             return res.redirect('/cart');
         }
-        
+
         // Fetch full user profile for pre-filling
         const userDoc = await db.collection('users').doc(userId).get();
         const fullUser = userDoc.exists ? userDoc.data() : req.user;
-        
+
         res.render('website/checkout', {
             user: fullUser,
             cartItems,
@@ -136,18 +136,18 @@ router.post('/checkout', cartAuth, async (req, res) => {
         const { billingInfo } = req.body;
         console.log('Checkout request received for user:', userId);
         console.log('Billing Info:', billingInfo ? 'Received' : 'MISSING');
-        
+
         if (!billingInfo) {
             return res.status(400).json({
                 success: false,
                 message: 'Billing information is required'
             });
         }
-        
+
         // Get cart items
         const cartRef = db.collection('carts').doc(userId);
         const cartDoc = await cartRef.get();
-        
+
         if (!cartDoc.exists || !cartDoc.data().items || cartDoc.data().items.length === 0) {
             console.log('Checkout failed: Cart is empty');
             return res.status(400).json({
@@ -155,32 +155,32 @@ router.post('/checkout', cartAuth, async (req, res) => {
                 message: 'Cart is empty'
             });
         }
-        
+
         const cartItems = cartDoc.data().items;
         const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const tax = total * 0.08;
         const grandTotal = total + tax;
-        
+
         // Get user data
         const userDoc = await db.collection('users').doc(userId).get();
         const userData = userDoc.data();
-        
+
         // Initialize QuickBooks
         const quickbooks = require('../services/quickbooks');
         const qbSettings = await db.collection('settings').doc('quickbooks').get();
-        
+
         let qbCustomerId = userData?.quickbooksCustomerId || null;
         let qbReceipt = null;
         let qbError = null;
-        
+
         // Only try QuickBooks if connected
         if (qbSettings.exists) {
             console.log('QuickBooks is connected, processing payment...');
-            
+
             try {
                 // Ensure tokens are valid and client is initialized
                 await quickbooks.validateAndRefreshToken();
-                
+
                 // Create or get customer in QuickBooks
                 if (!qbCustomerId) {
                     console.log('Creating new QB customer...');
@@ -192,7 +192,7 @@ router.post('/checkout', cartAuth, async (req, res) => {
                         });
                         qbCustomerId = qbCustomer.Id;
                         console.log('QB Customer created:', qbCustomerId);
-                        
+
                         // Save QB customer ID
                         await db.collection('users').doc(userId).update({
                             quickbooksCustomerId: qbCustomerId
@@ -204,7 +204,7 @@ router.post('/checkout', cartAuth, async (req, res) => {
                 } else {
                     console.log('Using existing QB customer:', qbCustomerId);
                 }
-                
+
                 // Create sales receipt in QuickBooks
                 if (qbCustomerId) {
                     console.log('Creating QB sales receipt...');
@@ -229,7 +229,7 @@ router.post('/checkout', cartAuth, async (req, res) => {
             console.log('To connect QuickBooks, visit: /quickbooks/connect');
             qbError = 'QuickBooks not connected';
         }
-        
+
         // ---- ShipStation Order Creation ----
         let shipStationOrderId = null;
         let shipStationError = null;
@@ -237,7 +237,7 @@ router.post('/checkout', cartAuth, async (req, res) => {
         try {
             console.log('Creating order in ShipStation...');
             const auth = Buffer.from(`${process.env.API_KEY}:${process.env.API_SK}`).toString('base64');
-            
+
             const ssOrderData = {
                 orderNumber: `RDF-${Date.now()}`,
                 orderDate: new Date().toISOString(),
@@ -323,17 +323,17 @@ router.post('/checkout', cartAuth, async (req, res) => {
             quickbooksConnected: qbSettings.exists && qbSettings.data().tokens ? true : false,
             createdAt: new Date().toISOString()
         };
-        
+
         // Clear cart
         await cartRef.delete();
-        
+
         res.json({
             success: true,
             message: 'Payment and Order processed successfully',
             orderId: shipStationOrderId, // Use ShipStation ID instead of Firestore ID
             quickbooksReceiptId: qbReceipt?.Id
         });
-        
+
     } catch (error) {
         console.error('Checkout error:', error);
         res.status(500).json({
@@ -348,19 +348,19 @@ router.post('/add', cartAuth, async (req, res) => {
     try {
         const userId = req.user.id;
         const { productId, productName, price, image, quantity = 1 } = req.body;
-        
+
         const cartRef = db.collection('carts').doc(userId);
         const cartDoc = await cartRef.get();
-        
+
         let cartItems = [];
-        
+
         if (cartDoc.exists) {
             cartItems = cartDoc.data().items || [];
         }
-        
+
         // Check if product already exists in cart
         const existingItemIndex = cartItems.findIndex(item => item.productId === productId);
-        
+
         if (existingItemIndex > -1) {
             // Update quantity
             cartItems[existingItemIndex].quantity += parseInt(quantity);
@@ -375,13 +375,13 @@ router.post('/add', cartAuth, async (req, res) => {
                 addedAt: new Date().toISOString()
             });
         }
-        
+
         await cartRef.set({
             userId,
             items: cartItems,
             updatedAt: new Date().toISOString()
         });
-        
+
         req.flash('success_msg', `${productName} added to cart!`);
         res.json({ success: true, message: 'Product added to cart', cartCount: cartItems.length });
     } catch (error) {
@@ -395,14 +395,14 @@ router.post('/update', cartAuth, async (req, res) => {
     try {
         const userId = req.user.id;
         const { productId, quantity } = req.body;
-        
+
         const cartRef = db.collection('carts').doc(userId);
         const cartDoc = await cartRef.get();
-        
+
         if (cartDoc.exists) {
             let cartItems = cartDoc.data().items || [];
             const itemIndex = cartItems.findIndex(item => item.productId === productId);
-            
+
             if (itemIndex > -1) {
                 if (parseInt(quantity) <= 0) {
                     // Remove item if quantity is 0 or less
@@ -410,19 +410,19 @@ router.post('/update', cartAuth, async (req, res) => {
                 } else {
                     cartItems[itemIndex].quantity = parseInt(quantity);
                 }
-                
+
                 await cartRef.update({
                     items: cartItems,
                     updatedAt: new Date().toISOString()
                 });
-                
+
                 // Calculate new totals
                 const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const tax = subtotal * 0.08;
                 const total = subtotal + tax;
 
-                res.json({ 
-                    success: true, 
+                res.json({
+                    success: true,
                     message: 'Cart updated',
                     totals: {
                         subtotal,
@@ -448,27 +448,27 @@ router.post('/remove', cartAuth, async (req, res) => {
     try {
         const userId = req.user.id;
         const { productId } = req.body;
-        
+
         const cartRef = db.collection('carts').doc(userId);
         const cartDoc = await cartRef.get();
-        
+
         if (cartDoc.exists) {
             let cartItems = cartDoc.data().items || [];
             cartItems = cartItems.filter(item => item.productId !== productId);
-            
+
             await cartRef.update({
                 items: cartItems,
                 updatedAt: new Date().toISOString()
             });
-            
+
             req.flash('success_msg', 'Item removed from cart');
             // Calculate new totals
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const tax = subtotal * 0.08;
             const total = subtotal + tax;
 
-            res.json({ 
-                success: true, 
+            res.json({
+                success: true,
                 message: 'Item removed from cart',
                 totals: {
                     subtotal,
@@ -491,13 +491,13 @@ router.post('/clear', cartAuth, async (req, res) => {
     try {
         const userId = req.user.id;
         const cartRef = db.collection('carts').doc(userId);
-        
+
         await cartRef.set({
             userId,
             items: [],
             updatedAt: new Date().toISOString()
         });
-        
+
         req.flash('success_msg', 'Cart cleared');
         res.redirect('/cart');
     } catch (error) {
@@ -513,13 +513,13 @@ router.get('/count', cartAuth, async (req, res) => {
         const userId = req.user.id;
         const cartRef = db.collection('carts').doc(userId);
         const cartDoc = await cartRef.get();
-        
+
         let count = 0;
         if (cartDoc.exists) {
             const cartItems = cartDoc.data().items || [];
             count = cartItems.length;
         }
-        
+
         res.json({ count });
     } catch (error) {
         console.error('Error getting cart count:', error);

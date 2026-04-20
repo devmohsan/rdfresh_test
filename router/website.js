@@ -5,6 +5,20 @@ const jwt = require('jsonwebtoken');
 const { db } = require('../firebase/db');
 const { getSettings } = require('../services/settingsService');
 
+const { userAuth, ndaGuard } = require('../middleware/websiteAuth');
+
+// 🔹 Neutralize Admin Sessions for Website
+// This ensures that even if an admin is logged in, they are treated as a guest on the website side.
+router.use((req, res, next) => {
+    if (res.locals.user && res.locals.user.role === 'admin') {
+        res.locals.user = null;
+    }
+    next();
+});
+
+// Apply NDA Gatekeeper globally to website routes
+router.use(ndaGuard);
+
 // Landing Page
 router.get('/', async (req, res) => {
     try {
@@ -37,20 +51,6 @@ router.get('/', async (req, res) => {
         });
     }
 });
-
-const { userAuth, ndaGuard } = require('../middleware/websiteAuth');
-
-// 🔹 Neutralize Admin Sessions for Website
-// This ensures that even if an admin is logged in, they are treated as a guest on the website side.
-router.use((req, res, next) => {
-    if (res.locals.user && res.locals.user.role === 'admin') {
-        res.locals.user = null;
-    }
-    next();
-});
-
-// Apply NDA Gatekeeper globally to website routes
-router.use(ndaGuard);
 
 // My Orders Page
 router.get('/my-orders', userAuth, async (req, res) => {
@@ -495,7 +495,12 @@ router.get('/register', redirectIfAuthenticated, (req, res) => {
 
 // Logout Route
 router.get('/logout', (req, res) => {
-    res.clearCookie('token');
+    // Explicitly clearing with all attributes for Reverse Proxy compatibility
+    res.clearCookie('token', {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None"
+    });
     req.flash('success', 'Logged out successfully.');
     res.redirect('/');
 });
