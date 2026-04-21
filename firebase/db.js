@@ -1,5 +1,5 @@
 // firebase/db.js
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT); S
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT); 
 const admin = require('firebase-admin');
 // const serviceAccount = {
 //   type: process.env.FIREBASE_TYPE,
